@@ -1,0 +1,95 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import ToastContext from "./ToastContext";
+import { useLocation, useNavigate } from "react-router-dom";
+
+export const AuthContext = createContext();
+
+export const AuthContextProvider = ({children}) =>{
+
+    const {toast} = useContext(ToastContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [user,setUser] = useState(null);
+    const [error,setError] = useState(null);
+
+    useEffect(() => {
+        checkUserLoggedIn();
+    },[]);
+    //check if the user is logged in.
+    const checkUserLoggedIn = async () => {
+     
+        try {
+            const res = await fetch(`http://localhost:4000/api/me`,{
+                method:"get",
+                headers:{
+                    "Authorization":`Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            const result = await res.json();
+            if(!result.error){
+                setUser(result);
+              navigate("/",{replace:true});
+            }else{
+                navigate("/login",{replace:true});
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
+
+    //login request
+
+    const loginUser = async(credentails)=>{
+        try {
+            const res = await fetch ('http://localhost:4000/api/login',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",  
+                },
+                body:JSON.stringify({ ...credentails }),
+            })
+            const result = await res.json();
+          if(!result.error){
+           // console.log(result);
+            localStorage.setItem("token", result.token);
+            setUser(result.user);
+            toast.success(`Logged in ${result.user.name}`);
+            navigate("/",{replace:true});
+
+          }else{
+            toast.error(result.error);
+          }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    //register request
+    const registerUser = async(credentails) => {
+        try {
+            const res = await fetch('http://localhost:4000/api/register',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",  
+                },
+                body:JSON.stringify({ ...credentails }),
+            })
+            const result = await res.json();
+            if(!result.error){
+               toast.success("User registered successfully!");
+               navigate("/login",{replace:true})
+    
+              }else{
+                toast.error(result.error);
+              }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    return (<AuthContext.Provider value={{ loginUser,registerUser,user,setUser}}>
+        
+        {children}
+        </AuthContext.Provider>
+    )
+}
