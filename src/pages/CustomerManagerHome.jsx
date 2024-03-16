@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 
-const Home = () =>{
+const CustomerManagerHome = () =>{
     const navigate = useNavigate();
     const {user} = useContext(AuthContext)
     useEffect(()=>{
@@ -13,12 +13,12 @@ const Home = () =>{
 
     },[]);
 
-    return user && (<>This is Employee Manager Home page {user ? user.name : null} 
+    return <>This is Customer Manager Home page {user ? user.name : null} 
     <br></br>
     <Button id="AddEmployee" variant="primary" type="submit">Add Employee</Button>{' '}
-    </>)
+    </>
   
       }
 
 
-export default Home;
+export default CustomerManagerHome;

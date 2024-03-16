@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import ToastContext from "../context/ToastContext";
 
-const CreateEmployee = () =>{
+const CreateTransport = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
@@ -30,7 +30,7 @@ const CreateEmployee = () =>{
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/employees',{
+        const res = await fetch('http://localhost:4000/api/transports',{
             method:"POST",
             headers:{
                 "Content-Type":"application/json",
@@ -92,7 +92,6 @@ const CreateEmployee = () =>{
             <option value="TRANSPORT_MANAGER">Transport Manager</option>
             <option value="PRODUCT_MANAGER">Product Manager</option>
             <option value="PAYMENT_MANAGER">Payment Manager</option>
-            <option value="CUSTOMER_MANAGER">Customer Manager</option>
           </Form.Select>
       </Form.Group>
       
@@ -109,4 +108,4 @@ const CreateEmployee = () =>{
       };
 
 
-export default CreateEmployee;
+export default CreateTransport;
