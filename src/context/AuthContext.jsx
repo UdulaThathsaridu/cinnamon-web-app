@@ -28,8 +28,18 @@ export const AuthContextProvider = ({children}) =>{
             });
             const result = await res.json();
             if(!result.error){
+                if(location.pathname === "/login" || 
+                location.pathname === "/register"){
+                    setTimeout(()=> {
+                        navigate("/",{replace:true});
+
+                    },500);
+                }else{
+                    navigate(location.pathname ? location.pathname:"/");
+
+                }
                 setUser(result);
-              navigate("/",{replace:true});
+                
             }else{
                 navigate("/login",{replace:true});
             }
@@ -55,9 +65,7 @@ export const AuthContextProvider = ({children}) =>{
            // console.log(result);
             localStorage.setItem("token", result.token);
             setUser(result.user);
-            toast.success(`Logged in ${result.user.name}`);
-            navigate("/",{replace:true});
-
+            return result;
           }else{
             toast.error(result.error);
           }

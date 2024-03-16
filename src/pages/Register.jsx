@@ -13,6 +13,8 @@ const Register = () =>{
     const [credentails,setCredentials] = useState({
         name:"",
         email:"",
+        address:"",
+        phone:"",
         password:"",
         confirmPassword:"",
     });
@@ -55,6 +57,19 @@ const Register = () =>{
           We'll never share your email with anyone else.
         </Form.Text>
       </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicAddress">
+        <Form.Label>Home Address</Form.Label>
+        <Form.Control id="address" name="address" type="text" 
+        placeholder="Enter address" value={credentails.address} onChange={handleInputChange} required/>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPhone">
+        <Form.Label>Phone Number</Form.Label>
+        <Form.Control id="phone" name="phone" type="tel" 
+        placeholder="Enter Phone Number" value={credentails.phone} onChange={handleInputChange} required/>
+      </Form.Group>
+
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>

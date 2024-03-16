@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
 
 
 import { AuthContext } from '../context/AuthContext';
@@ -11,6 +11,7 @@ import ToastContext from '../context/ToastContext';
 const Login = () =>{
   const {toast} = useContext(ToastContext);
   const {loginUser} = useContext(AuthContext);
+  const navigate = useNavigate();
 
 
     const [credentails,setCredentials] = useState({
@@ -35,8 +36,46 @@ const Login = () =>{
           return;
 
         }
-        await loginUser(credentails);
-    }
+        try {
+          const { user } = await loginUser(credentails);
+          toast.success(`Logged in ${user.name}`);
+          if(user && user.userRole){
+            switch(user.userRole){
+              case 'EMPLOYEE_MANAGER':
+                navigate('/employee-manager');
+                break;
+              case 'INVENTORY_MANAGER':
+                navigate('/inventory-manager');
+                break;
+                case 'SUPPLIER_MANAGER':
+                  navigate('/supplier-manager');
+                  break;
+                case 'DELIVERY_MANAGER':
+                  navigate('/delivery-manager');
+                  break;
+                case 'TRANSPORT_MANAGER':
+                  navigate('/transport-manager');
+                  break;
+                case 'PRODUCT_MANAGER':
+                  navigate('/product-manager') ;
+                  break;
+                case 'PAYMENT_MANAGER':
+                  navigate('/payment-manager');
+                  break;
+                  case 'CUSTOMER_MANAGER':
+                    navigate('/customer-manager');
+                    break;   
+              default:
+                  navigate('/customer');
+                  break;
+            }
+          }
+        } catch (err) {
+          console.log(err);
+           toast.error('Failed to login.Please try again')
+        }
+        
+    };
     return (<>
     
    
