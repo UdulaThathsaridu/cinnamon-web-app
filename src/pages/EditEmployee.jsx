@@ -34,7 +34,7 @@ const EditEmployee = () =>{
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/inventories',{
+        const res = await fetch('http://localhost:4000/api/employees',{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json",

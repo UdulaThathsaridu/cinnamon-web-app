@@ -14,11 +14,13 @@ const EditInventories = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
-        name:"",
-        address:"",
-        email:"",
-        phone:"",
+    const [inventoryDetails,setInventoryDetails] = useState({
+        productname:"",
+        sku:"",
+        quantity:"",
+        unitprice:"",
+        itemno:"",
+        suppliername:"",
     });
     const [loading,setLoading]= useState(false);
     const navigate = useNavigate();
@@ -28,27 +30,27 @@ const EditInventories = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setInventoryDetails({...inventoryDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/inventories',{
+        const res = await fetch(`http://localhost:4000/api/inventories/${id}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify({id,...userDetails}),
+            body:JSON.stringify(inventoryDetails),
         
         });
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Updated [${userDetails.name}]`);
-         setUserDetails({name:"",address:"",email:"",phone:""});
-         navigate("/allemployees");
+          toast.success(`Updated [${inventoryDetails.productname}]`);
+         setInventoryDetails({productname:"",sku:"",quantity:"",unitprice:"",itemno:"", suppliername:""});
+         navigate("/allinventories");
 
         }else{
             toast.error(result.error);
@@ -58,10 +60,10 @@ const EditInventories = () =>{
 
     useEffect(() => {
 
-        async function fetchData() {
+        async function fetchInventories() {
             setLoading(true);
         try {
-            const res = await fetch(`http://localhost:4000/api/employees/${id}`,{
+            const res = await fetch(`http://localhost:4000/api/inventories/${id}`,{
                 method:"GET",
                 headers:{
                     "Authorization":`Bearer ${localStorage.getItem("token")}`,
@@ -70,11 +72,13 @@ const EditInventories = () =>{
             })
             const result = await res.json();
 
-            setUserDetails({
-                name:result.name,
-                address:result.address,
-                email:result.email,
-                phone:result.phone
+            setInventoryDetails({
+                productname:result.productname,
+                sku:result.sku,
+                quantity:result.quantity,
+                unitprice:result.unitprice,
+                itemno:result.itemno,
+                suppliername:result.suppliername,
             });
             setLoading(false);
             
@@ -84,37 +88,47 @@ const EditInventories = () =>{
         }
         }
         
-        fetchData()
+        fetchInventories()
     },[])
 
     return(<>
-    {loading ? <Spinner splash="Loading Employee..."/>:(<>
-        <h2>Edit Employees</h2>
+    {loading ? <Spinner splash="Loading Inventories..."/>:(<>
+        <h2>Edit Inventories</h2>
     
-    <Form onSubmit={handleSubmit} >
+        <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
-        <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        <Form.Label>Product Name</Form.Label>
+        <Form.Control id="productname" name="productname" type="text" 
+        placeholder="Enter Product Name"  value={inventoryDetails.productname} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="sku">
+        <Form.Label>Product SKU</Form.Label>
+        <Form.Control id="sku" name="sku" type="text" 
+        placeholder="Enter Product SKU" value={inventoryDetails.sku} onChange={handleInputChange} required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+      <Form.Group className="mb-3" controlId="quantity">
+        <Form.Label>Product Quantity</Form.Label>
+        <Form.Control id="quantity" name="quantity" type="number" 
+        placeholder="Enter Product Quantity" value={inventoryDetails.quantity} onChange={handleInputChange} required/>
+       
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Empoyee Phone Number</Form.Label>
-        <Form.Control conid="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="unitprice">
+        <Form.Label>Enter Unit Price</Form.Label>
+        <Form.Control id="unitprice" name="unitprice" type="number" 
+        placeholder="Enter Unit Price" value={inventoryDetails.unitprice} onChange={handleInputChange} required/>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="itemno">
+        <Form.Label>Enter Item Number</Form.Label>
+        <Form.Control id="itemno" name="itemno" type="number" 
+        placeholder="Enter Item Number" value={inventoryDetails.itemno} onChange={handleInputChange} required/>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="suppliername">
+        <Form.Label>Enter Supplier Name</Form.Label>
+        <Form.Control id="suppliername" name="suppliername" type="text" 
+        placeholder="Enter Supplier Name" value={inventoryDetails.suppliername} onChange={handleInputChange} required/>
       </Form.Group>
       
       <Button id="btn" name="submit" variant="primary" type="submit">

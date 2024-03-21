@@ -38,6 +38,10 @@ const Login = () =>{
         }
         try {
           const { user } = await loginUser(credentails);
+          localStorage.setItem("email",user.email);
+          localStorage.setItem("id",user._id);
+          localStorage.setItem("name",user.name);
+          localStorage.setItem("address",user.address);
           toast.success(`Logged in ${user.name}`);
           if(user && user.userRole){
             switch(user.userRole){

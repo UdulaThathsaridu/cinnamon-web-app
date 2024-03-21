@@ -12,13 +12,13 @@ const AllSuppliers = () =>{
     const {toast}= useContext(ToastContext);
     const [showModal,setShowModal] = useState(false);
     const [loading,setLoading] = useState(false);
-    const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [employees,setEmployees] = useState([]);
+    const [selectedSupplier, setSelectedSupplier] = useState(null);
+    const [suppliers,setSuppliers] = useState([]);
     const [searchInput,setSearchInput] = useState("");
   
 
     useEffect(() => {
-        async function fetchData(){
+        async function fetchSupplier(){
             setLoading(true);
         try {
             const res = await fetch('http://localhost:4000/api/suppliers',{
@@ -29,7 +29,7 @@ const AllSuppliers = () =>{
             });
             const result = await res.json();
             if(!result.error){
-               setEmployees(result.employees);
+               setSuppliers(result.suppliers);
                setLoading(false);
             }else{
                 console.log(result);
@@ -40,11 +40,11 @@ const AllSuppliers = () =>{
             console.log(err);
         }
         }
-        fetchData();
+        fetchSupplier();
     }, []);
 
-    const deleteEmployee = async (id) => {
-        if(window.confirm("Are you sure you want to delete this employee?")){
+    const deleteSupplier = async (id) => {
+        if(window.confirm("Are you sure you want to delete this Supplier?")){
             try {
                 const res= await fetch(`http://localhost:4000/api/suppliers/${id}`,{
                     method:"DELETE",
@@ -53,7 +53,7 @@ const AllSuppliers = () =>{
                 const result = await res.json();
                 if(!result.error){
     
-                    toast.success("Deleted Employee");
+                    toast.success("Deleted Supplier");
                     setShowModal(false);
                     setLoading(true);
         try {
@@ -65,7 +65,7 @@ const AllSuppliers = () =>{
             });
             const result = await res.json();
             if(!result.error){
-               setEmployees(result.employees);
+               setSuppliers(result.suppliers);
                setLoading(false);
             }else{
                 console.log(result);
@@ -91,21 +91,21 @@ const AllSuppliers = () =>{
     const handleSearchSubmit = (event) => {
       event.preventDefault();
 
-      const newSearchUser = employees.filter((employee) => 
-      employee.name.toLowerCase().includes(searchInput.toLowerCase())
+      const newSearchSupplier = suppliers.filter((supplier) => 
+      supplier.name.toLowerCase().includes(searchInput.toLowerCase())
       );
-      console.log(newSearchUser);
+      console.log(newSearchSupplier);
 
-      setEmployees(newSearchUser);
+      setSuppliers(newSearchSupplier);
 
     };
   
 
-    return (<>This is the All Employees page
+    return (<>This is the All Suppliers page
     <br></br>
-    <a href="/allemployees" className="btn btn-danger my-2">Reload Employees</a>
-    {loading ? <Spinner splash="Loading Employees..." /> : (
-        (employees.length == 0 ? <h3>No Employeees Added</h3>:<>
+    <a href="/allsuppliers" className="btn btn-danger my-2">Reload Suppliers</a>
+    {loading ? <Spinner splash="Loading Suppliers..." /> : (
+        (suppliers.length == 0 ? <h3>No Suppliers Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
 
         <input
@@ -113,7 +113,7 @@ const AllSuppliers = () =>{
          name="searchInput" 
          id="searchInput"  
          className="form-control my-2" 
-         placeholder="Search Employee"
+         placeholder="Search Suppliers"
          value={searchInput}
          onChange={(e) => setSearchInput(e.target.value)}
          />
@@ -121,28 +121,26 @@ const AllSuppliers = () =>{
           Search</Button>{' '}
          </form>
 
-        <p>Total No of Employees:{employees.length}</p>
+        <p>Total No of Suppliers:{suppliers.length}</p>
         <Table striped bordered hover variant="dark">
         <thead>
           <tr>
             <th>Name</th>
-            <th>Address</th>
             <th>Email</th>
-            <th>Phone Number</th>
-            <th>Role</th>
+            <th>Registered Date</th>
+            <th>Location</th>
           </tr>
         </thead>
         <tbody>
-          {loading === false && employees.map((employee) =>(
-               <tr key={employee._id} onClick={()=> {
-                setSelectedEmployee({});
-                setSelectedEmployee(employee);
+          {loading === false && suppliers.map((supplier) =>(
+               <tr key={supplier._id} onClick={()=> {
+                setSelectedSupplier({});
+                setSelectedSupplier(supplier);
                 setShowModal(true)}}>
-               <td>{employee.name}</td>
-               <td>{employee.address}</td>
-               <td>{employee.email}</td>
-               <td>{employee.phone}</td>
-               <td>{employee.userRole}</td>
+               <td>{supplier.name}</td>
+               <td>{supplier.email}</td>
+               <td>{supplier.registeredDate}</td>
+               <td>{supplier.location}</td>
              </tr>
   
           ))}
@@ -158,27 +156,27 @@ const AllSuppliers = () =>{
         setShowModal(false)
       }}>
         <Modal.Header closeButton>
-          {selectedEmployee && <Modal.Title>Employee Details</Modal.Title>}
+          {selectedSupplier && <Modal.Title>Supplier Details</Modal.Title>}
         </Modal.Header>
 
         <Modal.Body>
-         { selectedEmployee &&(
+         { selectedSupplier &&(
             <>
-            <p><strong>Name:</strong> {selectedEmployee.name}</p>
-          <p><strong>Address:</strong>{selectedEmployee.address}</p>
-          <p><strong>Email:</strong> {selectedEmployee.email}</p>
-          <p><strong>Phone:</strong>{selectedEmployee.phone}</p>
-          <p><strong>Role:</strong>{selectedEmployee.userRole}</p>
+            <p><strong>Name:</strong> {selectedSupplier.name}</p>
+          <p><strong>Email:</strong>{selectedSupplier.email}</p>
+          <p><strong>Registered Date:</strong> {selectedSupplier.registeredDate}</p>
+          <p><strong>Location:</strong>{selectedSupplier.location}</p>
+          
           </>)}
         </Modal.Body>
 
         <Modal.Footer>
         <Link 
         className="btn btn-info"
-        to={`/edit/${selectedEmployee?._id}`}>
+        to={`/editsupplier/${selectedSupplier?._id}`}>
             Edit</Link>
         <Button id="btn btn-danger" variant="primary" onClick={()=>{
-           deleteEmployee(selectedEmployee._id)
+           deleteSupplier(selectedSupplier._id)
           }}>Delete</Button>
           <Button id="btn btn-warning" variant="secondary" onClick={()=>{
             setShowModal(false)

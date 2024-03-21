@@ -10,12 +10,12 @@ const CreateProduct = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
+    const [productDetails,setProductDetails] = useState({
         name:"",
-        address:"",
-        email:"",
-        phone:"",
-        userRole:"EMPLOYEE"
+        productId:"",
+        quantity:"",
+        price:"",
+        description:""
     });
     const navigate = useNavigate();
  
@@ -24,7 +24,7 @@ const CreateProduct = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setProductDetails({...productDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
@@ -36,16 +36,16 @@ const CreateProduct = () =>{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify(userDetails),
+            body:JSON.stringify(productDetails),
         
         });
   
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Created [${userDetails.name}]`);
+          toast.success(`Created [${productDetails.name}]`);
 
-          setUserDetails({name:"",address:"",email:"",phone:""});
+          setUserDetails({name:"",productId:"",quantity:"",price:"",description:""});
         }else{
           
             toast.error(result.error);
@@ -53,50 +53,38 @@ const CreateProduct = () =>{
         }
     }
     return(<>
-    <h2>Add Employees</h2>
+    <h2>Add Products</h2>
     
     <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
+        <Form.Label>Product Name</Form.Label>
         <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        placeholder="Enter Product Name"  value={productDetails.name} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="productId">
+        <Form.Label>Product ID</Form.Label>
+        <Form.Control id="productId" name="productId" type="text" 
+        placeholder="Enter Product ID" value={productDetails.productId} onChange={handleInputChange} required/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+        <Form.Label>Quantity</Form.Label>
+        <Form.Control id="quantity" name="quantity" type="number" 
+        placeholder="Quantity" value={productDetails.quantity} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Employee Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="role">
-        <Form.Label>Employee Role</Form.Label>
-          <Form.Select value={userDetails.userRole} onChange={handleInputChange} id="userRole" name="userRole">
-            <option value="EMPLOYEE">Employee</option>
-            <option value="EMPLOYEE_MANAGER">Employee Manager</option>
-            <option value="INVENTORY_MANAGER">Inventory Manager</option>
-            <option value="SUPPLIER_MANAGER">Supplier Manager</option>
-            <option value="DELIVERY_MANAGER">Delivery Manager</option>
-            <option value="TRANSPORT_MANAGER">Transport Manager</option>
-            <option value="PRODUCT_MANAGER">Product Manager</option>
-            <option value="PAYMENT_MANAGER">Payment Manager</option>
-          </Form.Select>
+      <Form.Group className="mb-3" controlId="price">
+        <Form.Label>Price</Form.Label>
+        <Form.Control id="price" name="price" type="text" 
+        placeholder="Enter Price" value={productDetails.price} onChange={handleInputChange} required/>
       </Form.Group>
       
+      <Form.Group className="mb-3" controlId="description">
+        <Form.Label>Description</Form.Label>
+        <Form.Control id="description" name="description" as="textarea" rows={5}
+        placeholder="Enter description" value={productDetails.description} onChange={handleInputChange} required/>
+      </Form.Group>
       <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Employee
+        Add Product
       </Button>
       <Form.Group >
         

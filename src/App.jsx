@@ -34,6 +34,12 @@ import AllPayments from "./pages/AllPayments";
 import EditPayment from "./pages/EditPayment";
 import CustomerHome from "./pages/CustomerHome";
 import CustomerManagerHome from "./pages/CustomerManagerHome";
+import CreatePayslip from "./pages/CreatePayslip";
+import AllPayslips from "./pages/AllPayslips";
+import EditPayslip from "./pages/EditPayslip";
+import CreateLeave from "./pages/CreateLeave";
+import AllLeaves from "./pages/AllLeaves";
+import EditLeave from "./pages/EditLeave";
 
 const App = () => {
   return (
@@ -56,24 +62,30 @@ const App = () => {
       <Route path="/create" element={<CreateEmployee></CreateEmployee>} />
       <Route path="/allemployees" element={<AllEmployee></AllEmployee>} />
       <Route path="/edit/:id" element={<EditEmployee></EditEmployee>} />
+      <Route path="/createpayslip/:id" element={<CreatePayslip></CreatePayslip>}/>
+      <Route path="/allpayslips" element={<AllPayslips></AllPayslips>}/>
+      <Route path="/editpayslip/:id" element={<EditPayslip></EditPayslip>}/>
+      <Route path="/createleave" element={<CreateLeave></CreateLeave>}/>
+      <Route path="/allleaves" element={<AllLeaves></AllLeaves>}/>
+      <Route path="/editleaves/:id" element={<EditLeave></EditLeave>}/>
       <Route path="/createinventory" element={<CreateInventory></CreateInventory>}/>
       <Route path="/allinventories" element={<AllInventories></AllInventories>}/>
-      <Route path ="/editinvenory:id" element={<EditInventories></EditInventories>}/>
+      <Route path ="/editinventory/:id" element={<EditInventories></EditInventories>}/>
       <Route path ="/createsuppliers" element={<CreateSupplier></CreateSupplier>}/>
       <Route path="/allsuppliers" element={<AllSuppliers></AllSuppliers>}/>
-      <Route path="/editsupplier:id" element={<EditSupplier></EditSupplier>}/>
+      <Route path="/editsupplier/:id" element={<EditSupplier></EditSupplier>}/>
       <Route path="/createdeliveries" element={<CreateDelivery></CreateDelivery>}/>
       <Route path="/alldeliveries" element={<AllDeliveries></AllDeliveries>}/>
-      <Route path="/editdeliveries:id" element={<EditDeliveries></EditDeliveries>}/>
+      <Route path="/editdeliveries/:id" element={<EditDeliveries></EditDeliveries>}/>
       <Route path="/createtransports" element={<CreateTransport></CreateTransport>}/>
       <Route path="/alltransports" element={<AllTransports></AllTransports>}/>
-      <Route path="/edittransports:id" element={<EditTransports></EditTransports>}/>
+      <Route path="/edittransports/:id" element={<EditTransports></EditTransports>}/>
       <Route path="/createproducts" element={<CreateProduct></CreateProduct>}/>
       <Route path="/allproducts" element={<AllProducts></AllProducts>}/>
-      <Route path="/editproducts:id" element={<EditProducts></EditProducts>}/>
+      <Route path="/editproducts/:id" element={<EditProducts></EditProducts>}/>
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
-      <Route path="editpayments:id" element={<EditPayment></EditPayment>}/>
+      <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
 
        
 

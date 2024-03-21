@@ -12,13 +12,13 @@ const AllProducts = () =>{
     const {toast}= useContext(ToastContext);
     const [showModal,setShowModal] = useState(false);
     const [loading,setLoading] = useState(false);
-    const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [employees,setEmployees] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [products,setProducts] = useState([]);
     const [searchInput,setSearchInput] = useState("");
   
 
     useEffect(() => {
-        async function fetchData(){
+        async function fetchProducts(){
             setLoading(true);
         try {
             const res = await fetch('http://localhost:4000/api/products',{
@@ -29,7 +29,7 @@ const AllProducts = () =>{
             });
             const result = await res.json();
             if(!result.error){
-               setEmployees(result.employees);
+               setProducts(result.products);
                setLoading(false);
             }else{
                 console.log(result);
@@ -40,11 +40,11 @@ const AllProducts = () =>{
             console.log(err);
         }
         }
-        fetchData();
+        fetchProducts();
     }, []);
 
-    const deleteEmployee = async (id) => {
-        if(window.confirm("Are you sure you want to delete this employee?")){
+    const deleteProducts = async (id) => {
+        if(window.confirm("Are you sure you want to delete this Product?")){
             try {
                 const res= await fetch(`http://localhost:4000/api/products/${id}`,{
                     method:"DELETE",
@@ -53,7 +53,7 @@ const AllProducts = () =>{
                 const result = await res.json();
                 if(!result.error){
     
-                    toast.success("Deleted Employee");
+                    toast.success("Deleted Product");
                     setShowModal(false);
                     setLoading(true);
         try {
@@ -65,7 +65,7 @@ const AllProducts = () =>{
             });
             const result = await res.json();
             if(!result.error){
-               setEmployees(result.employees);
+               setProducts(result.products);
                setLoading(false);
             }else{
                 console.log(result);
@@ -91,21 +91,21 @@ const AllProducts = () =>{
     const handleSearchSubmit = (event) => {
       event.preventDefault();
 
-      const newSearchUser = employees.filter((employee) => 
-      employee.name.toLowerCase().includes(searchInput.toLowerCase())
+      const newSearchProduct = products.filter((product) => 
+      product.name.toLowerCase().includes(searchInput.toLowerCase())
       );
-      console.log(newSearchUser);
+      console.log(newSearchProduct);
 
-      setEmployees(newSearchUser);
+      setProducts(newSearchProduct);
 
     };
   
 
-    return (<>This is the All Employees page
+    return (<>This is the All Products page
     <br></br>
-    <a href="/allemployees" className="btn btn-danger my-2">Reload Employees</a>
-    {loading ? <Spinner splash="Loading Employees..." /> : (
-        (employees.length == 0 ? <h3>No Employeees Added</h3>:<>
+    <a href="/allproducts" className="btn btn-danger my-2">Reload Products</a>
+    {loading ? <Spinner splash="Loading Products..." /> : (
+        (products.length == 0 ? <h3>No Products Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
 
         <input
@@ -113,7 +113,7 @@ const AllProducts = () =>{
          name="searchInput" 
          id="searchInput"  
          className="form-control my-2" 
-         placeholder="Search Employee"
+         placeholder="Search Product"
          value={searchInput}
          onChange={(e) => setSearchInput(e.target.value)}
          />
@@ -121,28 +121,28 @@ const AllProducts = () =>{
           Search</Button>{' '}
          </form>
 
-        <p>Total No of Employees:{employees.length}</p>
+        <p>Total No of Products:{products.length}</p>
         <Table striped bordered hover variant="dark">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Role</th>
+            <th>Product Name</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          {loading === false && employees.map((employee) =>(
-               <tr key={employee._id} onClick={()=> {
-                setSelectedEmployee({});
-                setSelectedEmployee(employee);
+          {loading === false && products.map((product) =>(
+               <tr key={product._id} onClick={()=> {
+                setSelectedProduct({});
+                setSelectedProduct(product);
                 setShowModal(true)}}>
-               <td>{employee.name}</td>
-               <td>{employee.address}</td>
-               <td>{employee.email}</td>
-               <td>{employee.phone}</td>
-               <td>{employee.userRole}</td>
+               <td>{product.name}</td>
+               <td>{product.productId}</td>
+               <td>{product.quantity}</td>
+               <td>{product.price}</td>
+               <td>{product.description}</td>
              </tr>
   
           ))}
@@ -158,27 +158,27 @@ const AllProducts = () =>{
         setShowModal(false)
       }}>
         <Modal.Header closeButton>
-          {selectedEmployee && <Modal.Title>Employee Details</Modal.Title>}
+          {selectedProduct && <Modal.Title>Product Details</Modal.Title>}
         </Modal.Header>
 
         <Modal.Body>
-         { selectedEmployee &&(
+         { selectedProduct &&(
             <>
-            <p><strong>Name:</strong> {selectedEmployee.name}</p>
-          <p><strong>Address:</strong>{selectedEmployee.address}</p>
-          <p><strong>Email:</strong> {selectedEmployee.email}</p>
-          <p><strong>Phone:</strong>{selectedEmployee.phone}</p>
-          <p><strong>Role:</strong>{selectedEmployee.userRole}</p>
+            <p><strong>Name:</strong> {selectedProduct.name}</p>
+          <p><strong>Product ID:</strong>{selectedProduct.productId}</p>
+          <p><strong>Quantity:</strong> {selectedProduct.quantity}</p>
+          <p><strong>Price:</strong>{selectedProduct.price}</p>
+          <p><strong>Description:</strong>{selectedProduct.description}</p>
           </>)}
         </Modal.Body>
 
         <Modal.Footer>
         <Link 
         className="btn btn-info"
-        to={`/edit/${selectedEmployee?._id}`}>
+        to={`/editproducts/${selectedProduct?._id}`}>
             Edit</Link>
         <Button id="btn btn-danger" variant="primary" onClick={()=>{
-           deleteEmployee(selectedEmployee._id)
+           deleteProducts(selectedProduct._id)
           }}>Delete</Button>
           <Button id="btn btn-warning" variant="secondary" onClick={()=>{
             setShowModal(false)

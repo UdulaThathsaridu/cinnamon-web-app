@@ -177,6 +177,10 @@ const AllEmployee = () =>{
         className="btn btn-info"
         to={`/edit/${selectedEmployee?._id}`}>
             Edit</Link>
+            <Link 
+        className="btn btn-info"
+        to={`/createpayslip/${selectedEmployee?._id}?name=${selectedEmployee?.name}`}>
+            Create Payslip</Link>
         <Button id="btn btn-danger" variant="primary" onClick={()=>{
            deleteEmployee(selectedEmployee._id)
           }}>Delete</Button>

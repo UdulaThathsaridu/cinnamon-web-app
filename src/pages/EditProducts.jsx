@@ -14,11 +14,12 @@ const EditProducts = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
+    const [productDetails,setProductDetails] = useState({
         name:"",
-        address:"",
-        email:"",
-        phone:"",
+        productId:"",
+        quantity:"",
+        price:"",
+        description:"",
     });
     const [loading,setLoading]= useState(false);
     const navigate = useNavigate();
@@ -28,27 +29,27 @@ const EditProducts = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setProductDetails({...productDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/products',{
+        const res = await fetch(`http://localhost:4000/api/products/${id}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify({id,...userDetails}),
+            body:JSON.stringify({id,...productDetails}),
         
         });
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Updated [${userDetails.name}]`);
-         setUserDetails({name:"",address:"",email:"",phone:""});
-         navigate("/allemployees");
+          toast.success(`Updated [${productDetails.name}]`);
+         setProductDetails({name:"",productId:"",quantity:"",price:"",description:""});
+         navigate("/allproducts");
 
         }else{
             toast.error(result.error);
@@ -58,7 +59,7 @@ const EditProducts = () =>{
 
     useEffect(() => {
 
-        async function fetchData() {
+        async function fetchProducts() {
             setLoading(true);
         try {
             const res = await fetch(`http://localhost:4000/api/products/${id}`,{
@@ -70,11 +71,12 @@ const EditProducts = () =>{
             })
             const result = await res.json();
 
-            setUserDetails({
+            setProductDetails({
                 name:result.name,
-                address:result.address,
-                email:result.email,
-                phone:result.phone
+                productId:result.productId,
+                quantity:result.quantity,
+                price:result.price,
+                description:result.description,
             });
             setLoading(false);
             
@@ -84,39 +86,41 @@ const EditProducts = () =>{
         }
         }
         
-        fetchData()
+        fetchProducts()
     },[])
 
     return(<>
-    {loading ? <Spinner splash="Loading Employee..."/>:(<>
-        <h2>Edit Employees</h2>
+    {loading ? <Spinner splash="Loading Products..."/>:(<>
+        <h2>Edit Products</h2>
     
     <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
+        <Form.Label>Product Name</Form.Label>
         <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        placeholder="Enter Product Name"  value={productDetails.name} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="productId">
+        <Form.Label>Product ID</Form.Label>
+        <Form.Control id="productId" name="productId" type="text" 
+        placeholder="Enter Product ID" value={productDetails.productId} onChange={handleInputChange} required/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+        <Form.Label>Quantity</Form.Label>
+        <Form.Control id="quantity" name="quantity" type="number" 
+        placeholder="Quantity" value={productDetails.quantity} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Empoyee Phone Number</Form.Label>
-        <Form.Control conid="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="price">
+        <Form.Label>Price</Form.Label>
+        <Form.Control id="price" name="price" type="text" 
+        placeholder="Enter Price" value={productDetails.price} onChange={handleInputChange} required/>
       </Form.Group>
       
+      <Form.Group className="mb-3" controlId="description">
+        <Form.Label>Description</Form.Label>
+        <Form.Control id="description" name="description" as="textarea" rows={5}
+        placeholder="Enter description" value={productDetails.description} onChange={handleInputChange} required/>
+      </Form.Group>
       <Button id="btn" name="submit" variant="primary" type="submit">
         Save Changes
       </Button>

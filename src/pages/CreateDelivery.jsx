@@ -10,12 +10,13 @@ const CreateDelivery = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
-        name:"",
-        address:"",
-        email:"",
-        phone:"",
-        userRole:"EMPLOYEE"
+    const [deliveryDetails,setDeliveryDetails] = useState({
+        name:localStorage.getItem("name"),
+        address:localStorage.getItem("address"),
+        weight:"",
+        courierName:"",
+        status:"",
+        description:"",
     });
     const navigate = useNavigate();
  
@@ -24,7 +25,7 @@ const CreateDelivery = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setDeliveryDetails({...deliveryDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
@@ -36,16 +37,16 @@ const CreateDelivery = () =>{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify(userDetails),
+            body:JSON.stringify(deliveryDetails),
         
         });
   
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Created [${userDetails.name}]`);
+          toast.success(`Created [${deliveryDetails.name}]`);
 
-          setUserDetails({name:"",address:"",email:"",phone:""});
+          setDeliveryDetails({name:localStorage.getItem("name"),address:localStorage.getItem("address"),weight:"",courierName:"",status:"",description:""});
         }else{
           
             toast.error(result.error);
@@ -53,50 +54,45 @@ const CreateDelivery = () =>{
         }
     }
     return(<>
-    <h2>Add Employees</h2>
+    <h2>Add Delivery</h2>
     
     <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
+        <Form.Label>Customer Name</Form.Label>
         <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        placeholder="Enter Customer Name"  value={deliveryDetails.name} onChange={handleInputChange}  required disabled/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
+        <Form.Label>Customer Address</Form.Label>
         <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+        placeholder="Enter Customer Address" value={deliveryDetails.address} onChange={handleInputChange} required disabled/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+      <Form.Group className="mb-3" controlId="weight">
+        <Form.Label>Order Weight</Form.Label>
+        <Form.Control id="weight" name="weight" type="number" 
+        placeholder="Enter Order Weight" value={deliveryDetails.weight} onChange={handleInputChange} required/>
+       
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Employee Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="courierName">
+        <Form.Label>Delivery Company Name</Form.Label>
+        <Form.Control id="courierName" name="courierName" type="text" 
+        placeholder="Enter Delivery Company Name" value={deliveryDetails.courierName} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="role">
-        <Form.Label>Employee Role</Form.Label>
-          <Form.Select value={userDetails.userRole} onChange={handleInputChange} id="userRole" name="userRole">
-            <option value="EMPLOYEE">Employee</option>
-            <option value="EMPLOYEE_MANAGER">Employee Manager</option>
-            <option value="INVENTORY_MANAGER">Inventory Manager</option>
-            <option value="SUPPLIER_MANAGER">Supplier Manager</option>
-            <option value="DELIVERY_MANAGER">Delivery Manager</option>
-            <option value="TRANSPORT_MANAGER">Transport Manager</option>
-            <option value="PRODUCT_MANAGER">Product Manager</option>
-            <option value="PAYMENT_MANAGER">Payment Manager</option>
-          </Form.Select>
+      <Form.Group className="mb-3" controlId="courierName">
+        <Form.Label>Status</Form.Label>
+        <Form.Control id="status" name="status" type="text" 
+        placeholder="Enter Status" value={deliveryDetails.status} onChange={handleInputChange} required/>
       </Form.Group>
-      
+      <Form.Group className="mb-3" controlId="description">
+        <Form.Label>Description</Form.Label>
+        <Form.Control id="description" name="description" as="textarea" rows={5} 
+        placeholder="Enter Description" value={deliveryDetails.description} onChange={handleInputChange} required/>
+      </Form.Group>
+
       <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Employee
+        Add Delivery
       </Button>
       <Form.Group >
         

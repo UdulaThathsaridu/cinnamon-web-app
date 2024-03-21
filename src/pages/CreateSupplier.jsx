@@ -10,12 +10,12 @@ const CreateSupplier = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
+    const [supplierDetails,setSupplierDetails] = useState({
         name:"",
-        address:"",
         email:"",
-        phone:"",
-        userRole:"EMPLOYEE"
+        registeredDate:"",
+        location:"",
+        
     });
     const navigate = useNavigate();
  
@@ -24,7 +24,7 @@ const CreateSupplier = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setSupplierDetails({...supplierDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
@@ -36,16 +36,16 @@ const CreateSupplier = () =>{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify(userDetails),
+            body:JSON.stringify(supplierDetails),
         
         });
   
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Created [${userDetails.name}]`);
+          toast.success(`Created [${supplierDetails.name}]`);
 
-          setUserDetails({name:"",address:"",email:"",phone:""});
+          setSupplierDetails({name:"",email:"",registeredDate:"",location:""});
         }else{
           
             toast.error(result.error);
@@ -53,50 +53,35 @@ const CreateSupplier = () =>{
         }
     }
     return(<>
-    <h2>Add Employees</h2>
+    <h2>Add Suppliers</h2>
     
     <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
+        <Form.Label>Supplier Name</Form.Label>
         <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        placeholder="Enter Supplier Name"  value={supplierDetails.name} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
-      </Form.Group>
+
       <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
+        <Form.Label>Supplier Email address</Form.Label>
         <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+        placeholder="Enter Supplier email" value={supplierDetails.email} onChange={handleInputChange} required/>
+       
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="registeredDate">
+        <Form.Label>Registered Date to Our Company</Form.Label>
+        <Form.Control id="registeredDate" name="registeredDate" type="date" 
+        placeholder="Enter Registered Date" value={supplierDetails.registeredDate} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Employee Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="role">
-        <Form.Label>Employee Role</Form.Label>
-          <Form.Select value={userDetails.userRole} onChange={handleInputChange} id="userRole" name="userRole">
-            <option value="EMPLOYEE">Employee</option>
-            <option value="EMPLOYEE_MANAGER">Employee Manager</option>
-            <option value="INVENTORY_MANAGER">Inventory Manager</option>
-            <option value="SUPPLIER_MANAGER">Supplier Manager</option>
-            <option value="DELIVERY_MANAGER">Delivery Manager</option>
-            <option value="TRANSPORT_MANAGER">Transport Manager</option>
-            <option value="PRODUCT_MANAGER">Product Manager</option>
-            <option value="PAYMENT_MANAGER">Payment Manager</option>
-          </Form.Select>
+      <Form.Group className="mb-3" controlId="location">
+        <Form.Label>Supplier Location</Form.Label>
+        <Form.Control id="location" name="location" type="text" 
+        placeholder="Enter Supplier Location" value={supplierDetails.location} onChange={handleInputChange} required/>
       </Form.Group>
       
       <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Employee
+        Add Supplier
       </Button>
       <Form.Group >
         

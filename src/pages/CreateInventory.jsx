@@ -10,22 +10,22 @@ const CreateInventory = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
-        name:"",
-        address:"",
-        email:"",
-        phone:"",
-        userRole:"EMPLOYEE"
+    const [inventoryDetails,setInventoryDetails] = useState({
+        productname:"",
+        sku:"",
+        quantity:"",
+        unitprice:"",
+        itemno:"",
+        suppliername:""
     });
     const navigate = useNavigate();
  
 
-
     const handleInputChange = (event) => {
-        const {name,value} = event.target;
-
-        setUserDetails({...userDetails, [name]: value});
-    }
+      const { name, value } = event.target;
+      setInventoryDetails({ ...inventoryDetails, [name]: value });
+  }
+  
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -36,16 +36,16 @@ const CreateInventory = () =>{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify(userDetails),
+            body:JSON.stringify(inventoryDetails),
         
         });
   
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Created [${userDetails.name}]`);
+          toast.success(`Created [${inventoryDetails.productname}]`);
 
-          setUserDetails({name:"",address:"",email:"",phone:""});
+          setInventoryDetails({productname:"",sku:"",quantity:"",unitprice:"",itemno:"",suppliername:""});
         }else{
           
             toast.error(result.error);
@@ -53,50 +53,48 @@ const CreateInventory = () =>{
         }
     }
     return(<>
-    <h2>Add Employees</h2>
+    <h2>Add Inventories</h2>
     
     <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
-        <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        <Form.Label>Product Name</Form.Label>
+        <Form.Control id="productname" name="productname" type="text" 
+        placeholder="Enter Product Name"  value={inventoryDetails.productname} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="sku">
+        <Form.Label>Product SKU</Form.Label>
+        <Form.Control id="sku" name="sku" type="text" 
+        placeholder="Enter Product SKU" value={inventoryDetails.sku} onChange={handleInputChange} required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+      <Form.Group className="mb-3" controlId="quantity">
+        <Form.Label>Product Quantity</Form.Label>
+        <Form.Control id="quantity" name="quantity" type="number" 
+        placeholder="Enter Product Quantity" value={inventoryDetails.quantity} onChange={handleInputChange} required/>
+       
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Employee Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="unitprice">
+        <Form.Label>Enter Unit Price</Form.Label>
+        <Form.Control id="unitprice" name="unitprice" type="number" 
+        placeholder="Enter Unit Price" value={inventoryDetails.unitprice} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="role">
-        <Form.Label>Employee Role</Form.Label>
-          <Form.Select value={userDetails.userRole} onChange={handleInputChange} id="userRole" name="userRole">
-            <option value="EMPLOYEE">Employee</option>
-            <option value="EMPLOYEE_MANAGER">Employee Manager</option>
-            <option value="INVENTORY_MANAGER">Inventory Manager</option>
-            <option value="SUPPLIER_MANAGER">Supplier Manager</option>
-            <option value="DELIVERY_MANAGER">Delivery Manager</option>
-            <option value="TRANSPORT_MANAGER">Transport Manager</option>
-            <option value="PRODUCT_MANAGER">Product Manager</option>
-            <option value="PAYMENT_MANAGER">Payment Manager</option>
-          </Form.Select>
+      <Form.Group className="mb-3" controlId="itemno">
+        <Form.Label>Enter Item Number</Form.Label>
+        <Form.Control id="itemno" name="itemno" type="number" 
+        placeholder="Enter Item Number" value={inventoryDetails.itemno} onChange={handleInputChange} required/>
       </Form.Group>
-      
+
+      <Form.Group className="mb-3" controlId="suppliername">
+        <Form.Label>Enter Supplier Name</Form.Label>
+        <Form.Control id="suppliername" name="suppliername" type="text" 
+        placeholder="Enter Supplier Name" value={inventoryDetails.suppliername} onChange={handleInputChange} required/>
+      </Form.Group>
+
+
+
       <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Employee
+        Add Inventory
       </Button>
       <Form.Group >
         
