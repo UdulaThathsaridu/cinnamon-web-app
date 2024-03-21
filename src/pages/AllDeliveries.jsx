@@ -12,16 +12,16 @@ const AllDeliveries = () =>{
     const {toast}= useContext(ToastContext);
     const [showModal,setShowModal] = useState(false);
     const [loading,setLoading] = useState(false);
-    const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [employees,setEmployees] = useState([]);
+    const [selectedDelivery, setSelectedDelivery] = useState(null);
+    const [deliveries,setDeliveries] = useState([]);
     const [searchInput,setSearchInput] = useState("");
   
 
     useEffect(() => {
-        async function fetchData(){
+        async function fetchDelivery(){
             setLoading(true);
         try {
-            const res = await fetch('http://localhost:4000/api/employees',{
+            const res = await fetch('http://localhost:4000/api/deliveries',{
                 method:"GET",
                 headers:{
                     "Authorization":`Bearer ${localStorage.getItem("token")}`,
@@ -29,7 +29,7 @@ const AllDeliveries = () =>{
             });
             const result = await res.json();
             if(!result.error){
-               setEmployees(result.employees);
+               setDeliveries(result.deliveries);
                setLoading(false);
             }else{
                 console.log(result);
@@ -40,24 +40,24 @@ const AllDeliveries = () =>{
             console.log(err);
         }
         }
-        fetchData();
+        fetchDelivery();
     }, []);
 
-    const deleteEmployee = async (id) => {
-        if(window.confirm("Are you sure you want to delete this employee?")){
+    const deleteDelivery = async (id) => {
+        if(window.confirm("Are you sure you want to delete this Delivery?")){
             try {
-                const res= await fetch(`http://localhost:4000/api/employees/${id}`,{
+                const res= await fetch(`http://localhost:4000/api/deliveries/${id}`,{
                     method:"DELETE",
                     headers:{"Authorization":`Bearer ${localStorage.getItem("token")}`,}
                 })
                 const result = await res.json();
                 if(!result.error){
     
-                    toast.success("Deleted Employee");
+                    toast.success("Deleted Delivery");
                     setShowModal(false);
                     setLoading(true);
         try {
-            const res = await fetch('http://localhost:4000/api/employees',{
+            const res = await fetch('http://localhost:4000/api/deliveries',{
                 method:"GET",
                 headers:{
                     "Authorization":`Bearer ${localStorage.getItem("token")}`,
@@ -65,7 +65,7 @@ const AllDeliveries = () =>{
             });
             const result = await res.json();
             if(!result.error){
-               setEmployees(result.employees);
+               setDeliveries(result.deliveries);
                setLoading(false);
             }else{
                 console.log(result);
@@ -91,21 +91,21 @@ const AllDeliveries = () =>{
     const handleSearchSubmit = (event) => {
       event.preventDefault();
 
-      const newSearchUser = employees.filter((employee) => 
-      employee.name.toLowerCase().includes(searchInput.toLowerCase())
+      const newSearchDelivery = deliveries.filter((delivery) => 
+      delivery.name.toLowerCase().includes(searchInput.toLowerCase())
       );
-      console.log(newSearchUser);
+      console.log(newSearchDelivery);
 
-      setEmployees(newSearchUser);
+      setDeliveries(newSearchDelivery);
 
     };
   
 
-    return (<>This is the All Employees page
+    return (<>This is the All Deliveries page
     <br></br>
-    <a href="/allemployees" className="btn btn-danger my-2">Reload Employees</a>
-    {loading ? <Spinner splash="Loading Employees..." /> : (
-        (employees.length == 0 ? <h3>No Employeees Added</h3>:<>
+    <a href="/alldeliveries" className="btn btn-danger my-2">Reload Deliveries</a>
+    {loading ? <Spinner splash="Loading Deliveries..." /> : (
+        (deliveries.length == 0 ? <h3>No Deliveries Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
 
         <input
@@ -121,28 +121,30 @@ const AllDeliveries = () =>{
           Search</Button>{' '}
          </form>
 
-        <p>Total No of Employees:{employees.length}</p>
+        <p>Total No of Deliveries:{deliveries.length}</p>
         <Table striped bordered hover variant="dark">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Role</th>
+            <th>Customer Name</th>
+            <th>Customer Address</th>
+            <th>Order Weight</th>
+            <th>Delivery Company Name</th>
+            <th>Status</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          {loading === false && employees.map((employee) =>(
-               <tr key={employee._id} onClick={()=> {
-                setSelectedEmployee({});
-                setSelectedEmployee(employee);
+          {loading === false && deliveries.map((delivery) =>(
+               <tr key={delivery._id} onClick={()=> {
+                setSelectedDelivery({});
+                setSelectedDelivery(delivery);
                 setShowModal(true)}}>
-               <td>{employee.name}</td>
-               <td>{employee.address}</td>
-               <td>{employee.email}</td>
-               <td>{employee.phone}</td>
-               <td>{employee.userRole}</td>
+               <td>{delivery.name}</td>
+               <td>{delivery.address}</td>
+               <td>{delivery.weight}</td>
+               <td>{delivery.courierName}</td>
+               <td>{delivery.status}</td>
+               <td>{delivery.description}</td>
              </tr>
   
           ))}
@@ -158,27 +160,28 @@ const AllDeliveries = () =>{
         setShowModal(false)
       }}>
         <Modal.Header closeButton>
-          {selectedEmployee && <Modal.Title>Employee Details</Modal.Title>}
+          {selectedDelivery && <Modal.Title>Delivery Details</Modal.Title>}
         </Modal.Header>
 
         <Modal.Body>
-         { selectedEmployee &&(
+         { selectedDelivery &&(
             <>
-            <p><strong>Name:</strong> {selectedEmployee.name}</p>
-          <p><strong>Address:</strong>{selectedEmployee.address}</p>
-          <p><strong>Email:</strong> {selectedEmployee.email}</p>
-          <p><strong>Phone:</strong>{selectedEmployee.phone}</p>
-          <p><strong>Role:</strong>{selectedEmployee.userRole}</p>
+            <p><strong>Name:</strong> {selectedDelivery.name}</p>
+          <p><strong>Address:</strong>{selectedDelivery.address}</p>
+          <p><strong>Order Weight:</strong> {selectedDelivery.weight}</p>
+          <p><strong>Delivery Company Name:</strong>{selectedDelivery.courierName}</p>
+          <p><strong>Status:</strong>{selectedDelivery.status}</p>
+          <p><strong>Description:</strong>{selectedDelivery.status}</p>
           </>)}
         </Modal.Body>
 
         <Modal.Footer>
         <Link 
         className="btn btn-info"
-        to={`/edit/${selectedEmployee?._id}`}>
+        to={`/editdeliveries/${selectedDelivery?._id}`}>
             Edit</Link>
         <Button id="btn btn-danger" variant="primary" onClick={()=>{
-           deleteEmployee(selectedEmployee._id)
+           deleteDelivery(selectedDelivery._id)
           }}>Delete</Button>
           <Button id="btn btn-warning" variant="secondary" onClick={()=>{
             setShowModal(false)

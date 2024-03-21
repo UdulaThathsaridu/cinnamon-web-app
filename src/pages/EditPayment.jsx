@@ -14,11 +14,12 @@ const EditPayment = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
+    const [paymentDetails,setPaymentDetails] = useState({
         name:"",
-        address:"",
-        email:"",
-        phone:"",
+        number:"",
+        expiryDate:"",
+        cvv:"",
+        issuingBank:"",
     });
     const [loading,setLoading]= useState(false);
     const navigate = useNavigate();
@@ -28,27 +29,27 @@ const EditPayment = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setPaymentDetails({...paymentDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/payments',{
+        const res = await fetch(`http://localhost:4000/api/payments/${id}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify({id,...userDetails}),
+            body:JSON.stringify({id,...paymentDetails}),
         
         });
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Updated [${userDetails.name}]`);
-         setUserDetails({name:"",address:"",email:"",phone:""});
-         navigate("/allemployees");
+          toast.success(`Updated [${paymentDetails.name}]`);
+         setUserDetails({name:"",number:"",expiryDate:"",cvv:"",issuingBank:""});
+         navigate("/allpayments");
 
         }else{
             toast.error(result.error);
@@ -58,7 +59,7 @@ const EditPayment = () =>{
 
     useEffect(() => {
 
-        async function fetchData() {
+        async function fetchPayment() {
             setLoading(true);
         try {
             const res = await fetch(`http://localhost:4000/api/payments/${id}`,{
@@ -70,11 +71,12 @@ const EditPayment = () =>{
             })
             const result = await res.json();
 
-            setUserDetails({
+            setPaymentDetails({
                 name:result.name,
-                address:result.address,
-                email:result.email,
-                phone:result.phone
+                number:result.number,
+                expiryDate:result.expiryDate,
+                cvv:result.cvv,
+                issuingBank:result.issuingBank,
             });
             setLoading(false);
             
@@ -84,42 +86,50 @@ const EditPayment = () =>{
         }
         }
         
-        fetchData()
+        fetchPayment()
     },[])
 
     return(<>
-    {loading ? <Spinner splash="Loading Employee..."/>:(<>
-        <h2>Edit Employees</h2>
+    {loading ? <Spinner splash="Loading Payments..."/>:(<>
+        <h2>Edit Payment Details</h2>
     
-    <Form onSubmit={handleSubmit} >
+        <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
+        <Form.Label>CardHolder Name</Form.Label>
         <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        placeholder="Enter CardHolder Name"  value={paymentDetails.name} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="number">
+        <Form.Label>Card Number</Form.Label>
+        <Form.Control id="number" name="number" type="number" 
+        placeholder="Enter Card Number" value={paymentDetails.number} onChange={handleInputChange} required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+      <Form.Group className="mb-3" controlId="expiryDate">
+        <Form.Label>Expiry Date</Form.Label>
+        <Form.Control id="expiryDate" name="expiryDate" type="date" 
+        placeholder="Enter Expiry Date" value={paymentDetails.expiryDate} onChange={handleInputChange} required />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Empoyee Phone Number</Form.Label>
-        <Form.Control conid="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="cvv">
+        <Form.Label>CVV</Form.Label>
+        <Form.Control id="cvv" name="cvv" type="number" 
+        placeholder="Enter CVV" value={paymentDetails.cvv} onChange={handleInputChange} required/>
       </Form.Group>
-      
+
+      <Form.Group className="mb-3" controlId="issuingBank">
+        <Form.Label>Issuing Bank </Form.Label>
+        <Form.Control id="issuingBank" name="issuingBank" type="text" 
+        placeholder="Enter Issuing Bank" value={paymentDetails.issuingBank} onChange={handleInputChange} required/>
+      </Form.Group>
+
+
+    
+    
       <Button id="btn" name="submit" variant="primary" type="submit">
-        Save Changes
+        Confirm Changes
       </Button>
+   
+      
       <Form.Group >
         
       </Form.Group>

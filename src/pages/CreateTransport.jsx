@@ -10,12 +10,12 @@ const CreateTransport = () =>{
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
 
-    const [userDetails,setUserDetails] = useState({
-        name:"",
-        address:"",
-        email:"",
-        phone:"",
-        userRole:"EMPLOYEE"
+    const [vehicleDetails,setVehicleDetails] = useState({
+        vehicle:"",
+        model:"",
+        status:"",
+        last_inspection:"",
+        next_inspection:"",
     });
     const navigate = useNavigate();
  
@@ -24,28 +24,28 @@ const CreateTransport = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setUserDetails({...userDetails, [name]: value});
+        setVehicleDetails({...vehicleDetails, [name]: value});
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const res = await fetch('http://localhost:4000/api/transports',{
+        const res = await fetch('http://localhost:4000/api/vehicles',{
             method:"POST",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify(userDetails),
+            body:JSON.stringify(vehicleDetails),
         
         });
   
         const result = await res.json();
         if(!result.error){
 
-          toast.success(`Created [${userDetails.name}]`);
+          toast.success(`Created [${vehicleDetails.vehicle}]`);
 
-          setUserDetails({name:"",address:"",email:"",phone:""});
+          setVehicleDetails({vehicle:"",model:"",status:"",last_inspection:"",next_inspection:""});
         }else{
           
             toast.error(result.error);
@@ -53,50 +53,40 @@ const CreateTransport = () =>{
         }
     }
     return(<>
-    <h2>Add Employees</h2>
+    <h2>Add Vehicles</h2>
     
     <Form onSubmit={handleSubmit} >
     <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
-        <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
+        <Form.Label>Vehicle Name</Form.Label>
+        <Form.Control id="vehicle" name="vehicle" type="text" 
+        placeholder="Enter Vehicle Name"  value={vehicleDetails.vehicle} onChange={handleInputChange}  required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="model">
+        <Form.Label>Vehicle Model</Form.Label>
+        <Form.Control id="model" name="model" type="text" 
+        placeholder="Enter Vehicle Model" value={vehicleDetails.model} onChange={handleInputChange} required/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
+      <Form.Group className="mb-3" controlId="status">
+        <Form.Label>Vehicle Status</Form.Label>
+        <Form.Control id="status" name="status" type="text" 
+        placeholder="Enter Vehicle Status" value={vehicleDetails.status} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Employee Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
+      <Form.Group className="mb-3" controlId="last_inspection">
+        <Form.Label>Last Inspection</Form.Label>
+        <Form.Control id="last_inspection" name="last_inspection" type="date" 
+        placeholder="Enter Last Inspection" value={vehicleDetails.last_inspection} onChange={handleInputChange} required/>
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="next_inspection">
+        <Form.Label>Next Inspection</Form.Label>
+        <Form.Control id="next_inspection" name="next_inspection" type="date" 
+        placeholder="Enter Next Inspection" value={vehicleDetails.next_inspection} onChange={handleInputChange} required/>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="role">
-        <Form.Label>Employee Role</Form.Label>
-          <Form.Select value={userDetails.userRole} onChange={handleInputChange} id="userRole" name="userRole">
-            <option value="EMPLOYEE">Employee</option>
-            <option value="EMPLOYEE_MANAGER">Employee Manager</option>
-            <option value="INVENTORY_MANAGER">Inventory Manager</option>
-            <option value="SUPPLIER_MANAGER">Supplier Manager</option>
-            <option value="DELIVERY_MANAGER">Delivery Manager</option>
-            <option value="TRANSPORT_MANAGER">Transport Manager</option>
-            <option value="PRODUCT_MANAGER">Product Manager</option>
-            <option value="PAYMENT_MANAGER">Payment Manager</option>
-          </Form.Select>
-      </Form.Group>
+   
       
       <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Employee
+        Add Vehicle
       </Button>
       <Form.Group >
         
