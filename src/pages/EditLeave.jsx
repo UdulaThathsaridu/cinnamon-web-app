@@ -8,6 +8,14 @@ import Form from 'react-bootstrap/Form';
 import ToastContext from "../context/ToastContext";
 import { Spinner } from "react-bootstrap";
 
+function formatDate(dateString){
+    const  date = new Date(dateString);
+    const year= date.getFullYear();
+    const month = String(date.getMonth()+1).padStart(2,'0');
+    const day = String(date.getDate()).padStart(2,'0');
+    return `${year}-${month}-${day}`;
+  }
+
 const EditLeave = () =>{
 
     const {id} = useParams();
@@ -20,6 +28,7 @@ const EditLeave = () =>{
         leaveTypeDetails:"",
         createdOn:"",
         leaveTypeStatus:"",
+        email:""
     });
     const [loading,setLoading]= useState(false);
     const navigate = useNavigate();
@@ -35,6 +44,10 @@ const EditLeave = () =>{
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if(leaveDetails.leaveTypeStatus !== "Approved" && leaveDetails.leaveTypeStatus !== "Declined"){
+            toast.error("Leave Status must be either 'Approved' or 'Declined' ");
+            return;
+        }
         const res = await fetch(`http://localhost:4000/api/leaves/${id}`,{
             method:"PUT",
             headers:{
@@ -48,7 +61,7 @@ const EditLeave = () =>{
         if(!result.error){
 
           toast.success(`Updated [${leaveDetails.leaveType}]`);
-         setLeaveDetails({leaveType:"",leaveTypeDetails:"",createdOn:"",leaveTypeStatus:""});
+         setLeaveDetails({leaveType:"",leaveTypeDetails:"",createdOn:"",leaveTypeStatus:"",email:result.email});
          navigate("/allleaves");
 
         }else{
@@ -74,7 +87,7 @@ const EditLeave = () =>{
             setLeaveDetails({
                 leaveType:result.leaveType,
                 leaveTypeDetails:result.leaveTypeDetails,
-                createdOn:result.createdOn,
+                createdOn:formatDate(result.createdOn),
                 leaveTypeStatus:result.leaveTypeStatus
             });
             setLoading(false);
@@ -96,17 +109,17 @@ const EditLeave = () =>{
     <Form.Group className="mb-3">
         <Form.Label>Leave Type</Form.Label>
         <Form.Control id="leaveType" name="leaveType" type="text" 
-        placeholder="Enter Leave Type"  value={leaveDetails.leaveType} onChange={handleInputChange}  required disabled/>
+        placeholder="Enter Leave Type"  value={leaveDetails.leaveType} onChange={handleInputChange}  required readOnly/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="leaveTypeDetails">
         <Form.Label>Leave Type Details</Form.Label>
         <Form.Control id="leaveTypeDetails" name="leaveTypeDetails" as="textarea" rows={5}
-        placeholder="Enter Leave Type Details" value={leaveDetails.leaveTypeDetails} onChange={handleInputChange} required disabled/>
+        placeholder="Enter Leave Type Details" value={leaveDetails.leaveTypeDetails} onChange={handleInputChange} required readOnly/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="createdOn">
         <Form.Label>Created On</Form.Label>
         <Form.Control id="createdOn" name="createdOn" type="date" 
-        placeholder="Created On" value={leaveDetails.createdOn} onChange={handleInputChange} required disabled/>
+        placeholder="Created On" value={leaveDetails.createdOn} onChange={handleInputChange} required  readOnly/>
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="leaveTypeStatus">

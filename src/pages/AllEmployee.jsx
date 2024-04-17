@@ -1,4 +1,4 @@
-import { useContext, useEffect,useState } from "react";
+import { useContext, useEffect,useRef,useState } from "react";
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
@@ -7,6 +7,9 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import ToastContext from "../context/ToastContext";
 import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import logo from "../assets/mandri-logo_black-2.png";
 
 const AllEmployee = () =>{
     const {toast}= useContext(ToastContext);
@@ -15,6 +18,7 @@ const AllEmployee = () =>{
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [employees,setEmployees] = useState([]);
     const [searchInput,setSearchInput] = useState("");
+    const contentRef = useRef(null);
   
 
     useEffect(() => {
@@ -56,6 +60,8 @@ const AllEmployee = () =>{
                     toast.success("Deleted Employee");
                     setShowModal(false);
                     setLoading(true);
+                    fetchData();
+
         try {
             const res = await fetch('http://localhost:4000/api/employees',{
                 method:"GET",
@@ -91,19 +97,61 @@ const AllEmployee = () =>{
     const handleSearchSubmit = (event) => {
       event.preventDefault();
 
-      const newSearchUser = employees.filter((employee) => 
+      const filteredEmployees = employees.filter((employee) => 
       employee.name.toLowerCase().includes(searchInput.toLowerCase())
       );
-      console.log(newSearchUser);
+      console.log(filteredEmployees);
 
-      setEmployees(newSearchUser);
+      setEmployees(filteredEmployees);
 
     };
-  
 
-    return (<>This is the All Employees page
+    const exportPDF = () => {
+      const tableContent = contentRef.current;
+      html2canvas(tableContent).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p','mm','a4');
+        
+        // Logo
+        const logoImg = new Image();
+        logoImg.src = logo;
+        logoImg.onload = function() {
+          const imgWidth = 30;
+          const imgHeight = (this.height * imgWidth) / this.width;
+          const marginLeft = 10;
+          const marginTop = 10; 
+          pdf.addImage(this, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
+        
+          // Title
+          pdf.setFontSize(16);
+          const titleText = "Employee Details";
+          const titleWidth = pdf.getStringUnitWidth(titleText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
+          const titleX = (pdf.internal.pageSize.width - titleWidth) / 2;
+          const titleY = marginTop + imgHeight + 10; // Adjusted top margin for the title
+          pdf.text(titleText, titleX, titleY);
+        
+          // Table Content
+          const pdfWidth = 200;
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          const tableMarginTop = titleY + 10; // Adjusted top margin to accommodate title
+          const tableMarginLeft = (pdf.internal.pageSize.width - pdfWidth) / 2; // Centering the table horizontally
+          pdf.addImage(imgData, 'PNG', tableMarginLeft, tableMarginTop, pdfWidth, pdfHeight);
+        
+          const fontSize = 12;
+          pdf.setFontSize(fontSize);
+        
+          pdf.save("employees.pdf");
+        };
+      });
+    };
+    
+
+    return (<>
+    
+    This is the All Employees page
     <br></br>
     <a href="/allemployees" className="btn btn-danger my-2">Reload Employees</a>
+    <Button onClick={exportPDF} variant="success" className="my-2 mx-2">Export to PDF</Button>
     {loading ? <Spinner splash="Loading Employees..." /> : (
         (employees.length == 0 ? <h3>No Employeees Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
@@ -121,7 +169,10 @@ const AllEmployee = () =>{
           Search</Button>{' '}
          </form>
 
+         <div ref={contentRef}>
         <p>Total No of Employees:{employees.length}</p>
+       
+        
         <Table striped bordered hover variant="dark">
         <thead>
           <tr>
@@ -147,7 +198,10 @@ const AllEmployee = () =>{
   
           ))}
         </tbody>
-      </Table> </>)
+      </Table> 
+      </div>
+      
+      </>)
         
     )}
      <div
@@ -179,7 +233,7 @@ const AllEmployee = () =>{
             Edit</Link>
             <Link 
         className="btn btn-info"
-        to={`/createpayslip/${selectedEmployee?._id}?name=${selectedEmployee?.name}`}>
+        to={`/createpayslip/${selectedEmployee?._id}?name=${selectedEmployee?.name}&email=${selectedEmployee?.email}`}>
             Create Payslip</Link>
         <Button id="btn btn-danger" variant="primary" onClick={()=>{
            deleteEmployee(selectedEmployee._id)
@@ -190,6 +244,7 @@ const AllEmployee = () =>{
         </Modal.Footer>
       </Modal>
     </div>
+   
     
     </>
     );
