@@ -1,112 +1,189 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import React from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import ToastContext from "../context/ToastContext";
+import { Formik } from 'formik';
 
-const CreateEmployee = () =>{
-    const {user} = useContext(AuthContext);
-    const {toast} = useContext(ToastContext);
-
-    const [userDetails,setUserDetails] = useState({
-        name:"",
-        address:"",
-        email:"",
-        phone:"",
-        userRole:"EMPLOYEE"
-    });
+const CreateEmployee = () => {
+    const { toast } = useContext(ToastContext);
     const navigate = useNavigate();
- 
 
+    const initialValues = {
+        name: "",
+        address: "",
+        email: "",
+        phone: "",
+        userRole: "EMPLOYEE"
+    };
 
-    const handleInputChange = (event) => {
-        const {name,value} = event.target;
+    const validate = values => {
+        const errors = {};
 
-        setUserDetails({...userDetails, [name]: value});
-    }
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const res = await fetch('http://localhost:4000/api/employees',{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${localStorage.getItem("token")}`,
-            },
-            body:JSON.stringify(userDetails),
-        
-        });
-  
-        const result = await res.json();
-        if(!result.error){
-
-          toast.success(`Created [${userDetails.name}]`);
-
-          setUserDetails({name:"",address:"",email:"",phone:""});
-        }else{
-          
-            toast.error(result.error);
-
+        if (!values.name.trim()) {
+            errors.name = "Name is required";
         }
-    }
-    return(<>
-    <h2>Add Employees</h2>
-    
-    <Form onSubmit={handleSubmit} >
-    <Form.Group className="mb-3">
-        <Form.Label>Employee Name</Form.Label>
-        <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Employee Name"  value={userDetails.name} onChange={handleInputChange}  required/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="address">
-        <Form.Label>Employee Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter Employee Address" value={userDetails.address} onChange={handleInputChange} required/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="email">
-        <Form.Label>Employee Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter Employee email" value={userDetails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
 
-      <Form.Group className="mb-3" controlId="phone">
-        <Form.Label>Employee Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={userDetails.phone} onChange={handleInputChange} required/>
-      </Form.Group>
+        if (!values.address.trim()) {
+            errors.address = "Address is required";
+        }
 
-      <Form.Group className="mb-3" controlId="role">
-        <Form.Label>Employee Role</Form.Label>
-          <Form.Select value={userDetails.userRole} onChange={handleInputChange} id="userRole" name="userRole">
-            <option value="EMPLOYEE">Employee</option>
-            <option value="EMPLOYEE_MANAGER">Employee Manager</option>
-            <option value="INVENTORY_MANAGER">Inventory Manager</option>
-            <option value="SUPPLIER_MANAGER">Supplier Manager</option>
-            <option value="DELIVERY_MANAGER">Delivery Manager</option>
-            <option value="TRANSPORT_MANAGER">Transport Manager</option>
-            <option value="PRODUCT_MANAGER">Product Manager</option>
-            <option value="PAYMENT_MANAGER">Payment Manager</option>
-            <option value="CUSTOMER_MANAGER">Customer Manager</option>
-          </Form.Select>
-      </Form.Group>
-      
-      <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Employee
-      </Button>
-      <Form.Group >
-        
-      </Form.Group>
-    </Form>
+        if (!values.email.trim()) {
+            errors.email = "Email is required";
+        } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+            errors.email = "Invalid email address";
+        }
 
-    </>
+        if (!values.phone.trim()) {
+            errors.phone = "Phone is required";
+        } else if (!/^\d{10}$/.test(values.phone)) {
+            errors.phone = "Phone number must be 10 digits";
+        }
+
+        return errors;
+    };
+
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        try {
+            const res = await fetch('http://localhost:4000/api/employees', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(values),
+            });
+
+            const result = await res.json();
+            if (!result.error) {
+                toast.success(`Created [${values.name}]`);
+                resetForm();
+            } else {
+                toast.error(result.error);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
+        <>
+            <h2>Add Employees</h2>
+            <Formik
+                initialValues={initialValues}
+                validate={validate}
+                onSubmit={handleSubmit}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting
+                }) => (
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Employee Name</Form.Label>
+                            <Form.Control
+                                name="name"
+                                type="text"
+                                placeholder="Enter Employee Name"
+                                value={values.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.name && !!errors.name}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.name}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="address">
+                            <Form.Label>Employee Address</Form.Label>
+                            <Form.Control
+                                name="address"
+                                type="text"
+                                placeholder="Enter Employee Address"
+                                value={values.address}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.address && !!errors.address}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.address}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="email">
+                            <Form.Label>Employee Email address</Form.Label>
+                            <Form.Control
+                                name="email"
+                                type="email"
+                                placeholder="Enter Employee email"
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.email && !!errors.email}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.email}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="phone">
+                            <Form.Label>Employee Phone Number</Form.Label>
+                            <Form.Control
+                                name="phone"
+                                type="tel"
+                                placeholder="Enter Phone Number"
+                                value={values.phone}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.phone && !!errors.phone}
+                                required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.phone}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="userRole">
+                            <Form.Label>Employee Role</Form.Label>
+                            <Form.Select
+                                name="userRole"
+                                value={values.userRole}
+                                onChange={handleChange}
+                            >
+                                <option value="EMPLOYEE">Employee</option>
+                                <option value="EMPLOYEE_MANAGER">Employee Manager</option>
+                                <option value="INVENTORY_MANAGER">Inventory Manager</option>
+                                <option value="SUPPLIER_MANAGER">Supplier Manager</option>
+                                <option value="DELIVERY_MANAGER">Delivery Manager</option>
+                                <option value="TRANSPORT_MANAGER">Transport Manager</option>
+                                <option value="PRODUCT_MANAGER">Product Manager</option>
+                                <option value="PAYMENT_MANAGER">Payment Manager</option>
+                                <option value="CUSTOMER_MANAGER">Customer Manager</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <Button
+                            id="btn"
+                            name="submit"
+                            variant="primary"
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Submitting...' : 'Add Employee'}
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
-      };
-
+};
 
 export default CreateEmployee;
