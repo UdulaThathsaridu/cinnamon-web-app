@@ -67,7 +67,8 @@ import SCart from "./pages/SCart";
 import CreateCheckout from "./pages/CreateCheckout";
 import CartPage from "./pages/CartPage";
 import OrderSummary from "./pages/OrderSummary";
-import AllOrders from "./pages/AllOrders";
+
+import SupplierOrders from "./pages/SupplierOrders";
 
 Chart.register(ArcElement);
 
@@ -97,6 +98,7 @@ const App = () => {
       <Route path="/checkout" element={<CreateCheckout></CreateCheckout>}/>
       <Route path="order-summary" element={<OrderSummary></OrderSummary>}/>
       <Route path="/allorders" element={<AllOrders></AllOrders>}/>
+      <Route path="/suporders" element={<SupplierOrders></SupplierOrders>}/>
       <Route path="/cart" element ={<Cart></Cart>}/>
       <Route path="/cart-items" element={<SCart></SCart>}/>
       <Route path="/cart-page" element={<CartPage></CartPage>}/>
@@ -118,7 +120,7 @@ const App = () => {
       <Route path="/allsuppliers" element={<AllSuppliers></AllSuppliers>}/>
       <Route path="/editsupplier/:id" element={<EditSupplier></EditSupplier>}/>
       <Route path ="/createorders" element={<CreateOrder></CreateOrder>}/>
-      <Route path="/allorders" element={<AllOrders></AllOrders>}/>
+      
       <Route path="/editorder/:id" element={<EditOrder></EditOrder>}/>
       <Route path="/createdeliveries" element={<CreateDelivery></CreateDelivery>}/>
       <Route path="/aboutus" element={<AboutUs></AboutUs>}/>
