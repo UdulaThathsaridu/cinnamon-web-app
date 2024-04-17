@@ -130,6 +130,7 @@ const AllProducts = () =>{
             <th>Quantity</th>
             <th>Price</th>
             <th>Description</th>
+            <th>Product Image</th>
           </tr>
         </thead>
         <tbody>
@@ -143,6 +144,9 @@ const AllProducts = () =>{
                <td>{product.quantity}</td>
                <td>{product.price}</td>
                <td>{product.description}</td>
+               <td>{product.imageUrl && (
+                <img src={`http://localhost:4000/${product.imageUrl}`} alt={product.name} style={{width:'100px',height:'auto'}}/>
+               )}</td>
              </tr>
   
           ))}
@@ -169,6 +173,9 @@ const AllProducts = () =>{
           <p><strong>Quantity:</strong> {selectedProduct.quantity}</p>
           <p><strong>Price:</strong>{selectedProduct.price}</p>
           <p><strong>Description:</strong>{selectedProduct.description}</p>
+          <p><strong>Product Image:</strong>{selectedProduct.imageUrl && (
+            <img src={`http://localhost:4000/${selectedProduct.imageUrl}`} alt={selectedProduct.name} style={{width:'100px',height:'auto'}}/>
+          )}</p>
           </>)}
         </Modal.Body>
 

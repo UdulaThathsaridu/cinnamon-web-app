@@ -20,8 +20,10 @@ const EditProducts = () =>{
         quantity:"",
         price:"",
         description:"",
+        imageUrl:"",
     });
     const [loading,setLoading]= useState(false);
+    const [productImage,setProductImage] = useState(null);
     const navigate = useNavigate();
  
 
@@ -29,33 +31,62 @@ const EditProducts = () =>{
     const handleInputChange = (event) => {
         const {name,value} = event.target;
 
-        setProductDetails({...productDetails, [name]: value});
+        setProductDetails((prevDetails) => ({
+          ...prevDetails,
+          [name]:value,
+        }));
+
+        console.log("Form Data:", formData);
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        const res = await fetch(`http://localhost:4000/api/products/${id}`,{
-            method:"PUT",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${localStorage.getItem("token")}`,
-            },
-            body:JSON.stringify({id,...productDetails}),
-        
-        });
-        const result = await res.json();
-        if(!result.error){
-
-          toast.success(`Updated [${productDetails.name}]`);
-         setProductDetails({name:"",productId:"",quantity:"",price:"",description:""});
-         navigate("/allproducts");
-
-        }else{
-            toast.error(result.error);
-
+      
+        const formData = new FormData();
+        formData.append("name", productDetails.name);
+        formData.append("productId", productDetails.productId);
+        formData.append("quantity", productDetails.quantity);
+        formData.append("price", productDetails.price);
+        formData.append("description", productDetails.description);
+        if (productImage) {
+          formData.append("image", productImage);
         }
-    }
+      
+        try {
+          const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: formData,
+          });
+          const result = await res.json();
+          if (!result.error) {
+            //update the imageurl with the new url
+            setProductDetails((prevDetails) => ({
+              ...prevDetails,
+              imageUrl:result.imageUrl,
+            }));
+            toast.success(`Updated [${productDetails.name}]`);
+            setProductDetails({
+              name: "",
+              productId: "",
+              quantity: "",
+              price: "",
+              description: "",
+              imageUrl:"",
+            });
+            setProductImage(null); // Reset the product image state
+            navigate("/allproducts");
+          } else {
+            toast.error(result.error);
+          }
+        } catch (err) {
+          console.error(err);
+          toast.error("Failed to update product");
+        }
+      };
+      
 
     useEffect(() => {
 
@@ -77,6 +108,7 @@ const EditProducts = () =>{
                 quantity:result.quantity,
                 price:result.price,
                 description:result.description,
+                imageUrl:result.imageUrl,
             });
             setLoading(false);
             
@@ -121,6 +153,21 @@ const EditProducts = () =>{
         <Form.Control id="description" name="description" as="textarea" rows={5}
         placeholder="Enter description" value={productDetails.description} onChange={handleInputChange} required/>
       </Form.Group>
+      <Form.Group controlId="image">
+     <Form.Label>Product Image</Form.Label>
+     {productDetails.imageUrl && (
+      <img 
+      src={`http://localhost:4000/${productDetails.imageUrl}`}
+      alt={productDetails.name}
+      style={{width:'100px',height:'auto'}}
+      />
+     )}
+     <Form.Control
+       type="file"
+      accept="image/*"
+      onChange={(e) => setProductImage(e.target.files[0])}
+  />
+</Form.Group>
       <Button id="btn" name="submit" variant="primary" type="submit">
         Save Changes
       </Button>

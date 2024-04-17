@@ -12,10 +12,18 @@ const PaymentManagerHome = () =>{
         !user && navigate("/login", {replace:true });
 
     },[]);
+    const handleAddFinancialClick = () => {
+        navigate("/createfinancial"); // Navigate to the CreateFinancial page
+    }
+
+    const handleAddInvoiceClick = () => {
+        navigate("/createinvoice"); // Navigate to the CreateFinancial page
+    }
 
     return <>This is Payment Manager Home page {user ? user.name : null} 
     <br></br>
-    <Button id="AddEmployee" variant="primary" type="submit">Add Employee</Button>{' '}
+    <Button variant="primary" onClick={handleAddFinancialClick}>Add Financial Reports</Button>
+    <Button variant="primary" onClick={handleAddInvoiceClick}>Add Invoice</Button>
     </>
   
       }

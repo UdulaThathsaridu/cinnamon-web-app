@@ -1,9 +1,11 @@
-import { useContext, useEffect } from "react";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
+import customerhomepic from "../assets/IMG_3025.jpg";
+import barkoil from '../assets/a1-2.jpg';
+import mosquitoil from '../assets/a1-5.jpg';
+import herbalbalm from '../assets/a1-3.jpg';
 
 const CustomerHome = () =>{
     const navigate = useNavigate();

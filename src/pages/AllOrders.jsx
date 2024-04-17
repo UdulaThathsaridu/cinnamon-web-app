@@ -1,73 +1,38 @@
-import { useContext, useEffect,useState } from "react";
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
 import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
-import ToastContext from "../context/ToastContext";
-import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import logo from "../assets/mandri-logo_black-2.png";
 
-const AllOrders = () =>{
-    const {toast}= useContext(ToastContext);
-    const [showModal,setShowModal] = useState(false);
-    const [loading,setLoading] = useState(false);
+const AllOrders = () => {
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [orders,setOrders] = useState([]);
-    const [searchInput,setSearchInput] = useState("");
-  
+    const [orders, setOrders] = useState([]);
+    const [exporting, setExporting] = useState(false);
+    const modalContentRef = useRef(null);
 
     useEffect(() => {
-        async function fetchOrder(){
-            setLoading(true);
-        try {
-            const res = await fetch('http://localhost:4000/api/orders',{
-                method:"GET",
-                headers:{
-                    "Authorization":`Bearer ${localStorage.getItem("token")}`,
-                }
-            });
-            const result = await res.json();
-            if(!result.error){
-               setOrders(result.orders);
-               setLoading(false);
-            }else{
-                console.log(result);
-                setLoading(false);
-            }
-        } catch (err) {
-            setLoading(false);
-            console.log(err);
-        }
-        }
-        fetchOrder();
+        fetchOrders();
     }, []);
 
-    const deleteOrder = async (id) => {
-        if(window.confirm("Are you sure you want to delete this Order?")){
-            try {
-                const res= await fetch(`http://localhost:4000/api/orders/${id}`,{
-                    method:"DELETE",
-                    headers:{"Authorization":`Bearer ${localStorage.getItem("token")}`,}
-                })
-                const result = await res.json();
-                if(!result.error){
-    
-                    toast.success("Deleted Order");
-                    setShowModal(false);
-                    setLoading(true);
+    const fetchOrders = async () => {
+        setLoading(true);
         try {
-            const res = await fetch('http://localhost:4000/api/orders',{
-                method:"GET",
-                headers:{
-                    "Authorization":`Bearer ${localStorage.getItem("token")}`,
+            const res = await fetch('http://localhost:4000/api/customerorder', {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
             });
             const result = await res.json();
-            if(!result.error){
-               setOrders(result.orders);
-               setLoading(false);
-            }else{
+            if (!result.error) {
+                setOrders(result);
+                setLoading(false);
+            } else {
                 console.log(result);
                 setLoading(false);
             }
@@ -75,125 +40,131 @@ const AllOrders = () =>{
             setLoading(false);
             console.log(err);
         }
+    };
 
-                }else{
-    
-                    toast.error(result.error);
+    const exportPDF = () => {
+        setExporting(true);
+        const modalContent = modalContentRef.current;
+        html2canvas(modalContent).then((canvas) => {
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = 30;
+            const imgHeight = 30;
+            const marginLeft = 10;
+            const marginTop = 10;
+
+            pdf.addImage(logo, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
+
+            pdf.setFontSize(16);
+            const titleText = "Order Details";
+            const titleWidth = pdf.getStringUnitWidth(titleText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
+            const titleX = (pdf.internal.pageSize.width - titleWidth) / 2;
+            const titleY = 20;
+
+            pdf.text(titleText, titleX, titleY);
+
+            const contentLeftMargin = 10;
+            const contentTopMargin = marginTop + imgHeight + 10;
+            pdf.addImage(imgData, 'PNG', contentLeftMargin, contentTopMargin, 180, 160);
+
+            pdf.save("order_details.pdf");
+            setExporting(false);
+        });
+    };
+
+    const deleteOrder = async (id) => {
+        if (window.confirm("Are you sure you want to delete this order?")) {
+            try {
+                const res = await fetch(`http://localhost:4000/api/customerorder/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                    }
+                });
+                const result = await res.json();
+                if (!result.error) {
+                    // Reload orders after deletion
+                    fetchOrders();
+                    setShowModal(false);
+                } else {
+                    console.log(result.error);
                 }
             } catch (err) {
                 console.log(err);
             }
-
         }
-       
-    }
-    
-    const handleSearchSubmit = (event) => {
-      event.preventDefault();
-
-      const newSearchOrder = orders.filter((order) => 
-      order.name.toLowerCase().includes(searchInput.toLowerCase())
-      );
-      console.log(newSearchOrder);
-
-      setOrders(newSearchOrder);
-
     };
-  
 
-    return (<>This is the All Orders page
-    <br></br>
-    <a href="/allorders" className="btn btn-danger my-2">Reload Orders</a>
-    {loading ? <Spinner splash="Loading Orders..." /> : (
-        (orders.length == 0 ? <h3>No Orders Added</h3>:<>
-        <form className="d-flex" onSubmit={handleSearchSubmit}>
-
-        <input
-         type="text" 
-         name="searchInput" 
-         id="searchInput"  
-         className="form-control my-2" 
-         placeholder="Search Suppliers"
-         value={searchInput}
-         onChange={(e) => setSearchInput(e.target.value)}
-         />
-         <Button id="Search"  variant="primary" type="submit" className="btn btn-info mx-2">
-          Search</Button>{' '}
-         </form>
-
-        <p>Total No of Orders:{orders.length}</p>
-        <Table striped bordered hover variant="dark">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Order ID</th>
-            <th>Product ID</th>
-            <th>Suplier ID</th>
-            <th>Quantity</th>
-            <th>SKU</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading === false && orders.map((order) =>(
-               <tr key={order._id} onClick={()=> {
-                setSelectedOrder({});
-                setSelectedOrder(order);
-                setShowModal(true)}}>
-               <td>{order.name}</td>
-               <td>{order.orderid}</td>
-               <td>{order.productid}</td>
-               <td>{order.supplierid}</td>
-               <td>{order.quantity}</td>
-               <td>{order.sku}</td>
-             </tr>
-  
-          ))}
-        </tbody>
-      </Table> </>)
-        
-    )}
-     <div
-      className="modal show"
-      style={{ display: 'block', position: 'initial' }}
-    >
-      <Modal show={showModal} onHide={()=>{
-        setShowModal(false)
-      }}>
-        <Modal.Header closeButton>
-          {selectedOrder && <Modal.Title>Order Details</Modal.Title>}
-        </Modal.Header>
-
-        <Modal.Body>
-         { selectedOrder &&(
-            <>
-            <p><strong>Name:</strong> {selectedOrder.name}</p>
-          <p><strong>OrderID:</strong>{selectedOrder.orderid}</p>
-          <p><strong>ProductID:</strong> {selectedOrder.productid}</p>
-          <p><strong>SupplierID:</strong>{selectedOrder.supplierid}</p>
-          <p><strong>Quantity:</strong>{selectedOrder.quantity}</p>
-          <p><strong>SKU:</strong>{selectedOrder.sku}</p>
-          
-          </>)}
-        </Modal.Body>
-
-        <Modal.Footer>
-        <Link 
-        className="btn btn-info"
-        to={`/editorder/${selectedOrder?._id}`}>
-            Edit</Link>
-        <Button id="btn btn-danger" variant="primary" onClick={()=>{
-           deleteOrder(selectedOrder._id)
-          }}>Delete</Button>
-          <Button id="btn btn-warning" variant="secondary" onClick={()=>{
-            setShowModal(false)
-          }}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-    
-    </>
+    return (
+        <>
+            <h1>All Customer Orders</h1>
+            {loading ? (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            ) : (
+                <div>
+                    {orders.length === 0 ? (
+                        <h3>No Orders Found</h3>
+                    ) : (
+                        <>
+                            <p>Total Number of Orders: {orders.length}</p>
+                            <Table striped bordered hover variant="dark">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Total Price</th>
+                                        <th>Order Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders.map(order => (
+                                        <tr key={order._id} onClick={() => { setShowModal(true); setSelectedOrder(order); }}>
+                                            <td>{order._id}</td>
+                                            {/* Calculate total price */}
+                                            <td>${order.cart.reduce((total, item) => total + item.price, 0)}</td>
+                                            <td>{new Date(order.createdAt).toLocaleString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </>
+                    )}
+                </div>
+            )}
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Order Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body ref={modalContentRef}>
+                    {selectedOrder && (
+                        <>
+                            <p><strong>Order ID:</strong> {selectedOrder._id}</p>
+                            <p><strong>Total Price:</strong> ${selectedOrder.cart.reduce((total, item) => total + item.price, 0)}</p>
+                            <p><strong>Order Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                            <h3>Products:</h3>
+                            <ul>
+                                {selectedOrder.cart.map((item, index) => (
+                                    <li key={index}>
+                                        <p><strong>Product Name:</strong> {item.name}</p>
+                                        <p><strong>Quantity:</strong> {item.quantity}</p>
+                                        <p><strong>Price per unit:</strong> ${item.price}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={() => deleteOrder(selectedOrder._id)}>Delete</Button>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+                    <Button variant="success" onClick={exportPDF} disabled={exporting}>
+                        {exporting ? "Exporting..." : "Export to PDF"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
-      }
-
+}
 
 export default AllOrders;

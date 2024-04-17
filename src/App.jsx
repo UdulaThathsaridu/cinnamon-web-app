@@ -47,6 +47,30 @@ import EditPayslip from "./pages/EditPayslip";
 import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
+import CreateInvoice from "./pages/CreateInvoice";
+import AllInvoice from "./pages/AllInvoice";
+import EditInvoice from "./pages/EditInvoice";
+import CreateFinancial from "./pages/CreateFinancial";
+import AllFinancial from "./pages/AllFinancial";
+import EditFinancial from "./pages/EditFinancial";
+import {Chart, ArcElement} from 'chart.js'
+import Vision from "./pages/Vision";
+import CustomerProfile from "./pages/CustomerProfile";
+import ResetPasswordForm from "./pages/ResetPasswordForm";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ResetPasswordConfirmPage from "./pages/ResetPasswordConfirmPage";
+import CustomerProduct from "./pages/CustomerProduct";
+import ProductDetails from "./pages/ProductDetails";
+import { Cart } from "react-bootstrap-icons";
+
+import SCart from "./pages/SCart";
+import CreateCheckout from "./pages/CreateCheckout";
+import CartPage from "./pages/CartPage";
+import OrderSummary from "./pages/OrderSummary";
+import AllOrders from "./pages/AllOrders";
+
+Chart.register(ArcElement);
+
 
 const App = () => {
   return (
@@ -63,7 +87,19 @@ const App = () => {
       <Route path="/payment-manager" element={<PaymentManagerHome></PaymentManagerHome>}/>
       <Route path="/customer" element={<CustomerHome></CustomerHome>}/>
       <Route path="/customer-manager" element={<CustomerManagerHome></CustomerManagerHome>}/>
-
+      <Route path="/vision" element={<Vision></Vision>}/>
+      <Route path="/customer-profile" element={<CustomerProfile></CustomerProfile>}/>
+      <Route path="/reset-password-page" element={<ResetPasswordPage></ResetPasswordPage>}/>
+      <Route path="/reset-password-form" element={<ResetPasswordForm></ResetPasswordForm>}/>
+      <Route  path="/reset-password-confirm/:token" element={<ResetPasswordConfirmPage></ResetPasswordConfirmPage>} />
+      <Route path="/customer-product" element={<CustomerProduct></CustomerProduct>}/>
+      <Route path="/product-details/:id" element={<ProductDetails></ProductDetails>} />
+      <Route path="/checkout" element={<CreateCheckout></CreateCheckout>}/>
+      <Route path="order-summary" element={<OrderSummary></OrderSummary>}/>
+      <Route path="/allorders" element={<AllOrders></AllOrders>}/>
+      <Route path="/cart" element ={<Cart></Cart>}/>
+      <Route path="/cart-items" element={<SCart></SCart>}/>
+      <Route path="/cart-page" element={<CartPage></CartPage>}/>
       <Route path="/login" element={<Login></Login>} />
       <Route path="/register" element={<Register></Register>} />
       <Route path="/create" element={<CreateEmployee></CreateEmployee>} />
@@ -100,6 +136,12 @@ const App = () => {
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
       <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
+      <Route path="/createfinancial" element={<CreateFinancial></CreateFinancial>}/>
+      <Route path="/allfinancial" element={<AllFinancial></AllFinancial>}/>
+      <Route path="/editfinancial/:id" element={<EditFinancial></EditFinancial>}/>
+      <Route path="/createinvoice" element={<CreateInvoice></CreateInvoice>}/>
+      <Route path="/allinvoice" element={<AllInvoice></AllInvoice>} />
+      <Route path="/editinvoice/:id" element={<EditInvoice></EditInvoice>}/>
 
        
 
