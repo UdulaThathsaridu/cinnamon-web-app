@@ -16,8 +16,15 @@ import CreateSupplier from "./pages/CreateSupplier";
 import SupplierManagerHome from "./pages/SupplierManagerHome";
 import AllSuppliers from "./pages/AllSuppliers";
 import EditSupplier from "./pages/EditSupplier";
+import CreateOrder from "./pages/CreateOrder";
+import AllOrders from "./pages/AllOrders";
+import EditOrder from "./pages/EditOrder";
 import DeliveryManagerHome from "./pages/DeliveryManagerHome";
 import CreateDelivery from "./pages/CreateDelivery";
+import AboutUs  from "./pages/AboutUs";
+import ContactUs  from "./pages/ContactUs";
+import ContactSupplier from "./pages/ContactSupplier";
+import SupplierInbox from "./pages/SupplierInbox";
 import AllDeliveries from "./pages/AllDeliveries";
 import EditDeliveries from "./pages/EditDeliveries";
 import TransportManagerHome from "./pages/TransportManagerHome";
@@ -74,7 +81,14 @@ const App = () => {
       <Route path ="/createsuppliers" element={<CreateSupplier></CreateSupplier>}/>
       <Route path="/allsuppliers" element={<AllSuppliers></AllSuppliers>}/>
       <Route path="/editsupplier/:id" element={<EditSupplier></EditSupplier>}/>
+      <Route path ="/createorders" element={<CreateOrder></CreateOrder>}/>
+      <Route path="/allorders" element={<AllOrders></AllOrders>}/>
+      <Route path="/editorder/:id" element={<EditOrder></EditOrder>}/>
       <Route path="/createdeliveries" element={<CreateDelivery></CreateDelivery>}/>
+      <Route path="/aboutus" element={<AboutUs></AboutUs>}/>
+      <Route path="/contactus" element={<ContactUs></ContactUs>}/>
+      <Route path="/contactsupplier" element={<ContactSupplier></ContactSupplier>}/>
+      <Route path="/supplierinbox" element={<SupplierInbox></SupplierInbox>}/>
       <Route path="/alldeliveries" element={<AllDeliveries></AllDeliveries>}/>
       <Route path="/editdeliveries/:id" element={<EditDeliveries></EditDeliveries>}/>
       <Route path="/createtransports" element={<CreateTransport></CreateTransport>}/>
