@@ -19,6 +19,8 @@ const CreateProduct = () => {
         image: null
     });
 
+    const [validated, setValidated] = useState(false);
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setProductDetails({ ...productDetails, [name]: value });
@@ -26,11 +28,21 @@ const CreateProduct = () => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
+        const fileSize = file.size / 1024 / 1024; // in MB
+        if (fileSize > 25) {
+            toast.error("Image size should be less than 25MB");
+            return;
+        }
         setProductDetails({ ...productDetails, image: file });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        }
+        setValidated(true);
 
         const formData = new FormData();
         formData.append('name', productDetails.name);
@@ -65,30 +77,36 @@ const CreateProduct = () => {
     return (
         <>
             <h2>Add Products</h2>
-            <Form onSubmit={handleSubmit} encType="multipart/form-data">
+            <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
                 <Form.Group className="mb-3">
                     <Form.Label>Product Name</Form.Label>
                     <Form.Control name="name" type="text" placeholder="Enter Product Name" value={productDetails.name} onChange={handleInputChange} required />
+                    <Form.Control.Feedback type="invalid">Please provide a product name.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="productId">
                     <Form.Label>Product ID</Form.Label>
                     <Form.Control name="productId" type="text" placeholder="Enter Product ID" value={productDetails.productId} onChange={handleInputChange} required />
+                    <Form.Control.Feedback type="invalid">Please provide a product ID.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Quantity</Form.Label>
                     <Form.Control name="quantity" type="number" placeholder="Quantity" value={productDetails.quantity} onChange={handleInputChange} required />
+                    <Form.Control.Feedback type="invalid">Please provide a quantity.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="price">
                     <Form.Label>Price</Form.Label>
-                    <Form.Control name="price" type="text" placeholder="Enter Price" value={productDetails.price} onChange={handleInputChange} required />
+                    <Form.Control name="price" type="text" pattern="[0-9]*" placeholder="Enter Price" value={productDetails.price} onChange={handleInputChange} required />
+                    <Form.Control.Feedback type="invalid">Please provide a valid price.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="description">
                     <Form.Label>Description</Form.Label>
                     <Form.Control name="description" as="textarea" rows={5} placeholder="Enter description" value={productDetails.description} onChange={handleInputChange} required />
+                    <Form.Control.Feedback type="invalid">Please provide a description.</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="image">
                     <Form.Label>Product Image</Form.Label>
                     <Form.Control name="image" type="file" accept="image/*" onChange={handleImageChange} required />
+                    <Form.Control.Feedback type="invalid">Please provide an image.</Form.Control.Feedback>
                 </Form.Group>
                 <Button variant="primary" type="submit">Add Product</Button>
             </Form>

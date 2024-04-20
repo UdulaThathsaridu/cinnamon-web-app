@@ -14,9 +14,7 @@ const CustomerProduct = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [cart, setCart] = useState([]);
-
-   
-    
+    const [searchTerm, setSearchTerm] = useState(""); // State for search term
 
     useEffect(() => {
         !user && navigate("/login", { replace: true });
@@ -94,11 +92,22 @@ const CustomerProduct = () => {
         }
     };
 
- 
+    // Filter products based on search term
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="container">
             <h2>Welcome, {user ? user.name : null} </h2>
+            <Form.Group controlId="search">
+                <Form.Control
+                    type="text"
+                    placeholder="Search products"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </Form.Group>
             <p>Here are some products for you:</p>
             {loading ? (
                 <Spinner animation="border" role="status">
@@ -106,7 +115,7 @@ const CustomerProduct = () => {
                 </Spinner>
             ) : (
                 <div className="row">
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                         <div key={product._id} className="col-md-4 mb-3">
                             <Card className="h-100">
                                 <Card.Img variant="top" src={`http://localhost:4000/${product.imageUrl}`} alt={product.name} />
@@ -132,7 +141,6 @@ const CustomerProduct = () => {
                     ))}
                 </div>
             )}
-           
         </div>
     );
 };
