@@ -58,12 +58,6 @@ import EditPayslip from "./pages/EditPayslip";
 import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
-import CreateInvoice from "./pages/CreateInvoice";
-import AllInvoice from "./pages/AllInvoice";
-import EditInvoice from "./pages/EditInvoice";
-import CreateFinancial from "./pages/CreateFinancial";
-import AllFinancial from "./pages/AllFinancial";
-import EditFinancial from "./pages/EditFinancial";
 import {Chart, ArcElement} from 'chart.js'
 import Vision from "./pages/Vision";
 import CustomerProfile from "./pages/CustomerProfile";
