@@ -29,9 +29,20 @@ import CreateProduct from "./pages/CreateProduct";
 import AllProducts from "./pages/AllProducts";
 import EditProducts from "./pages/EditProducts";
 import PaymentManagerHome from "./pages/PaymentManagerHome";
+
 import CreatePayment from "./pages/CreatePayment";
 import AllPayments from "./pages/AllPayments";
 import EditPayment from "./pages/EditPayment";
+
+
+import CreateInvoice from "./pages/CreateInvoice";
+import AllInvoice from "./pages/AllInvoice";
+import EditInvoice from "./pages/EditInvoice";
+
+import CreateFinancial from "./pages/CreateFinancial";
+import AllFinancial from "./pages/AllFinancial";
+import EditFinancial from "./pages/EditFinancial";
+
 import CustomerHome from "./pages/CustomerHome";
 import CustomerManagerHome from "./pages/CustomerManagerHome";
 import CreatePayslip from "./pages/CreatePayslip";
@@ -86,6 +97,14 @@ const App = () => {
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
       <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
+      <Route path="/createfinancial" element={<CreateFinancial></CreateFinancial>}/>
+      <Route path="/allfinancial" element={<AllFinancial></AllFinancial>}/>
+      <Route path="/editfinancial/:id" element={<EditFinancial></EditFinancial>}/>
+      <Route path="/createinvoice" element={<CreateInvoice></CreateInvoice>}/>
+      <Route path="/allinvoice" element={<AllInvoice></AllInvoice>} />
+      <Route path="/editinvoice/:id" element={<EditInvoice></EditInvoice>}/>
+      
+      
 
        
 

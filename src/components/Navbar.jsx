@@ -10,6 +10,7 @@ import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
 
 
+
 const Navbar = ({title = "Mandri Life"}) => {
   const {user,setUser} = useContext(AuthContext);
   const navigate = useNavigate();
@@ -37,11 +38,16 @@ const Navbar = ({title = "Mandri Life"}) => {
     }
   }
     return (
-      <ReactBootstrapNavbar expand="lg" b bg="primary" variant="dark" >
+     
+      
+      <ReactBootstrapNavbar expand="lg" style={{ backgroundColor: '#7B3F00' }} variant="dark">
+
       <Container>
         
       <div to="#" onClick={handleTitleClick}>
-      <ReactBootstrapNavbar.Brand >{title}</ReactBootstrapNavbar.Brand>
+      
+  <img src="/src/assets/mandri logo_black.png" alt="Mandri Life" style={{ height: '50px', marginRight: '10px' }} />
+
        </div>
         <ReactBootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
         <ReactBootstrapNavbar.Collapse id="basic-navbar-nav">
@@ -160,8 +166,12 @@ const Navbar = ({title = "Mandri Life"}) => {
           {user && user.userRole === "PAYMENT_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
            
-            <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' }}>All Payment</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' , color : "black",fontWeight: 'bold' }}>All Payment |</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>Create Financial Reports |</Nav.Link>
+            <Nav.Link  as = {Link} to="/allfinancial" style={{ marginLeft: '10px',color : "black",fontWeight: 'bold'  }}>All Financial Reports |</Nav.Link>
+            <Nav.Link  as = {Link} to="/createinvoice" style={{ marginLeft: '10px',color : "black",fontWeight: 'bold'  }}>Create Invoice |</Nav.Link>
+            <Nav.Link  as = {Link} to="/allinvoice" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>All Invoice |</Nav.Link>
+            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>Add Leave</Nav.Link> 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
