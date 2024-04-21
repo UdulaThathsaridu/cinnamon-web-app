@@ -13,6 +13,7 @@ import CustomerProfileLogo from '../assets/customer-profile-logo.png';
 import {PersonCircle} from 'react-bootstrap-icons';
 
 
+
 const Navbar = ({title = "Mandri Life"}) => {
   const {user,setUser} = useContext(AuthContext);
   const navigate = useNavigate();
@@ -183,8 +184,12 @@ const Navbar = ({title = "Mandri Life"}) => {
             <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px' }}>Create Financial</Nav.Link> 
             <Nav.Link  as = {Link} to="/allfinancial" style={{ marginLeft: '10px' }}>All Financial</Nav.Link> 
            
-            <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' }}>All Payment</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' , color : "black",fontWeight: 'bold' }}>All Payment |</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>Create Financial Reports |</Nav.Link>
+            <Nav.Link  as = {Link} to="/allfinancial" style={{ marginLeft: '10px',color : "black",fontWeight: 'bold'  }}>All Financial Reports |</Nav.Link>
+            <Nav.Link  as = {Link} to="/createinvoice" style={{ marginLeft: '10px',color : "black",fontWeight: 'bold'  }}>Create Invoice |</Nav.Link>
+            <Nav.Link  as = {Link} to="/allinvoice" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>All Invoice |</Nav.Link>
+            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>Add Leave</Nav.Link> 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
