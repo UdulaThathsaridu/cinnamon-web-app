@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useContext, useEffect, useState, useRef } from "react";
+=======
+import { useContext, useEffect,useState } from "react";
+>>>>>>> efdd7816e2138a8b256e535184ca5f9dd2e44aa3
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
@@ -7,8 +11,11 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import ToastContext from "../context/ToastContext";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+=======
+>>>>>>> efdd7816e2138a8b256e535184ca5f9dd2e44aa3
 
 const AllFinancials = () =>{
     const {toast}= useContext(ToastContext);
@@ -17,11 +24,16 @@ const AllFinancials = () =>{
     const [selectedFinancial, setSelectedFinancial] = useState(null);
     const [financials,setFinancials] = useState([]);
     const [searchInput,setSearchInput] = useState("");
+<<<<<<< HEAD
     const modalRef = useRef(null);
+=======
+  
+>>>>>>> efdd7816e2138a8b256e535184ca5f9dd2e44aa3
 
     useEffect(() => {
         async function fetchFinancial(){
             setLoading(true);
+<<<<<<< HEAD
             try {
                 const res = await fetch('http://localhost:4000/api/financials',{
                     method:"GET",
@@ -41,6 +53,27 @@ const AllFinancials = () =>{
                 setLoading(false);
                 console.log(err);
             }
+=======
+        try {
+            const res = await fetch('http://localhost:4000/api/financials',{
+                method:"GET",
+                headers:{
+                    "Authorization":`Bearer ${localStorage.getItem("token")}`,
+                }
+            });
+            const result = await res.json();
+            if(!result.error){
+               setFinancials(result.financials);
+               setLoading(false);
+            }else{
+                console.log(result);
+                setLoading(false);
+            }
+        } catch (err) {
+            setLoading(false);
+            console.log(err);
+        }
+>>>>>>> efdd7816e2138a8b256e535184ca5f9dd2e44aa3
         }
         fetchFinancial();
     }, []);
@@ -59,6 +92,32 @@ const AllFinancials = () =>{
                     setLoading(true);
                     fetchFinancial();
                 }else{
+    
+                    toast.success("Deleted Financial Report");
+                    setShowModal(false);
+                    setLoading(true);
+        try {
+            const res = await fetch('http://localhost:4000/api/financials',{
+                method:"GET",
+                headers:{
+                    "Authorization":`Bearer ${localStorage.getItem("token")}`,
+                }
+            });
+            const result = await res.json();
+            if(!result.error){
+               setFinancials(result.financials);
+               setLoading(false);
+            }else{
+                console.log(result);
+                setLoading(false);
+            }
+        } catch (err) {
+            setLoading(false);
+            console.log(err);
+        }
+
+                }else{
+    
                     toast.error(result.error);
                 }
             } catch (err) {

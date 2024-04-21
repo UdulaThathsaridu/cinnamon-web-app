@@ -5,9 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import ReactBootstrapNavbar from 'react-bootstrap/Navbar';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
+import Logo from '../assets/mandri-logo_black-2.png'
+import CustomerProfileLogo from '../assets/customer-profile-logo.png';
+import {PersonCircle} from 'react-bootstrap-icons';
 
 
 
@@ -15,6 +18,12 @@ const Navbar = ({title = "Mandri Life"}) => {
   const {user,setUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const {toast} = useContext(ToastContext);
+  const [cartCount,setCartCount] = useState(0);
+
+  useEffect(()=> {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartCount(cart.length);
+  },[location]);
 
   const handleTitleClick = () => {
     if(user && user.userRole === "CUSTOMER"){
@@ -38,16 +47,14 @@ const Navbar = ({title = "Mandri Life"}) => {
     }
   }
     return (
-     
-      
-      <ReactBootstrapNavbar expand="lg" style={{ backgroundColor: '#7B3F00' }} variant="dark">
-
+      <ReactBootstrapNavbar expand="lg" b bg="primary" variant="dark" sticky='top' >
       <Container>
         
-      <div to="#" onClick={handleTitleClick}>
-      
-  <img src="/src/assets/mandri logo_black.png" alt="Mandri Life" style={{ height: '50px', marginRight: '10px' }} />
-
+      <div to="#" onClick={handleTitleClick} style={{display:'flex',alignItems:'center'}}>
+     
+      <ReactBootstrapNavbar.Brand >
+      <img src={Logo} alt="Mandri Life Logo" style={{ width: 'auto', height: '60px' }} />
+        {title}</ReactBootstrapNavbar.Brand>
        </div>
         <ReactBootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
         <ReactBootstrapNavbar.Collapse id="basic-navbar-nav">
@@ -75,10 +82,10 @@ const Navbar = ({title = "Mandri Life"}) => {
             <Form className="d-flex ms-auto my-2">
             <Nav.Link  as = {Link} to="/create" style={{ marginLeft: '10px' }}>Create Employees</Nav.Link> 
             <Nav.Link  as = {Link} to="/allemployees" style={{ marginLeft: '10px' }}>All Employees</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createpayslip" style={{ marginLeft: '10px' }}>Create Payslips</Nav.Link> 
             <Nav.Link  as = {Link} to="/allpayslips" style={{ marginLeft: '10px' }}>All Payslips</Nav.Link> 
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
             <Nav.Link  as = {Link} to="/allleaves" style={{ marginLeft: '10px' }}>All Leaves</Nav.Link> 
+           
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
@@ -98,24 +105,30 @@ const Navbar = ({title = "Mandri Life"}) => {
             }} >Logout</Button>
           </Form>
           </>}
-          {user && user.userRole === "INVENTORY_MANAGER" && <> 
-            <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/createinventory" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
-            <Nav.Link  as = {Link} to="/allinventories" style={{ marginLeft: '10px' }}>All Inventories</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link>  
-            <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
-              setUser(null);
-              localStorage.clear();
-              toast.success("Logged Out!");
-              navigate("/login",{replace:true});
-            }} >Logout</Button>
-          </Form>
-          </>}
+          {user && user.userRole === "INVENTORY_MANAGER" && <>
+  <Form className="d-flex ms-auto my-2">
+    <Button as={Link} to="/createinventory" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Create Inventory</Button>
+    <Button as={Link} to="/allinventories" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>All Inventories</Button>
+    <Button as={Link} to="/contactsupplier" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Contact</Button>
+    <Button as={Link} to="/createleave" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Add Leave</Button>
+    <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
+      setUser(null);
+      localStorage.clear();
+      toast.success("Logged Out!");
+      navigate("/login",{replace:true});
+    }}>Logout</Button>
+  </Form>
+</>}
+
           {user && user.userRole === "SUPPLIER_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
             <Nav.Link  as = {Link} to="/createsuppliers" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
             <Nav.Link  as = {Link} to="/allsuppliers" style={{ marginLeft: '10px' }}>All Suppliers</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createorders" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
+            <Nav.Link  as = {Link} to="/suporders" style={{ marginLeft: '10px' }}>All Suppliers</Nav.Link> 
+            <Nav.Link  as = {Link} to="/supplierinbox" style={{ marginLeft: '10px' }}>Inbox</Nav.Link> 
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
@@ -129,6 +142,7 @@ const Navbar = ({title = "Mandri Life"}) => {
             <Nav.Link  as = {Link} to="/createdeliveries" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
             <Nav.Link  as = {Link} to="/alldeliveries" style={{ marginLeft: '10px' }}>All Deliveries</Nav.Link> 
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createdeliveries" style={{ marginLeft: '10px' }}>Add Delivery Details</Nav.Link>
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
@@ -165,6 +179,10 @@ const Navbar = ({title = "Mandri Life"}) => {
           </>}
           {user && user.userRole === "PAYMENT_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
+            <Nav.Link  as = {Link} to="/createinvoice" style={{ marginLeft: '10px' }}>Create Invoice</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allinvoice" style={{ marginLeft: '10px' }}>All Invoice</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px' }}>Create Financial</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allfinancial" style={{ marginLeft: '10px' }}>All Financial</Nav.Link> 
            
             <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' , color : "black",fontWeight: 'bold' }}>All Payment |</Nav.Link> 
             <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px',color : "black" ,fontWeight: 'bold' }}>Create Financial Reports |</Nav.Link>
@@ -181,10 +199,28 @@ const Navbar = ({title = "Mandri Life"}) => {
           </Form>
           </>}
           {user && user.userRole === "CUSTOMER" && <> 
+         
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/createpayment" style={{ marginLeft: '10px' }}>Add Payment Details</Nav.Link> 
-            <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' }}>All Payment</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createdeliveries" style={{ marginLeft: '10px' }}>Add Delivery Details</Nav.Link>
+            <Nav.Link  as = {Link} to="/customer" style={{ marginLeft: '10px' }}>Home</Nav.Link> 
+            <Nav.Link  as = {Link} to="/vision" style={{ marginLeft: '10px' }}>Vision & Mission</Nav.Link> 
+            <Nav.Link  as = {Link} to="/aboutus" style={{ marginLeft: '10px' }}>About Us</Nav.Link>
+            <Nav.Link  as = {Link} to="/customer-product" style={{ marginLeft: '10px' }}>Products</Nav.Link> 
+            
+            <Nav.Link  as = {Link} to="/contactus" style={{ marginLeft: '10px' }}>Contact Us</Nav.Link>
+          
+
+           
+            
+           
+             
+          
+            
+            <Nav.Link  as = {Link} to="/allorders" style={{ marginLeft: '10px' }}>My Orders</Nav.Link>
+            <Nav.Link  as = {Link} to="/cart-page" style={{ marginLeft: '10px' }}>Cart({cartCount})</Nav.Link> 
+            <Button as={Link} to="/customer-profile" variant="link" style={{ marginLeft: '10px', padding: '0' }}>
+                <img src={CustomerProfileLogo} alt="Customer Profile" style={{ marginRight: '5px', width: '24px', height: '24px' }} />
+                
+              </Button>
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
