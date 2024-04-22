@@ -58,6 +58,7 @@ import EditPayslip from "./pages/EditPayslip";
 import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
+import CustomerStatues from "./pages/CustomerStatues";
 import {Chart, ArcElement} from 'chart.js'
 import Vision from "./pages/Vision";
 import CustomerProfile from "./pages/CustomerProfile";
@@ -150,6 +151,7 @@ const App = () => {
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
       <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
+      <Route path="/customerstatues" element={<CustomerStatues></CustomerStatues>}/>
       <Route path="/createfinancial" element={<CreateFinancial></CreateFinancial>}/>
       <Route path="/allfinancial" element={<AllFinancial></AllFinancial>}/>
       <Route path="/editfinancial/:id" element={<EditFinancial></EditFinancial>}/>

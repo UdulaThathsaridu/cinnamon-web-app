@@ -1,20 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react"; // Added useRef
+import React from "react";
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
-import ToastContext from "../context/ToastContext";
-import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas"; // Ensure html2canvas is installed
 
-const AllDeliveries = () => {
-    const { toast } = useContext(ToastContext);
+const CustomerStatues = () => {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [selectedDelivery, setSelectedDelivery] = useState(null);
     const [deliveries, setDeliveries] = useState([]);
     const [searchInput, setSearchInput] = useState("");
+    const contentRef = useRef(null); // Added ref for capturing content
 
     useEffect(() => {
         const fetchDelivery = async () => {
@@ -42,28 +40,6 @@ const AllDeliveries = () => {
         fetchDelivery();
     }, []);
 
-    const deleteDelivery = async (id) => {
-        if (window.confirm("Are you sure you want to delete this Delivery?")) {
-            try {
-                const res = await fetch(`http://localhost:4000/api/deliveries/${id}`, {
-                    method: "DELETE",
-                    headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
-                });
-                const result = await res.json();
-                if (!result.error) {
-                    toast.success("Deleted Delivery");
-                    setShowModal(false);
-                    setLoading(true);
-                    fetchDelivery();
-                } else {
-                    toast.error(result.error);
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        }
-    }
-
     const handleSearchSubmit = (event) => {
         event.preventDefault();
         const newSearchDelivery = deliveries.filter((delivery) =>
@@ -73,26 +49,27 @@ const AllDeliveries = () => {
     };
 
     const exportPDF = () => {
-        const input = document.getElementById('pdfTable');
-        html2canvas(input)
-            .then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-                pdf.addImage(imgData, 'PNG', 0, 0);
-                pdf.save("deliveries.pdf");
-            });
-    };
+        const tableContent = contentRef.current;
+        html2canvas(tableContent).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 180;
+            const pdfWidth = 200;
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            const marginLeft = (pdf.internal.pageSize.width - pdfWidth) / 2;
+            const marginTop = 10;
 
-    const reloadDeliveries = () => {
-        setLoading(true);
-        fetchDelivery();
+            pdf.addImage(imgData, 'PNG', marginLeft, marginTop, imgWidth, pdfHeight);
+            pdf.save("deliveryStatues.pdf");
+        });
     };
 
     return (
         <>
-            <h1>All Deliveries</h1>
+            This is the All Deliveries page
+            <br />
+            <a href="/customerstatues" className="btn btn-danger my-2">Reload Deliveries</a>
             <Button onClick={exportPDF} variant="success" className="my-2 mx-2">Export to PDF</Button>
-            <Button onClick={reloadDeliveries} variant="danger" className="my-2">Reload Deliveries</Button>
 
             {loading ? <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
@@ -114,7 +91,7 @@ const AllDeliveries = () => {
                     </form>
 
                     <p>Total No of Deliveries: {deliveries.length}</p>
-                    <Table striped bordered hover variant="dark" id="pdfTable">
+                    <Table striped bordered hover variant="dark" ref={contentRef}>
                         <thead>
                             <tr>
                                 <th>Customer Name</th>
@@ -143,32 +120,8 @@ const AllDeliveries = () => {
                     </Table>
                 </>)
             )}
-            <div className="modal show" style={{ display: 'block', position: 'initial' }}>
-                <Modal show={showModal} onHide={() => setShowModal(false)}>
-                    <Modal.Header closeButton>
-                        {selectedDelivery && <Modal.Title>Delivery Details</Modal.Title>}
-                    </Modal.Header>
-                    <Modal.Body>
-                        {selectedDelivery && (
-                            <>
-                                <p><strong>Name:</strong> {selectedDelivery.name}</p>
-                                <p><strong>Address:</strong> {selectedDelivery.address}</p>
-                                <p><strong>Order Weight:</strong> {selectedDelivery.weight}</p>
-                                <p><strong>Delivery Company Name:</strong> {selectedDelivery.courierName}</p>
-                                <p><strong>Status:</strong> {selectedDelivery.status}</p>
-                                <p><strong>Email:</strong> {selectedDelivery.email}</p>
-                            </>
-                        )}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Link className="btn btn-info" to={`/editdeliveries/${selectedDelivery?._id}`}>Edit</Link>
-                        <Button variant="primary" onClick={() => deleteDelivery(selectedDelivery?._id)}>Delete</Button>
-                        <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
         </>
     );
 }
 
-export default AllDeliveries;
+export default CustomerStatues;
