@@ -8,7 +8,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
-import Logo from '../assets/mandri-logo_black-2.png'
+import Logo from '../assets/mandri-logo_white.png'
 import CustomerProfileLogo from '../assets/customer-profile-logo.png';
 import {PersonCircle} from 'react-bootstrap-icons';
 
@@ -46,8 +46,8 @@ const Navbar = ({title = "Mandri Life"}) => {
     }
   }
     return (
-      <ReactBootstrapNavbar expand="lg" b bg="primary" variant="dark" sticky='top' >
-      <Container>
+      <ReactBootstrapNavbar className="bg-dark text-white text-center py-4 mt-auto" expand="lg" bg="primary" variant="light" sticky='top' data-bs-theme="dark" >
+      <Container >
         
       <div to="#" onClick={handleTitleClick} style={{display:'flex',alignItems:'center'}}>
      
@@ -56,7 +56,7 @@ const Navbar = ({title = "Mandri Life"}) => {
         {title}</ReactBootstrapNavbar.Brand>
        </div>
         <ReactBootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
-        <ReactBootstrapNavbar.Collapse id="basic-navbar-nav">
+        <ReactBootstrapNavbar.Collapse id="basic-navbar-nav" >
           {
             !user  && <Nav className="ms-auto">
             <Nav.Link as = {Link} to="/login" >Login</Nav.Link> 
@@ -65,17 +65,7 @@ const Navbar = ({title = "Mandri Life"}) => {
             </Link>
             
          
-             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-               <NavDropdown.Item href="#action/3.2">
-                 Another action
-               </NavDropdown.Item>
-               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-               <NavDropdown.Divider />
-               <NavDropdown.Item href="#action/3.4">
-                 Separated link
-               </NavDropdown.Item>
-             </NavDropdown>  </Nav>
+              </Nav>
           }
           {user && user.userRole === "EMPLOYEE_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
@@ -196,7 +186,7 @@ const Navbar = ({title = "Mandri Life"}) => {
           {user && user.userRole === "CUSTOMER" && <> 
          
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/customer" style={{ marginLeft: '10px' }}>Home</Nav.Link> 
+            <Nav.Link  as = {Link} to="/customer" style={{ marginLeft: '10px' }} >Home</Nav.Link> 
             <Nav.Link  as = {Link} to="/vision" style={{ marginLeft: '10px' }}>Vision & Mission</Nav.Link> 
             <Nav.Link  as = {Link} to="/aboutus" style={{ marginLeft: '10px' }}>About Us</Nav.Link>
             <Nav.Link  as = {Link} to="/customer-product" style={{ marginLeft: '10px' }}>Products</Nav.Link> 
