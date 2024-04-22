@@ -40,6 +40,7 @@ import EditPayslip from "./pages/EditPayslip";
 import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
+import CustomerStatues from "./pages/CustomerStatues";
 
 const App = () => {
   return (
@@ -86,6 +87,7 @@ const App = () => {
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
       <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
+      <Route path="/customerstatues" element={<CustomerStatues></CustomerStatues>}/>
 
        
 

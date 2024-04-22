@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef } from "react"; // Added useRef
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
@@ -6,7 +6,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas"; // Ensure html2canvas is installed
 
-const AllDeliveries = () => {
+const CustomerStatues = () => {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [selectedDelivery, setSelectedDelivery] = useState(null);
@@ -68,7 +68,7 @@ const AllDeliveries = () => {
         <>
             This is the All Deliveries page
             <br />
-            <a href="/alldeliveries" className="btn btn-danger my-2">Reload Deliveries</a>
+            <a href="/customerstatues" className="btn btn-danger my-2">Reload Deliveries</a>
             <Button onClick={exportPDF} variant="success" className="my-2 mx-2">Export to PDF</Button>
 
             {loading ? <Spinner animation="border" role="status">
@@ -124,5 +124,4 @@ const AllDeliveries = () => {
     );
 }
 
-export default AllDeliveries;
-
+export default CustomerStatues;

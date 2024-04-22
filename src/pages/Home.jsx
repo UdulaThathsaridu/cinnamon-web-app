@@ -15,10 +15,9 @@ const Home = () =>{
 
     return user && (<>This is Employee Manager Home page {user ? user.name : null} 
     <br></br>
-    <Button id="AddEmployee" variant="primary" type="submit">Add Employee</Button>{' '}
+    <Button id="AddEmployee" variant="primary" type="submit">Add Package</Button>{' '}
     </>)
   
       }
-
 
 export default Home;

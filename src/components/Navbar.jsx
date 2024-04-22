@@ -174,7 +174,6 @@ const Navbar = ({title = "Mandri Life"}) => {
             <Form className="d-flex ms-auto my-2">
             <Nav.Link  as = {Link} to="/createpayment" style={{ marginLeft: '10px' }}>Add Payment Details</Nav.Link> 
             <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' }}>All Payment</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createdeliveries" style={{ marginLeft: '10px' }}>Add Delivery Details</Nav.Link>
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
