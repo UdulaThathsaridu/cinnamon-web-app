@@ -40,7 +40,7 @@ export const AuthContextProvider = ({children}) =>{
                 }
                 setUser(result);
                 
-            }else{
+            }else if(location.pathname !== "/reset-password-confirm"){
                 navigate("/login",{replace:true});
             }
         } catch (err) {
@@ -95,7 +95,30 @@ export const AuthContextProvider = ({children}) =>{
             console.log(err);
         }
     }
-    return (<AuthContext.Provider value={{ loginUser,registerUser,user,setUser}}>
+     // Define the updateUserProfile function
+     const updateUserProfile = async (formData) => {
+        try {
+            const res = await fetch(`http://localhost:4000/api/update-profile`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(formData),
+            });
+            const result = await res.json();
+            if (!result.error) {
+                toast.success("Profile updated successfully!");
+                setUser(result.user); // Update the user state with the updated profile
+            } else {
+                toast.error(result.error);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    return (<AuthContext.Provider value={{ loginUser,registerUser,user,setUser,updateUserProfile}}>
         
         {children}
         </AuthContext.Provider>
