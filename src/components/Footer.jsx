@@ -1,6 +1,7 @@
 // Footer.js
 import React from 'react';
 import mandriLifeLogo from '../assets/mandri-logo_white.png'; // Import your Mandri Life logo
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -28,6 +29,7 @@ const Footer = () => {
               <li>Spices</li>
               <li>Essential Oil</li>
               <li>Herbal Products</li>
+             <Link to="/createfeedbacks"><p>Feedback</p></Link> 
             </ul>
           </div>
           <div className="col-md-3">
