@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
 import Logo from '../assets/mandri-logo_white.png'
-import CustomerProfileLogo from '../assets/customer-profile-logo.png';
+import CustomerProfileLogo from '../assets/customer-profile-logo2.png';
 import {PersonCircle} from 'react-bootstrap-icons';
 
 
@@ -191,26 +191,15 @@ const Navbar = ({title = "Mandri Life"}) => {
           {user && user.userRole === "CUSTOMER" && <> 
          
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/customer" style={{ marginLeft: '10px' }} >Home</Nav.Link> 
-            <Nav.Link  as = {Link} to="/vision" style={{ marginLeft: '10px' }}>Vision & Mission</Nav.Link> 
-            <Nav.Link  as = {Link} to="/aboutus" style={{ marginLeft: '10px' }}>About Us</Nav.Link>
-            <Nav.Link  as = {Link} to="/customer-product" style={{ marginLeft: '10px' }}>Products</Nav.Link>
-
-             <Nav.Link  as = {Link} to="/createfeedbacks" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
-             <Nav.Link  as = {Link} to="/allfeedbacks" style={{ marginLeft: '10px' }}>All</Nav.Link> 
-             
+            <Nav.Link  as = {Link} to="/customer" style={{ marginLeft: '10px' }} >Home |</Nav.Link> 
+            <Nav.Link  as = {Link} to="/vision" style={{ marginLeft: '10px' }}>Vision & Mission |</Nav.Link> 
+            <Nav.Link  as = {Link} to="/aboutus" style={{ marginLeft: '10px' }}>About Us |</Nav.Link>
+            <Nav.Link  as = {Link} to="/customer-product" style={{ marginLeft: '10px' }}>Products |</Nav.Link>
             
-            <Nav.Link  as = {Link} to="/contactus" style={{ marginLeft: '10px' }}>Contact Us</Nav.Link>
-          
-
-           
-            
-           
-             
-          
-            
-            <Nav.Link  as = {Link} to="/allorders" style={{ marginLeft: '10px' }}>My Orders</Nav.Link>
-            <Nav.Link  as = {Link} to="/cart-page" style={{ marginLeft: '10px' }}>Cart({cartCount})</Nav.Link> 
+            <Nav.Link  as = {Link} to="/contactus" style={{ marginLeft: '10px' }}>Contact Us |</Nav.Link>
+    
+            <Nav.Link  as = {Link} to="/allorders" style={{ marginLeft: '10px' }}>My Orders |</Nav.Link>
+            <Nav.Link  as = {Link} to="/cart-page" style={{ marginLeft: '10px' }}>Cart({cartCount}) |</Nav.Link> 
             <Button as={Link} to="/customer-profile" variant="link" style={{ marginLeft: '10px', padding: '0' }}>
                 <img src={CustomerProfileLogo} alt="Customer Profile" style={{ marginRight: '5px', width: '24px', height: '24px' }} />
                 
