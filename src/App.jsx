@@ -74,6 +74,8 @@ import CartPage from "./pages/CartPage";
 import OrderSummary from "./pages/OrderSummary";
 
 import SupplierOrders from "./pages/SupplierOrders";
+import CreateFeedback from "./pages/CreateFeedback";
+
 
 Chart.register(ArcElement);
 
@@ -125,6 +127,9 @@ const App = () => {
       <Route path="/allsuppliers" element={<AllSuppliers></AllSuppliers>}/>
       <Route path="/editsupplier/:id" element={<EditSupplier></EditSupplier>}/>
       <Route path ="/createorders" element={<CreateOrder></CreateOrder>}/>
+
+      <Route path ="/createfeedbacks" element={<CreateFeedback></CreateFeedback>}/>
+      
       
       <Route path="/editorder/:id" element={<EditOrder></EditOrder>}/>
       <Route path="/createdeliveries" element={<CreateDelivery></CreateDelivery>}/>
