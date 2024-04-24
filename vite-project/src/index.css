@@ -53,6 +53,15 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+img {
+  border:2px;
+  max-width: 25%;
+  max-height: 25%;
+   margin: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
