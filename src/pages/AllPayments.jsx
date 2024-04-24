@@ -128,7 +128,6 @@ const AllPayments = () =>{
             <th>CardHolder Name</th>
             <th>Card Number</th>
             <th>Expiry Date</th>
-            <th>CVV</th>
             <th>Issuing Bank</th>
           </tr>
         </thead>
@@ -141,7 +140,6 @@ const AllPayments = () =>{
                <td>{payment.name}</td>
                <td>{payment.number}</td>
                <td>{payment.expiryDate}</td>
-               <td>{payment.cvv}</td>
                <td>{payment.issuingBank}</td>
              </tr>
   
@@ -167,16 +165,11 @@ const AllPayments = () =>{
             <p><strong>CardHolder Name:</strong> {selectedPayment.name}</p>
           <p><strong>Card Number:</strong>{selectedPayment.number}</p>
           <p><strong>Expiry Date:</strong> {selectedPayment.expiryDate}</p>
-          <p><strong>CVV:</strong>{selectedPayment.cvv}</p>
           <p><strong>Issuing Bank:</strong>{selectedPayment.issuingBank}</p>
           </>)}
         </Modal.Body>
 
         <Modal.Footer>
-        <Link 
-        className="btn btn-info"
-        to={`/editpayments/${selectedPayment?._id}`}>
-            Edit</Link>
         <Button id="btn btn-danger" variant="primary" onClick={()=>{
            deletePayment(selectedPayment._id)
           }}>Delete</Button>

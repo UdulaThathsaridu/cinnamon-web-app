@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Card, Spinner } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom';
+import { Card, Spinner,Button } from 'react-bootstrap';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -52,7 +53,9 @@ const ProductDetails = () => {
         <Card.Text>
           <strong>Description:</strong> {product.description}
         </Card.Text>
-        
+        <Link to="/customer-product">
+        <Button variant="primary" className="mt-3" >Browse More</Button>
+        </Link>
       </Card.Body>
     </Card>
   );

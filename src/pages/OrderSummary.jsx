@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Container, Card, ListGroup } from 'react-bootstrap';
 
 const OrderSummary = () => {
     // State to hold the order details
@@ -16,37 +17,39 @@ const OrderSummary = () => {
     }, []);
 
     const handleGoToProducts = () => {
-         // Remove order details from localStorage
-         localStorage.removeItem("orderDetails");
+        // Remove order details from localStorage
+        localStorage.removeItem("orderDetails");
         // Navigate to the customer product page
         navigate("/customer-product");
     };
 
     return (
-        <div className="container">
-            <h2>Order Details</h2>
+        <Container className="mt-5">
+            <h2 className="mb-4">Order Details</h2>
             {orderDetails ? (
-                <div>
-                    <p>Order ID: {orderDetails._id}</p>
-                    <p>Total Price: ${orderDetails.cart.reduce((total, item) => total + item.total, 0)}</p> {/* Calculate total price */}
-                    <p>Order Date: {new Date(orderDetails.expiryDate).toLocaleString()}</p>
-                    <h3>Products:</h3>
-                    <ul>
-                        {orderDetails.cart.map((item, index) => (
-                            <li key={index}>
-                                <p>Product Name: {item.name}</p>
-                                <p>Quantity: {item.quantity}</p>
-                                <p>Price per unit: ${item.price}</p>
-                                <p>Total Price: ${item.total}</p>
-                            </li>
-                        ))}
-                    </ul>
-                    <button onClick={handleGoToProducts}>Go to Customer Products</button>
-                </div>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>Order ID: {orderDetails._id}</Card.Title>
+                        <Card.Text>Total Price: ${orderDetails.cart.reduce((total, item) => total + item.total, 0)}</Card.Text> {/* Calculate total price */}
+                        <Card.Text>Order Date: {new Date(orderDetails.expiryDate).toLocaleString()}</Card.Text>
+                        <Card.Title className="mt-3">Products:</Card.Title>
+                        <ListGroup variant="flush">
+                            {orderDetails.cart.map((item, index) => (
+                                <ListGroup.Item key={index}>
+                                    <p>Product Name: {item.name}</p>
+                                    <p>Quantity: {item.quantity}</p>
+                                    <p>Price per unit: ${item.price}</p>
+                                    <p>Total Price: ${item.total}</p>
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                        <Button variant="primary" className="mt-3" onClick={handleGoToProducts}>Browse More</Button>
+                    </Card.Body>
+                </Card>
             ) : (
                 <p>No order details available</p>
             )}
-        </div>
+        </Container>
     );
 };
 

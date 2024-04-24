@@ -7,11 +7,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 // Import images for the functionalities
-import createTransportImage from '../assets/delivery-truck-icon.jpg';
-import allTransportsImage from '../assets/warehousing-icon.jpg';
-import createShipmentImage from '../assets/forklift-icon.jpg';
-import allShipmentsImage from '../assets/cargo-container-icon.jpg';
-import contactInventory from '../assets/gmail-icon.jpg';
+import createTransportImage from '../assets/delivery-truck-icon.png';
+import allTransportsImage from '../assets/warehousing-icon.png';
+import createShipmentImage from '../assets/forklift-icon.png';
+import allShipmentsImage from '../assets/cargo-container-icon.png';
+import contactInventory from '../assets/gmail-icon.png';
 import addLeaveImage from '../assets/add.png';
 
 const TransportManagerHome = () => {

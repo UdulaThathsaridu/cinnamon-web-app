@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 const Layout = ({navbar=true,children}) => {
     const location = useLocation();
-    const hideFooterRoutes = ["/login","/register"];
+    const hideFooterRoutes = ["/login","/register","/payment-manager"];
     //give extra space to every part of our website
     return <>
     

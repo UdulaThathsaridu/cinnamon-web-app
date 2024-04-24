@@ -38,8 +38,9 @@ const CreateEmployee = () => {
 
         if (!values.phone.trim()) {
             errors.phone = "Phone is required";
-        } else if (!/^\d{10}$/.test(values.phone)) {
-            errors.phone = "Phone number must be 10 digits";
+        } else if (!/^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(values.phone)) {
+            // Sri Lankan phone number pattern: starts with 0 and followed by 9 digits
+            errors.phone = "Invalid phone number";
         }
 
         return errors;
