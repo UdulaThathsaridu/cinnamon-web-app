@@ -1,101 +1,176 @@
-import { useContext, useEffect, useState } from "react";
-import React from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import ToastContext from "../context/ToastContext";
+import { Formik } from 'formik';
 
-const CreateTransport = () =>{
-    const {user} = useContext(AuthContext);
-    const {toast} = useContext(ToastContext);
-
-    const [vehicleDetails,setVehicleDetails] = useState({
-        vehicle:"",
-        model:"",
-        status:"",
-        last_inspection:"",
-        next_inspection:"",
+const CreateTransport = () => {
+    const [vehicleDetails, setVehicleDetails] = useState({
+        vehicle: "",
+        model: "",
+        status: "",
+        last_inspection: "",
+        next_inspection: "",
     });
-    const navigate = useNavigate();
- 
 
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        try {
+            const res = await fetch('http://localhost:4000/api/vehicles', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(values),
+            });
 
-    const handleInputChange = (event) => {
-        const {name,value} = event.target;
-
-        setVehicleDetails({...vehicleDetails, [name]: value});
-    }
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const res = await fetch('http://localhost:4000/api/vehicles',{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${localStorage.getItem("token")}`,
-            },
-            body:JSON.stringify(vehicleDetails),
-        
-        });
-  
-        const result = await res.json();
-        if(!result.error){
-
-          toast.success(`Created [${vehicleDetails.vehicle}]`);
-
-          setVehicleDetails({vehicle:"",model:"",status:"",last_inspection:"",next_inspection:""});
-        }else{
-          
-            toast.error(result.error);
-
+            const result = await res.json();
+            if (!result.error) {
+                // Handle success
+                console.log(`Created [${values.vehicle}]`);
+                resetForm();
+            } else {
+                // Handle error
+                console.error(result.error);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        } finally {
+            setSubmitting(false);
         }
-    }
-    return(<>
-    <h2>Add Vehicles</h2>
-    
-    <Form onSubmit={handleSubmit} >
-    <Form.Group className="mb-3">
-        <Form.Label>Vehicle Name</Form.Label>
-        <Form.Control id="vehicle" name="vehicle" type="text" 
-        placeholder="Enter Vehicle Name"  value={vehicleDetails.vehicle} onChange={handleInputChange}  required/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="model">
-        <Form.Label>Vehicle Model</Form.Label>
-        <Form.Control id="model" name="model" type="text" 
-        placeholder="Enter Vehicle Model" value={vehicleDetails.model} onChange={handleInputChange} required/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="status">
-        <Form.Label>Vehicle Status</Form.Label>
-        <Form.Control id="status" name="status" type="text" 
-        placeholder="Enter Vehicle Status" value={vehicleDetails.status} onChange={handleInputChange} required/>
-      </Form.Group>
+    };
 
-      <Form.Group className="mb-3" controlId="last_inspection">
-        <Form.Label>Last Inspection</Form.Label>
-        <Form.Control id="last_inspection" name="last_inspection" type="date" 
-        placeholder="Enter Last Inspection" value={vehicleDetails.last_inspection} onChange={handleInputChange} required/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="next_inspection">
-        <Form.Label>Next Inspection</Form.Label>
-        <Form.Control id="next_inspection" name="next_inspection" type="date" 
-        placeholder="Enter Next Inspection" value={vehicleDetails.next_inspection} onChange={handleInputChange} required/>
-      </Form.Group>
+    return (
+        <>
+            <h2>Add Vehicles</h2>
+            <Formik
+                initialValues={vehicleDetails}
+                validate={values => {
+                    const errors = {};
 
-   
-      
-      <Button id="btn" name="submit" variant="primary" type="submit">
-        Add Vehicle
-      </Button>
-      <Form.Group >
-        
-      </Form.Group>
-    </Form>
+                    if (!values.vehicle.trim()) {
+                        errors.vehicle = "Vehicle name is required";
+                    } else if (!/^[a-zA-Z]+$/.test(values.vehicle.trim())) {
+                      errors.vehicle = "Vehicle name can only contain letters";
+                  }
 
-    </>
+                    if (!values.model.trim()) {
+                        errors.model = "Vehicle model is required";
+                    } else if (!/^[a-zA-Z]+$/.test(values.model.trim())) {
+                      errors.model = "Vehicle model can only contain letters";
+                  }
+
+                    if (!values.status.trim()) {
+                        errors.status = "Vehicle status is required";
+                    } else if (!/^[a-zA-Z]+$/.test(values.status.trim())) {
+                      errors.status = "Vehicle status can only contain letters";
+                  }
+
+                    if (!values.last_inspection.trim()) {
+                        errors.last_inspection = "Last inspection date is required";
+                    }
+
+                    if (!values.next_inspection.trim()) {
+                        errors.next_inspection = "Next inspection date is required";
+                    }
+
+                    return errors;
+                }}
+                onSubmit={handleSubmit}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting
+                }) => (
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Vehicle Name</Form.Label>
+                            <Form.Control
+                                name="vehicle"
+                                type="text"
+                                placeholder="Enter Vehicle Name"
+                                value={values.vehicle}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.vehicle && !!errors.vehicle}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.vehicle}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Vehicle Model</Form.Label>
+                            <Form.Control
+                                name="model"
+                                type="text"
+                                placeholder="Enter Vehicle Model"
+                                value={values.model}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.model && !!errors.model}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.model}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Vehicle Status</Form.Label>
+                            <Form.Control
+                                name="status"
+                                type="text"
+                                placeholder="Enter Vehicle Status"
+                                value={values.status}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.status && !!errors.status}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.status}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Last Inspection</Form.Label>
+                            <Form.Control
+                                name="last_inspection"
+                                type="date"
+                                value={values.last_inspection}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.last_inspection && !!errors.last_inspection}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.last_inspection}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Next Inspection</Form.Label>
+                            <Form.Control
+                                name="next_inspection"
+                                type="date"
+                                value={values.next_inspection}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.next_inspection && !!errors.next_inspection}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.next_inspection}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Submitting' : 'Add Vehicle'}
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
-      };
-
+};
 
 export default CreateTransport;

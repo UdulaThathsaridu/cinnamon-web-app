@@ -75,6 +75,11 @@ import OrderSummary from "./pages/OrderSummary";
 
 import SupplierOrders from "./pages/SupplierOrders";
 import CreateFeedback from "./pages/CreateFeedback";
+import CreateShipments from "./pages/CreateShipments";
+import AllShipments from "./pages/AllShipments";
+import EditShipments from "./pages/EditShipments";
+import ContactInventory from "./pages/ContactInventory";
+import InventoryInbox from "./pages/InventoryInbox";
 
 
 
@@ -144,6 +149,16 @@ const App = () => {
       <Route path="/createtransports" element={<CreateTransport></CreateTransport>}/>
       <Route path="/alltransports" element={<AllTransports></AllTransports>}/>
       <Route path="/edittransports/:id" element={<EditTransports></EditTransports>}/>
+      <Route path="/contactinventory" element={<ContactInventory></ContactInventory>}/>
+      <Route path="/inventoryinbox" element={<InventoryInbox></InventoryInbox>}/>
+
+
+
+      <Route path="/createshipments" element={<CreateShipments></CreateShipments>}/>
+      <Route path="/allshipments" element={<AllShipments></AllShipments>}/>
+      <Route path="/editshipments/:id" element={<EditShipments></EditShipments>}/>
+
+
       <Route path="/createproducts" element={<CreateProduct></CreateProduct>}/>
       <Route path="/allproducts" element={<AllProducts></AllProducts>}/>
       <Route path="/editproducts/:id" element={<EditProducts></EditProducts>}/>

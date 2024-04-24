@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import ToastContext from "../context/ToastContext";
-import { Card, Spinner, Form } from "react-bootstrap";
+import { Card, Spinner, Form, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const CustomerProduct = () => {
@@ -99,8 +99,8 @@ const CustomerProduct = () => {
 
     return (
         <div className="container">
-            <h2>Welcome, {user ? user.name : null} </h2>
-            <Form.Group controlId="search">
+            <h2 className="mb-4">Welcome, {user ? user.name : null}</h2>
+            <Form.Group controlId="search" className="mb-3">
                 <Form.Control
                     type="text"
                     placeholder="Search products"
@@ -108,21 +108,21 @@ const CustomerProduct = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </Form.Group>
-            <p>Here are some products for you:</p>
+            <p className="mb-4">Here are some products for you:</p>
             {loading ? (
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             ) : (
-                <div className="row">
+                <Row xs={1} md={2} lg={3} className="g-4">
                     {filteredProducts.map((product) => (
-                        <div key={product._id} className="col-md-4 mb-3">
-                            <Card className="h-100">
+                        <Col key={product._id}>
+                            <Card>
                                 <Card.Img variant="top" src={`http://localhost:4000/${product.imageUrl}`} alt={product.name} />
                                 <Card.Body>
                                     <Card.Title>{product.name}</Card.Title>
                                     <Card.Text>Price: ${product.price}</Card.Text>
-                                    <Form.Group controlId={`quantity-${product._id}`}>
+                                    <Form.Group controlId={`quantity-${product._id}`} className="mb-3">
                                         <Form.Label>Quantity</Form.Label>
                                         <Form.Control
                                             type="number"
@@ -132,14 +132,12 @@ const CustomerProduct = () => {
                                         />
                                     </Form.Group>
                                     <Button variant="primary" onClick={() => addToCart(product, parseInt(document.getElementById(`quantity-${product._id}`).value))}>Add to Cart</Button>
-                                    <Link to={`/product-details/${product._id}`}>
-                                        <Button variant="primary">View Details</Button>
-                                    </Link>
+                                    <Link to={`/product-details/${product._id}`} className="btn btn-primary ms-2">View Details</Link>
                                 </Card.Body>
                             </Card>
-                        </div>
+                        </Col>
                     ))}
-                </div>
+                </Row>
             )}
         </div>
     );
