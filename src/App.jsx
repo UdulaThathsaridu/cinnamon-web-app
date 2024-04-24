@@ -41,6 +41,7 @@ import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
 
+
 const App = () => {
   return (
     <ToastContextProvider>
@@ -77,9 +78,12 @@ const App = () => {
       <Route path="/createdeliveries" element={<CreateDelivery></CreateDelivery>}/>
       <Route path="/alldeliveries" element={<AllDeliveries></AllDeliveries>}/>
       <Route path="/editdeliveries/:id" element={<EditDeliveries></EditDeliveries>}/>
+
       <Route path="/createtransports" element={<CreateTransport></CreateTransport>}/>
       <Route path="/alltransports" element={<AllTransports></AllTransports>}/>
       <Route path="/edittransports/:id" element={<EditTransports></EditTransports>}/>
+      <Route path="/transporthome" element={<TransportManagerHome></TransportManagerHome>}/>
+
       <Route path="/createproducts" element={<CreateProduct></CreateProduct>}/>
       <Route path="/allproducts" element={<AllProducts></AllProducts>}/>
       <Route path="/editproducts/:id" element={<EditProducts></EditProducts>}/>

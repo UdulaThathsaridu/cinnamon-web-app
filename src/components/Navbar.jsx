@@ -133,8 +133,11 @@ const Navbar = ({title = "Mandri Life"}) => {
           </>}
           {user && user.userRole === "TRANSPORT_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
+
+            <Nav.Link as = {Link} to="/transporthome" style={{ marginLeft: '10px' }}>Home</Nav.Link>
             <Nav.Link  as = {Link} to="/createtransports" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
             <Nav.Link  as = {Link} to="/alltransports" style={{ marginLeft: '10px' }}>All Transports</Nav.Link>
+
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link>  
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
