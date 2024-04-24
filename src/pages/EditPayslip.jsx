@@ -8,16 +8,25 @@ import Form from 'react-bootstrap/Form';
 import ToastContext from "../context/ToastContext";
 import { Spinner } from "react-bootstrap";
 
+function formatDate(dateString){
+  const  date = new Date(dateString);
+  const year= date.getFullYear();
+  const month = String(date.getMonth()+1).padStart(2,'0');
+  const day = String(date.getDate()).padStart(2,'0');
+  return `${year}-${month}-${day}`;
+}
+
 const EditPayslip = () =>{
 
     const {id} = useParams();
     const {user} = useContext(AuthContext);
     const {toast} = useContext(ToastContext);
+    const queryParams = new URLSearchParams(location.search);
 
     const [payslipDetails,setPayslipDetails] = useState({
         id:"",
         name:"",
-        year:"",
+        date:"",
         allowances:"",
         deductions:"",
         otherAllowances:"",
@@ -48,7 +57,7 @@ const EditPayslip = () =>{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${localStorage.getItem("token")}`,
             },
-            body:JSON.stringify({id,...payslipDetails}),
+            body:JSON.stringify({email:queryParams.get("email"),id,...payslipDetails}),
         
         });
         const result = await res.json();
@@ -90,7 +99,8 @@ const EditPayslip = () =>{
                 totalAllowance:result.totalAllowance,
                 totalDeduction:result.totalDeduction,
                 netSalary:result.netSalary,
-                paymentMethod:result.paymentMethod
+                paymentMethod:result.paymentMethod,
+                date:formatDate(result.date)
                
             });
             setLoading(false);
@@ -142,7 +152,7 @@ const EditPayslip = () =>{
       <Form.Group className="mb-3" controlId="basic">
         <Form.Label>Employee basic</Form.Label>
         <Form.Control id="basic" name="basic" type="number" 
-        placeholder="Enter basic" value={payslipDetails.basic} onChange={handleInputChange} required disabled/>
+        placeholder="Enter basic" value={payslipDetails.basic} onChange={handleInputChange} required readOnly/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="totalAllowance">
         <Form.Label>Employee totalAllowance</Form.Label>
