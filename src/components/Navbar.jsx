@@ -100,7 +100,9 @@ const Navbar = ({title = "Mandri Life"}) => {
     <Button as={Link} to="/createinventory" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Create Inventory</Button>
     <Button as={Link} to="/allinventories" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>All Inventories</Button>
     <Button as={Link} to="/contactsupplier" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Contact</Button>
+    <Button as={Link} to="/inventoryinbox" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Inbox</Button>
     <Button as={Link} to="/createleave" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Add Leave</Button>
+    
     <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
       setUser(null);
       localStorage.clear();
@@ -143,9 +145,12 @@ const Navbar = ({title = "Mandri Life"}) => {
           </>}
           {user && user.userRole === "TRANSPORT_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/createtransports" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createtransports" style={{ marginLeft: '10px' }}>Create Transport</Nav.Link> 
             <Nav.Link  as = {Link} to="/alltransports" style={{ marginLeft: '10px' }}>All Transports</Nav.Link>
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link>  
+            <Nav.Link  as = {Link} to="/createshipments" style={{ marginLeft: '10px' }}>Create Shipments</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allshipments" style={{ marginLeft: '10px' }}>All Shipments</Nav.Link>
+            <Nav.Link  as = {Link} to="/contactinventory" style={{ marginLeft: '10px' }}>Contact Inventory</Nav.Link>
+            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();

@@ -58,7 +58,6 @@ import EditPayslip from "./pages/EditPayslip";
 import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
-import CustomerStatues from "./pages/CustomerStatues";
 import {Chart, ArcElement} from 'chart.js'
 import Vision from "./pages/Vision";
 import CustomerProfile from "./pages/CustomerProfile";
@@ -76,6 +75,11 @@ import OrderSummary from "./pages/OrderSummary";
 
 import SupplierOrders from "./pages/SupplierOrders";
 import CreateFeedback from "./pages/CreateFeedback";
+import CreateShipments from "./pages/CreateShipments";
+import AllShipments from "./pages/AllShipments";
+import EditShipments from "./pages/EditShipments";
+import ContactInventory from "./pages/ContactInventory";
+import InventoryInbox from "./pages/InventoryInbox";
 
 
 
@@ -145,13 +149,22 @@ const App = () => {
       <Route path="/createtransports" element={<CreateTransport></CreateTransport>}/>
       <Route path="/alltransports" element={<AllTransports></AllTransports>}/>
       <Route path="/edittransports/:id" element={<EditTransports></EditTransports>}/>
+      <Route path="/contactinventory" element={<ContactInventory></ContactInventory>}/>
+      <Route path="/inventoryinbox" element={<InventoryInbox></InventoryInbox>}/>
+
+
+
+      <Route path="/createshipments" element={<CreateShipments></CreateShipments>}/>
+      <Route path="/allshipments" element={<AllShipments></AllShipments>}/>
+      <Route path="/editshipments/:id" element={<EditShipments></EditShipments>}/>
+
+
       <Route path="/createproducts" element={<CreateProduct></CreateProduct>}/>
       <Route path="/allproducts" element={<AllProducts></AllProducts>}/>
       <Route path="/editproducts/:id" element={<EditProducts></EditProducts>}/>
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
       <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
-      <Route path="/customerstatues" element={<CustomerStatues></CustomerStatues>}/>
       <Route path="/createfinancial" element={<CreateFinancial></CreateFinancial>}/>
       <Route path="/allfinancial" element={<AllFinancial></AllFinancial>}/>
       <Route path="/editfinancial/:id" element={<EditFinancial></EditFinancial>}/>
