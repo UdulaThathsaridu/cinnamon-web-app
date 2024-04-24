@@ -8,94 +8,174 @@ import ToastContext from '../context/ToastContext';
 
 const Register = () =>{
   const {toast} = useContext(ToastContext);
-  const {registerUser} = useContext(AuthContext)
+  const {registerUser} = useContext(AuthContext);
 
-    const [credentails,setCredentials] = useState({
-        name:"",
-        email:"",
-        address:"",
-        phone:"",
-        password:"",
-        confirmPassword:"",
-    });
+  const [credentials,setCredentials] = useState({
+    name:"",
+    email:"",
+    address:"",
+    phone:"",
+    password:"",
+    confirmPassword:"",
+  });
 
-    const handleInputChange = (event) => {
-        const {name,value} = event.target;
-        
-        setCredentials({ ...credentails, [name]:value });
-    };
+  const [errors, setErrors] = useState({});
 
-    const handleSubmit =(event) =>{
-        event.preventDefault();
-        console.log(credentails);
-        //handle authentication
-        if(!credentails.name ||!credentails.email || !credentails.password || !credentails.confirmPassword){
-          toast.error("Please enter all the required fields!");
-          return;
-        }
-        if(credentails.password !== credentails.confirmPassword){
-          toast.error("Password do not match!");
-          return;
-        }
-        const userData = {...credentails,confirmPassword: undefined};
-        registerUser(userData);
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const re = /^\d+$/;
+    return re.test(phone);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
+  const handleInputChange = (event) => {
+    const {name, value} = event.target;
+    let error = '';
+
+    switch (name) {
+      case 'name':
+        error = value.trim() ? '' : 'Name is required';
+        break;
+      case 'address':
+        error = value.trim() ? '' : 'Address is required';
+        break;
+      case 'email':
+        error = validateEmail(value) ? '' : 'Invalid email address';
+        break;
+      case 'phone':
+        error = validatePhone(value) ? '' : 'Invalid phone number';
+        break;
+      case 'password':
+        error = validatePassword(value) ? '' : 'Password must be at least 8 characters long';
+        break;
+      case 'confirmPassword':
+        error = value === credentials.password ? '' : 'Passwords do not match';
+        break;
+      default:
+        break;
     }
-    return <>
-    
-    <h3>Create your Account</h3>
-    <Form onSubmit={handleSubmit}>
-    <Form.Group className="mb-3" controlId="name">
-        <Form.Label>Name</Form.Label>
-        <Form.Control id="name" name="name" type="text" 
-        placeholder="Enter Name" value={credentails.name} onChange={handleInputChange} required/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control id="email" name="email" type="email" 
-        placeholder="Enter email" value={credentails.email} onChange={handleInputChange} required/>
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicAddress">
-        <Form.Label>Home Address</Form.Label>
-        <Form.Control id="address" name="address" type="text" 
-        placeholder="Enter address" value={credentails.address} onChange={handleInputChange} required/>
-      </Form.Group>
+    setErrors({ ...errors, [name]: error });
+    setCredentials({ ...credentials, [name]: value });
+  };
 
-      <Form.Group className="mb-3" controlId="formBasicPhone">
-        <Form.Label>Phone Number</Form.Label>
-        <Form.Control id="phone" name="phone" type="tel" 
-        placeholder="Enter Phone Number" value={credentails.phone} onChange={handleInputChange} required/>
-      </Form.Group>
+  const handleSubmit =(event) =>{
+    event.preventDefault();
+    const { email, phone, password, confirmPassword } = credentials;
 
+    if (!email || !phone || !password || !confirmPassword || !credentials.name || !credentials.address) {
+      toast.error("Please enter all the required fields!");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control id="passwrod" name="password" type="password" 
-        placeholder="Enter Password" value={credentails.password} onChange={handleInputChange} required/>
-      </Form.Group>
+    const userData = { ...credentials, confirmPassword: undefined };
+    registerUser(userData);
+  };
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Confirm Password</Form.Label>
-        <Form.Control id="confirmPassword" name="confirmPassword" type="password" 
-        placeholder="Enter Password" value={credentails.confirmPassword} onChange={handleInputChange} required/>
-      </Form.Group>
+  return (
+    <>
+      <h3>Create your Account</h3>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            name="name"
+            type="text"
+            placeholder="Enter Name"
+            value={credentials.name}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.name && <Form.Text className="text-danger">{errors.name}</Form.Text>}
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            name="email"
+            type="email"
+            placeholder="Enter email"
+            value={credentials.email}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
 
-      
-      <Button id="btn" name="submit" variant="primary" type="submit">
-        Register
-      </Button>
-      <Form.Group >
-        <p>Already Have an Account?
-        <Link to="/login">
-        Login
+        <Form.Group className="mb-3" controlId="formBasicAddress">
+          <Form.Label>Home Address</Form.Label>
+          <Form.Control
+            name="address"
+            type="text"
+            placeholder="Enter address"
+            value={credentials.address}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.address && <Form.Text className="text-danger">{errors.address}</Form.Text>}
+        </Form.Group>
 
-        </Link></p>
-      </Form.Group>
-    </Form>
+        <Form.Group className="mb-3" controlId="formBasicPhone">
+          <Form.Label>Phone Number</Form.Label>
+          <Form.Control
+            name="phone"
+            type="tel"
+            placeholder="Enter Phone Number"
+            value={credentials.phone}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.phone && <Form.Text className="text-danger">{errors.phone}</Form.Text>}
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            name="password"
+            type="password"
+            placeholder="Enter Password"
+            value={credentials.password}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            name="confirmPassword"
+            type="password"
+            placeholder="Enter Password"
+            value={credentials.confirmPassword}
+            onChange={handleInputChange}
+            required
+          />
+          {errors.confirmPassword && <Form.Text className="text-danger">{errors.confirmPassword}</Form.Text>}
+        </Form.Group>
+
+        <Button id="btn" name="submit" variant="primary" type="submit">
+          Register
+        </Button>
+        <Form.Group>
+          <p>Already Have an Account? <Link to="/login">Login</Link></p>
+        </Form.Group>
+      </Form>
     </>
-}
+  );
+};
 
 export default Register;
