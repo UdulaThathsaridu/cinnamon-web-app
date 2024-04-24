@@ -16,6 +16,9 @@ import CreateSupplier from "./pages/CreateSupplier";
 import SupplierManagerHome from "./pages/SupplierManagerHome";
 import AllSuppliers from "./pages/AllSuppliers";
 import EditSupplier from "./pages/EditSupplier";
+import CreateOrder from "./pages/CreateOrder";
+import AllOrders from "./pages/AllOrders";
+import EditOrder from "./pages/EditOrder";
 import DeliveryManagerHome from "./pages/DeliveryManagerHome";
 import CreateDelivery from "./pages/CreateDelivery";
 import AllDeliveries from "./pages/AllDeliveries";
@@ -40,6 +43,13 @@ import EditPayslip from "./pages/EditPayslip";
 import CreateLeave from "./pages/CreateLeave";
 import AllLeaves from "./pages/AllLeaves";
 import EditLeave from "./pages/EditLeave";
+import ContactTransport from "./pages/ContactTransport";
+import TrasnportInbox from "./pages/TrasnportInbox";
+import ContactPayment from "./pages/ContactPayment";
+import PaymentInbox from "./pages/PaymentInbox";
+import Suppliermail from "./pages/Suppliermails";
+
+
 
 const App = () => {
   return (
@@ -74,6 +84,9 @@ const App = () => {
       <Route path ="/createsuppliers" element={<CreateSupplier></CreateSupplier>}/>
       <Route path="/allsuppliers" element={<AllSuppliers></AllSuppliers>}/>
       <Route path="/editsupplier/:id" element={<EditSupplier></EditSupplier>}/>
+      <Route path ="/createorders" element={<CreateOrder></CreateOrder>}/>
+      <Route path="/allorders" element={<AllOrders></AllOrders>}/>
+      <Route path="/editorder/:id" element={<EditOrder></EditOrder>}/>
       <Route path="/createdeliveries" element={<CreateDelivery></CreateDelivery>}/>
       <Route path="/alldeliveries" element={<AllDeliveries></AllDeliveries>}/>
       <Route path="/editdeliveries/:id" element={<EditDeliveries></EditDeliveries>}/>
@@ -86,6 +99,12 @@ const App = () => {
       <Route path="/createpayment" element={<CreatePayment></CreatePayment>}/>
       <Route path="/allpayment" element={<AllPayments></AllPayments>}/>
       <Route path="/editpayments/:id" element={<EditPayment></EditPayment>}/>
+      <Route path="/contactTransport" element={<ContactTransport></ContactTransport>}/>
+      <Route path="/contactPayment" element={<ContactPayment></ContactPayment>}/>
+      <Route path="/transportInbox" element={<TrasnportInbox></TrasnportInbox>}/>
+      <Route path="/PaymentInbox" element={<PaymentInbox></PaymentInbox>}/>
+      <Route path="/Suppliermails" element={<Suppliermail></Suppliermail>}/>
+      
 
        
 

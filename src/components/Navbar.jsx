@@ -107,9 +107,14 @@ const Navbar = ({title = "Mandri Life"}) => {
           </>}
           {user && user.userRole === "SUPPLIER_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/createsuppliers" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createsuppliers" style={{ marginLeft: '10px' }}>Create Suppliers</Nav.Link> 
             <Nav.Link  as = {Link} to="/allsuppliers" style={{ marginLeft: '10px' }}>All Suppliers</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createorders" style={{ marginLeft: '10px' }}>Create Orders</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allorders" style={{ marginLeft: '10px' }}>All Orders</Nav.Link> 
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            <Nav.Link  as = {Link} to="/ContactTransport" style={{ marginLeft: '10px' }}>Inventory Manager Inbox</Nav.Link>
+            <Nav.Link  as = {Link} to="/ContactPayment" style={{ marginLeft: '10px' }}>Payment Manager Inbox</Nav.Link>
+            <Nav.Link  as = {Link} to="/Suppliermails" style={{ marginLeft: '10px' }}>Supplier Inbox</Nav.Link>
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
@@ -135,7 +140,8 @@ const Navbar = ({title = "Mandri Life"}) => {
             <Form className="d-flex ms-auto my-2">
             <Nav.Link  as = {Link} to="/createtransports" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
             <Nav.Link  as = {Link} to="/alltransports" style={{ marginLeft: '10px' }}>All Transports</Nav.Link>
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link>  
+            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            <Nav.Link  as = {Link} to="/transportInbox" style={{ marginLeft: '10px' }}>Inbox</Nav.Link> 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
@@ -162,6 +168,7 @@ const Navbar = ({title = "Mandri Life"}) => {
            
             <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px' }}>All Payment</Nav.Link> 
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            <Nav.Link  as = {Link} to="/PaymentInbox" style={{ marginLeft: '10px' }}>Payment Inbox</Nav.Link> 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
