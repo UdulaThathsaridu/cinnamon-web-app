@@ -80,6 +80,7 @@ import AllShipments from "./pages/AllShipments";
 import EditShipments from "./pages/EditShipments";
 import ContactInventory from "./pages/ContactInventory";
 import InventoryInbox from "./pages/InventoryInbox";
+import TransportInbox from "./pages/TransportInbox";
 
 
 
@@ -157,7 +158,7 @@ const App = () => {
       <Route path="/createshipments" element={<CreateShipments></CreateShipments>}/>
       <Route path="/allshipments" element={<AllShipments></AllShipments>}/>
       <Route path="/editshipments/:id" element={<EditShipments></EditShipments>}/>
-
+      <Route path="/transportinbox" element={<TransportInbox></TransportInbox>}/>
 
       <Route path="/createproducts" element={<CreateProduct></CreateProduct>}/>
       <Route path="/allproducts" element={<AllProducts></AllProducts>}/>

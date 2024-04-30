@@ -19,6 +19,8 @@ const AllTransports = () =>{
     const [vehicles,setVehicles] = useState([]);
     const [searchInput,setSearchInput] = useState("");
     const contentRef = useRef(null);
+
+    
   
 
     useEffect(() => {
