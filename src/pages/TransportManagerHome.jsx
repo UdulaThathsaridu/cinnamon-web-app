@@ -6,13 +6,6 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-// Import images for the functionalities
-import createTransportImage from '../assets/delivery-truck-icon.jpg';
-import allTransportsImage from '../assets/warehousing-icon.jpg';
-import createShipmentImage from '../assets/forklift-icon.jpg';
-import allShipmentsImage from '../assets/cargo-container-icon.jpg';
-import contactInventory from '../assets/gmail-icon.jpg';
-import addLeaveImage from '../assets/add.png';
 
 const TransportManagerHome = () => {
     const navigate = useNavigate();
@@ -78,9 +71,7 @@ const TransportManagerHome = () => {
                     <p className="text-center mt-2">Add Leave</p>
                 </Col>
             </Row>
-           
         </>
-        
     );
 }
 
