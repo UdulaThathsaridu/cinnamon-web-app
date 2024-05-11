@@ -159,6 +159,7 @@ const TransportManagerHome = () => {
                 <p><strong> Today Arrivals :</strong></p>
                 <p style={{color: 'red'}}>{shipmentsCount}</p> {/* Display count of shipments with arrival date one day later than the current day */}
             </div>
+        
         </Card>
     </Col>
 </Row>

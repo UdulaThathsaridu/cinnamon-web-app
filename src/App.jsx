@@ -81,7 +81,7 @@ import EditShipments from "./pages/EditShipments";
 import ContactInventory from "./pages/ContactInventory";
 import InventoryInbox from "./pages/InventoryInbox";
 import TransportInbox from "./pages/TransportInbox";
-
+import LocationTest from "./pages/LocationTest";
 
 
 
@@ -152,6 +152,7 @@ const App = () => {
       <Route path="/edittransports/:id" element={<EditTransports></EditTransports>}/>
       <Route path="/contactinventory" element={<ContactInventory></ContactInventory>}/>
       <Route path="/inventoryinbox" element={<InventoryInbox></InventoryInbox>}/>
+      <Route path="/LocationTest" element={<LocationTest></LocationTest>}/>
 
 
 
