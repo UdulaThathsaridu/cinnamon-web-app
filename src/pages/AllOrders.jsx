@@ -122,7 +122,7 @@ const AllOrders = () => {
                                         <tr key={order._id} onClick={() => { setShowModal(true); setSelectedOrder(order); }}>
                                             <td>{order._id}</td>
                                             {/* Calculate total price */}
-                                            <td>${order.cart.reduce((total, item) => total + item.price, 0)}</td>
+                                            <td>RS.{order.cart.reduce((total, item) => total + item.price, 0)}</td>
                                             <td>{new Date(order.createdAt).toLocaleString()}</td>
                                         </tr>
                                     ))}
@@ -140,7 +140,7 @@ const AllOrders = () => {
                     {selectedOrder && (
                         <>
                             <p><strong>Order ID:</strong> {selectedOrder._id}</p>
-                            <p><strong>Total Price:</strong> ${selectedOrder.cart.reduce((total, item) => total + item.price, 0)}</p>
+                            <p><strong>Total Price:</strong> RS.{selectedOrder.cart.reduce((total, item) => total + item.price, 0)}</p>
                             <p><strong>Order Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
                             <h3>Products:</h3>
                             <ul>
@@ -148,7 +148,7 @@ const AllOrders = () => {
                                     <li key={index}>
                                         <p><strong>Product Name:</strong> {item.name}</p>
                                         <p><strong>Quantity:</strong> {item.quantity}</p>
-                                        <p><strong>Price per unit:</strong> ${item.price}</p>
+                                        <p><strong>Price per unit:</strong> RS.{item.price}</p>
                                     </li>
                                 ))}
                             </ul>

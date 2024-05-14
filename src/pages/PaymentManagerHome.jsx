@@ -42,12 +42,12 @@ const PaymentManagerHome = () =>{
             top: 0,
             left: 0,
             width: '100%',
-            height: '200%', // Adjust the height as needed
-            backgroundColor: 'rgba(123, 63, 0, 0.5)', // Semi-transparent cinnamon brown
+            height: '100%', // Adjust the height as needed
+            backgroundColor: 'white', // Semi-transparent cinnamon brown
             zIndex: -1,
         }}>
         
-        <div style={{ textAlign: 'center', fontSize: '50px',fontWeight: 'bold',  marginTop: '80px',color: 'black' }}>
+        <div style={{ textAlign: 'center', fontSize: '50px',fontWeight: 'bold',  marginTop: '105px',color: 'black' }}>
              
             Welcome {user ? user.name : null}...!
             </div>
@@ -86,7 +86,7 @@ const PaymentManagerHome = () =>{
                 </div>
                 <div style={{ textAlign: 'left', marginRight: '500px' }}>
                     <button onClick={ handleAddLeaveClick} style={{ border: '3px solid black', background: '#7B3F00', margin: '20px', padding: '5px', cursor: 'pointer' }}>
-                        <img src="src/assets/6.png" alt="Saved Payment Details" style={{ width: '150px', height: '150px' }} />
+                        <img src="src/assets/6001299.png" alt="Saved Payment Details" style={{ width: '150px', height: '150px' }} />
                     </button>
                     <button style={{ 
     cursor: 'pointer', 
@@ -99,7 +99,7 @@ const PaymentManagerHome = () =>{
 }} onClick={handleAddLeaveClick}> Add Leave</button>
                 </div>
            
-                <div style={{ textAlign: 'right', marginRight: '102px' }}>
+                <div style={{ textAlign: 'right', marginRight: '102px' ,marginTop: '-630px'}}>
                     <button onClick={handleViewAllFinancialReportsClick} style={{ border: '3px solid black', background: '#7B3F00', margin: '20px', padding: '5px', cursor: 'pointer' }}>
                         <img src="src/assets/7.png" alt="Saved Payment Details" style={{ width: '150px', height: '150px' }} />
                     </button>

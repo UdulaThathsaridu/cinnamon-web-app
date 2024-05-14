@@ -1,56 +1,43 @@
-import { useContext, useState } from "react";
-import React from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import * as Yup from "yup";
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import ToastContext from "../context/ToastContext";
 
 const CreateProduct = () => {
     const { toast } = useContext(ToastContext);
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
 
-    const [productDetails, setProductDetails] = useState({
+    const initialValues = {
         name: "",
         productId: "",
-        quantity: "",
+        quantity: 0,
         price: "",
         description: "",
         image: null
+    };
+
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required("Product Name is required"),
+        productId: Yup.string().required("Product ID is required"),
+        quantity: Yup.number().required("Quantity is required").min(0, "Quantity cannot be negative"),
+        price: Yup.number().required("Price is required").min(0, "Price cannot be negative"),
+        description: Yup.string().required("Description is required"),
+        image: Yup.mixed().required("Image is required"),
     });
 
-    const [validated, setValidated] = useState(false);
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setProductDetails({ ...productDetails, [name]: value });
-    };
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        const fileSize = file.size / 1024 / 1024; // in MB
-        if (fileSize > 25) {
-            toast.error("Image size should be less than 25MB");
-            return;
-        }
-        setProductDetails({ ...productDetails, image: file });
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        }
-        setValidated(true);
-
+    const handleSubmit = async (values, { setSubmitting }) => {
         const formData = new FormData();
-        formData.append('name', productDetails.name);
-        formData.append('productId', productDetails.productId);
-        formData.append('quantity', productDetails.quantity);
-        formData.append('price', productDetails.price);
-        formData.append('description', productDetails.description);
-        formData.append('image', productDetails.image);
+        formData.append('name', values.name);
+        formData.append('productId', values.productId);
+        formData.append('quantity', values.quantity);
+        formData.append('price', values.price);
+        formData.append('description', values.description);
+        formData.append('image', values.image);
 
         try {
             const res = await fetch('http://localhost:4000/api/products', {
@@ -63,53 +50,66 @@ const CreateProduct = () => {
 
             const result = await res.json();
             if (!result.error) {
-                toast.success(`Created [${productDetails.name}]`);
-                setProductDetails({ name: "", productId: "", quantity: "", price: "", description: "", image: null });
+                toast.success(`Created [${values.name}]`);
+                // Reset form values
+                setSubmitting(false);
             } else {
                 toast.error(result.error);
+                setSubmitting(false);
             }
         } catch (err) {
             console.error(err);
             toast.error("Failed to create product");
+            setSubmitting(false);
         }
     };
 
     return (
         <>
             <h2>Add Products</h2>
-            <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
-                <Form.Group className="mb-3">
-                    <Form.Label>Product Name</Form.Label>
-                    <Form.Control name="name" type="text" placeholder="Enter Product Name" value={productDetails.name} onChange={handleInputChange} required />
-                    <Form.Control.Feedback type="invalid">Please provide a product name.</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="productId">
-                    <Form.Label>Product ID</Form.Label>
-                    <Form.Control name="productId" type="text" placeholder="Enter Product ID" value={productDetails.productId} onChange={handleInputChange} required />
-                    <Form.Control.Feedback type="invalid">Please provide a product ID.</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Quantity</Form.Label>
-                    <Form.Control name="quantity" type="number" placeholder="Quantity" value={productDetails.quantity} onChange={handleInputChange} required />
-                    <Form.Control.Feedback type="invalid">Please provide a quantity.</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="price">
-                    <Form.Label>Price</Form.Label>
-                    <Form.Control name="price" type="text" pattern="[0-9]*" placeholder="Enter Price" value={productDetails.price} onChange={handleInputChange} required />
-                    <Form.Control.Feedback type="invalid">Please provide a valid price.</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="description">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control name="description" as="textarea" rows={5} placeholder="Enter description" value={productDetails.description} onChange={handleInputChange} required />
-                    <Form.Control.Feedback type="invalid">Please provide a description.</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="image">
-                    <Form.Label>Product Image</Form.Label>
-                    <Form.Control name="image" type="file" accept="image/*" onChange={handleImageChange} required />
-                    <Form.Control.Feedback type="invalid">Please provide an image.</Form.Control.Feedback>
-                </Form.Group>
-                <Button variant="primary" type="submit">Add Product</Button>
-            </Form>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+                validateOnChange={true}
+                validateOnBlur={true}
+            >
+                {({ isSubmitting }) => (
+                    <Form>
+                        <div className="mb-3">
+                            <label htmlFor="name">Product Name</label>
+                            <Field name="name" type="text" className="form-control" />
+                            <ErrorMessage name="name" component="div" className="text-danger" />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="productId">Product ID</label>
+                            <Field name="productId" type="text" className="form-control" />
+                            <ErrorMessage name="productId" component="div" className="text-danger" />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="quantity">Quantity</label>
+                            <Field name="quantity" type="number" className="form-control" />
+                            <ErrorMessage name="quantity" component="div" className="text-danger" />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="price">Price</label>
+                            <Field name="price" type="number" className="form-control" />
+                            <ErrorMessage name="price" component="div" className="text-danger" />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="description">Description</label>
+                            <Field name="description" as="textarea" rows={5} className="form-control" />
+                            <ErrorMessage name="description" component="div" className="text-danger" />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="image">Product Image</label>
+                            <Field name="image" type="file" accept="image/*" className="form-control" />
+                            <ErrorMessage name="image" component="div" className="text-danger" />
+                        </div>
+                        <Button variant="primary" type="submit" disabled={isSubmitting}>Add Product</Button>
+                    </Form>
+                )}
+            </Formik>
         </>
     );
 };

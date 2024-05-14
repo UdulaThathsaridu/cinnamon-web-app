@@ -2,7 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+
 import { Row, Col, Card } from 'react-bootstrap';
+
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+// Import images for the functionalities
+import createTransportImage from '../assets/delivery-truck-icon.png';
+import allTransportsImage from '../assets/warehousing-icon.png';
+import createShipmentImage from '../assets/forklift-icon.png';
+import allShipmentsImage from '../assets/cargo-container-icon.png';
+import contactInventory from '../assets/gmail-icon.png';
+import addLeaveImage from '../assets/add.png';
+
 
 const TransportManagerHome = () => {
     const navigate = useNavigate();
