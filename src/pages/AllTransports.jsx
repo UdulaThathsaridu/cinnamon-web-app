@@ -149,8 +149,11 @@ const AllTransports = () =>{
 
     return (<>This is the All Vehicles page
     <br></br>
-    <a href="/alltransports" className="btn btn-danger my-2">Reload Vehicles</a>
+    <div className="mb-3">
+    <Link to="/createtransports" className="btn btn-primary me-2">Create Transport</Link>
+    <a href="/alltransports" className="btn btn-danger">Reload Vehicles</a>
     <Button onClick={exportPDF} variant="success" className="my-2 mx-2">Export to PDF</Button>
+    </div>
     {loading ? <Spinner splash="Loading Vehicles..." /> : (
         (vehicles.length == 0 ? <h3>No Vehicles Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
@@ -169,7 +172,7 @@ const AllTransports = () =>{
          </form>
 
          <div ref={contentRef}>
-        <p>Total No of Vehicles:{vehicles.length}</p>
+        <p>Total No of Vehicles : {vehicles.length}</p>
         <Table striped bordered hover variant="dark">
         <thead>
           <tr>
