@@ -135,6 +135,18 @@ const CreateShipments = () => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 isInvalid={touched.route && !!errors.route}
+                                
+                                //Disable
+                                onKeyDown={(e) => {
+                                    const key = e.key;
+                                    // Check if the pressed key is a number or not a space
+                                    if (!isNaN(key) && key !== " ") {
+                                        // Prevent input of numeric characters except space
+                                        e.preventDefault();
+                                    }
+                                }}
+                                
+                                
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.route}
