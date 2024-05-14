@@ -6,8 +6,6 @@ import Button from 'react-bootstrap/Button';
 import { Row, Col, Card } from 'react-bootstrap';
 
 
-// Import images for the functionalities
-
 
 const TransportManagerHome = () => {
     const navigate = useNavigate();
