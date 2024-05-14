@@ -173,7 +173,7 @@ const AllTransports = () =>{
 
          <div ref={contentRef}>
         <p>Total No of Vehicles : {vehicles.length}</p>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
         <thead>
           <tr>
             <th>Vehicle</th>
@@ -185,21 +185,22 @@ const AllTransports = () =>{
           </tr>
         </thead>
         <tbody>
-          {loading === false && vehicles.map((vehicle) =>(
-               <tr key={vehicle._id} onClick={()=> {
-                setSelectedVehicle({});
-                setSelectedVehicle(vehicle);
-                setShowModal(true)}}>
-               <td>{vehicle.vehicle}</td>
-               <td>{vehicle.vnumber}</td>
-               <td>{vehicle.model}</td>
-               <td>{vehicle.status}</td>
-               <td>{vehicle.last_inspection}</td>
-               <td>{vehicle.next_inspection}</td>
-             </tr>
-  
-          ))}
-        </tbody>
+  {loading === false && vehicles.map((vehicle) => (
+    <tr key={vehicle._id} onClick={() => {
+      setSelectedVehicle(vehicle);
+      setShowModal(true);
+    }}>
+      <td>{vehicle.vehicle}</td>
+      <td>{vehicle.vnumber}</td>
+      <td>{vehicle.model}</td>
+      <td>{vehicle.status}</td>
+      {/* Format dates if needed */}
+      <td>{new Date(vehicle.last_inspection).toLocaleDateString()}</td>
+      <td>{new Date(vehicle.next_inspection).toLocaleDateString()}</td>
+    </tr>
+  ))}
+</tbody>
+
       </Table>
       </div>
        </>)

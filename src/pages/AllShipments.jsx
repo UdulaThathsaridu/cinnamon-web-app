@@ -170,7 +170,7 @@ const AllShipments = () =>{
 
          <div ref={contentRef}>
         <p>Total No of Shipments : {shipments.length}</p>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
         <thead>
           <tr>
             <th>Route</th>
@@ -185,24 +185,25 @@ const AllShipments = () =>{
           </tr>
         </thead>
         <tbody>
-          {loading === false && shipments.map((shipment) =>(
-               <tr key={shipment._id} onClick={()=> {
-                setSelectedShipment({});
-                setSelectedShipment(shipment);
-                setShowModal(true)}}>
-               <td>{shipment.route}</td>
-               <td>{shipment.supplier}</td>
-               <td>{shipment.date}</td>
-               <td>{shipment.vehicle}</td>
-               <td>{shipment.max_distance}</td>
-               <td>{shipment.speed_limit}</td>
-               <td>{shipment.arrival}</td>
-               <td>{shipment.driver}</td>
-               <td>{shipment.note}</td>
-             </tr>
-  
-          ))}
-        </tbody>
+  {loading === false && shipments.map((shipment) => (
+    <tr key={shipment._id} onClick={() => {
+      setSelectedShipment(shipment);
+      setShowModal(true);
+    }}>
+      <td>{shipment.route}</td>
+      <td>{shipment.supplier}</td>
+      {/* Format date if needed */}
+      <td>{new Date(shipment.date).toLocaleDateString()}</td>
+      <td>{shipment.vehicle}</td>
+      <td>{shipment.max_distance}</td>
+      <td>{shipment.speed_limit}</td>
+      <td>{new Date(shipment.arrival).toLocaleDateString()}</td>
+      <td>{shipment.driver}</td>
+      <td>{shipment.note}</td>
+    </tr>
+  ))}
+</tbody>
+
       </Table> 
       </div>
       </>)
