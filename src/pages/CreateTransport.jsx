@@ -6,12 +6,13 @@ import { Formik } from 'formik';
 const CreateTransport = () => {
     const [vehicleDetails, setVehicleDetails] = useState({
         vehicle: "",
+        vnumber: "",
         model: "",
         status: "",
         last_inspection: "",
         next_inspection: "",
     });
-
+        
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const res = await fetch('http://localhost:4000/api/vehicles', {
@@ -52,6 +53,13 @@ const CreateTransport = () => {
                     } else if (!/^[a-zA-Z]+$/.test(values.vehicle.trim())) {
                       errors.vehicle = "Vehicle name can only contain letters";
                   }
+
+                  if (!values.vnumber.trim()) {
+                    errors.vnumber = "Vehicle number is required";
+                } else if (!/^[A-Z][A-Za-z0-9]{8}\d$/.test(values.vnumber.trim()) || values.vnumber.trim().length !== 10) {
+                    errors.vnumber = "Invalid vehicle number. It should start with a capital letter, followed by 8 alphanumeric characters, and end with a digit. It must be 10 characters long.";
+                }
+                
 
                     if (!values.model.trim()) {
                         errors.model = "Vehicle model is required";
@@ -118,6 +126,21 @@ const CreateTransport = () => {
         {errors.vehicle}
     </Form.Control.Feedback>
 </Form.Group>
+<Form.Group className="mb-3">
+                            <Form.Label>Vehicle Number</Form.Label>
+                            <Form.Control
+                                name="vnumber"
+                                type="text"
+                                placeholder="Enter Vehicle Number"
+                                value={values.vnumber}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.vnumber && !!errors.vnumber}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.vnumber}
+                            </Form.Control.Feedback>
+                        </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Vehicle Model</Form.Label>

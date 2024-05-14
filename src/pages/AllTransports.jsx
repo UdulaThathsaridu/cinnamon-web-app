@@ -174,6 +174,7 @@ const AllTransports = () =>{
         <thead>
           <tr>
             <th>Vehicle</th>
+            <th>Vehicle Number</th>
             <th>Model</th>
             <th>Status</th>
             <th>Last Inspection</th>
@@ -187,6 +188,7 @@ const AllTransports = () =>{
                 setSelectedVehicle(vehicle);
                 setShowModal(true)}}>
                <td>{vehicle.vehicle}</td>
+               <td>{vehicle.vnumber}</td>
                <td>{vehicle.model}</td>
                <td>{vehicle.status}</td>
                <td>{vehicle.last_inspection}</td>
@@ -215,6 +217,7 @@ const AllTransports = () =>{
          { selectedVehicle &&(
             <>
             <p><strong>Vehicle:</strong> {selectedVehicle.vehicle}</p>
+          <p><strong>Vehicle Number</strong> {selectedVehicle.vnumber}</p>
           <p><strong>Model:</strong>{selectedVehicle.model}</p>
           <p><strong>Status:</strong> {selectedVehicle.status}</p>
           <p><strong>Last Inspection:</strong>{selectedVehicle.last_inspection}</p>
