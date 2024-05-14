@@ -53,6 +53,8 @@ const CreateShipments = () => {
 
                     if (!values.route.trim()) {
                         errors.route = "Route is required";
+                    } else if (!/^[\w\s]+ to [\w\s]+$/i.test(values.route.trim())) {
+                        errors.route = "Route should consist of two words separated by 'to'";
                     }
 
                     if (!values.supplier.trim()) {
@@ -61,6 +63,16 @@ const CreateShipments = () => {
 
                     if (!values.date.trim()) {
                         errors.date = "Date is required";
+                    } else {
+                        const today = new Date();
+                        const selectedDate = new Date(values.date);
+                        if (
+                            selectedDate.getDate() !== today.getDate() ||
+                            selectedDate.getMonth() !== today.getMonth() ||
+                            selectedDate.getFullYear() !== today.getFullYear()
+                        ) {
+                            errors.date = "Date should be today's date";
+                        }
                     }
 
                     if (!values.vehicle.trim()) {
@@ -69,14 +81,26 @@ const CreateShipments = () => {
 
                     if (!values.max_distance.trim()) {
                         errors.max_distance = "Max distance is required";
+                    } else if (!/^\d+$/.test(values.max_distance.trim())) {
+                        errors.max_distance = "Max distance must be a number";
                     }
 
                     if (!values.speed_limit.trim()) {
                         errors.speed_limit = "Speed limit is required";
+                    } else if (!/^\d+$/.test(values.speed_limit.trim())) {
+                        errors.speed_limit = "Speed limit must contain only numbers";
+                    } else if (parseInt(values.speed_limit) >= 100) {
+                        errors.speed_limit = "Speed limit must be less than 100";
                     }
 
-                    if (!values.arrival.trim()) {
-                        errors.arrival = "Arrival is required";
+                       if (!values.arrival.trim()) {
+                        errors.arrival = "Arrival Date is required";
+                    } else {
+                        const today = new Date();
+                        const arrivalDate = new Date(values.arrival);
+                        if (arrivalDate <= today) {
+                            errors.arrival = "Arrival Date should be after today";
+                        }
                     }
 
                     if (!values.driver.trim()) {
@@ -106,7 +130,7 @@ const CreateShipments = () => {
                             <Form.Control
                                 name="route"
                                 type="text"
-                                placeholder="Enter Route"
+                                placeholder="--- to ---"
                                 value={values.route}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -146,7 +170,7 @@ const CreateShipments = () => {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Vehicle</Form.Label>
+                            <Form.Label>Vehicles (Car,Van,Truck,Lorry)</Form.Label>
                             <Form.Control
                                 name="vehicle"
                                 type="text"
@@ -161,7 +185,7 @@ const CreateShipments = () => {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Max Distance</Form.Label>
+                            <Form.Label>Max Distance (km)</Form.Label>
                             <Form.Control
                                 name="max_distance"
                                 type="text"
@@ -176,7 +200,7 @@ const CreateShipments = () => {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Speed Limit</Form.Label>
+                            <Form.Label>Speed Limit (km/h)</Form.Label>
                             <Form.Control
                                 name="speed_limit"
                                 type="text"

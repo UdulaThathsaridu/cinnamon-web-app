@@ -6,12 +6,13 @@ import { Formik } from 'formik';
 const CreateTransport = () => {
     const [vehicleDetails, setVehicleDetails] = useState({
         vehicle: "",
+        vnumber: "",
         model: "",
         status: "",
         last_inspection: "",
         next_inspection: "",
     });
-
+        
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const res = await fetch('http://localhost:4000/api/vehicles', {
@@ -53,6 +54,13 @@ const CreateTransport = () => {
                       errors.vehicle = "Vehicle name can only contain letters";
                   }
 
+                  if (!values.vnumber.trim()) {
+                    errors.vnumber = "Vehicle number is required";
+                } else if (!/^[A-Z][A-Za-z0-9]{8}\d$/.test(values.vnumber.trim()) || values.vnumber.trim().length !== 10) {
+                    errors.vnumber = "Invalid vehicle number. It should start with a capital letter, followed by 8 alphanumeric characters, and end with a digit. It must be 10 characters long.";
+                }
+                
+
                     if (!values.model.trim()) {
                         errors.model = "Vehicle model is required";
                     } else if (!/^[a-zA-Z]+$/.test(values.model.trim())) {
@@ -65,14 +73,25 @@ const CreateTransport = () => {
                       errors.status = "Vehicle status can only contain letters";
                   }
 
-                    if (!values.last_inspection.trim()) {
-                        errors.last_inspection = "Last inspection date is required";
+                  if (!values.last_inspection.trim()) {
+                    errors.last_inspection = "Last inspection date is required";
+                } else {
+                    const today = new Date();
+                    const lastInspectionDate = new Date(values.last_inspection);
+                    if (lastInspectionDate > today) {
+                        errors.last_inspection = "Last inspection date cannot be in the future";
                     }
+                }
 
-                    if (!values.next_inspection.trim()) {
-                        errors.next_inspection = "Next inspection date is required";
+                if (!values.next_inspection.trim()) {
+                    errors.next_inspection = "Next inspection date is required";
+                } else {
+                    const today = new Date();
+                    const nextInspectionDate = new Date(values.next_inspection);
+                    if (nextInspectionDate <= today) {
+                        errors.next_inspection = "Next inspection date must be after today";
                     }
-
+                }
                     return errors;
                 }}
                 onSubmit={handleSubmit}
@@ -87,21 +106,42 @@ const CreateTransport = () => {
                     isSubmitting
                 }) => (
                     <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Vehicle Name</Form.Label>
+                 <Form.Group className="mb-3">
+    <Form.Label>Vehicle Type</Form.Label>
+    <Form.Control
+        as="select" // Use select input
+        name="vehicle"
+        value={values.vehicle} // Corrected value prop
+        onChange={handleChange}
+        onBlur={handleBlur}
+        isInvalid={touched.vehicle && !!errors.vehicle}
+    >
+        <option value="">- Select Vehicle -</option>
+        <option value="van">Van</option>
+        <option value="car">Car</option>
+        <option value="truck">Truck</option>
+        <option value="lorry">Lorry</option>
+    </Form.Control>
+    <Form.Control.Feedback type="invalid">
+        {errors.vehicle}
+    </Form.Control.Feedback>
+</Form.Group>
+<Form.Group className="mb-3">
+                            <Form.Label>Vehicle Number</Form.Label>
                             <Form.Control
-                                name="vehicle"
+                                name="vnumber"
                                 type="text"
-                                placeholder="Enter Vehicle Name"
-                                value={values.vehicle}
+                                placeholder="Enter Vehicle Number"
+                                value={values.vnumber}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                isInvalid={touched.vehicle && !!errors.vehicle}
+                                isInvalid={touched.vnumber && !!errors.vnumber}
                             />
                             <Form.Control.Feedback type="invalid">
-                                {errors.vehicle}
+                                {errors.vnumber}
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group className="mb-3">
                             <Form.Label>Vehicle Model</Form.Label>
                             <Form.Control
@@ -120,14 +160,17 @@ const CreateTransport = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Vehicle Status</Form.Label>
                             <Form.Control
+                                as="select" // Use select input
                                 name="status"
-                                type="text"
-                                placeholder="Enter Vehicle Status"
                                 value={values.status}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 isInvalid={touched.status && !!errors.status}
-                            />
+                            >
+                                <option value="">-Select Status-</option>
+                                <option value="good">Good</option>
+                                <option value="bad">Bad</option>
+                            </Form.Control>
                             <Form.Control.Feedback type="invalid">
                                 {errors.status}
                             </Form.Control.Feedback>

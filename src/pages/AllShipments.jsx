@@ -145,8 +145,12 @@ const AllShipments = () =>{
 
     return (<>This is the All Shipment page
     <br></br>
+    <div className="mb-3">
+    <Link to="/createshipments" className="btn btn-primary me-2">Create Shipments</Link>
     <a href="/allshipments" className="btn btn-danger my-2">Reload Shipments</a>
     <Button onClick={exportPDF} variant="success" className="my-2 mx-2">Export to PDF</Button>
+</div>
+
     {loading ? <Spinner splash="Loading Shipments..." /> : (
         (shipments.length == 0 ? <h3>No Shipments Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
@@ -165,7 +169,7 @@ const AllShipments = () =>{
          </form>
 
          <div ref={contentRef}>
-        <p>Total No of Shipments:{shipments.length}</p>
+        <p>Total No of Shipments : {shipments.length}</p>
         <Table striped bordered hover variant="dark">
         <thead>
           <tr>
