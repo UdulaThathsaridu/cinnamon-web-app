@@ -2,7 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+
 import { Row, Col, Card } from 'react-bootstrap';
+
+
+// Import images for the functionalities
+
 
 const TransportManagerHome = () => {
     const navigate = useNavigate();
