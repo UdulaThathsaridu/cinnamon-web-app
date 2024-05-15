@@ -114,11 +114,13 @@ const Navbar = ({title = "Mandri Life"}) => {
 
           {user && user.userRole === "SUPPLIER_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/ContactTransport" style={{ marginLeft: '10px' }}>Transport Manager Inbox |</Nav.Link>
-            <Nav.Link  as = {Link} to="/ContactPayment" style={{ marginLeft: '10px' }}>Payment Manager Inbox |</Nav.Link>
-            <Nav.Link  as = {Link} to="/Suppliermails" style={{ marginLeft: '10px' }}>Supplier Inbox |</Nav.Link>
-            <Nav.Link  as = {Link} to="/supplierinbox" style={{ marginLeft: '10px' }}>Supplier Manager Inbox |</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link>
+            <Nav.Link  as = {Link} to="/createsuppliers" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
+            <Nav.Link  as = {Link} to="/allsuppliers" style={{ marginLeft: '10px' }}>All Suppliers</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createorders" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
+            <Nav.Link  as = {Link} to="/suporders" style={{ marginLeft: '10px' }}>All Suppliers</Nav.Link> 
+            <Nav.Link  as = {Link} to="/supplierinbox" style={{ marginLeft: '10px' }}>Inbox</Nav.Link> 
+            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
@@ -143,12 +145,16 @@ const Navbar = ({title = "Mandri Life"}) => {
           </>}
           {user && user.userRole === "TRANSPORT_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/createtransports" style={{ marginLeft: '10px' }}>Create Transport</Nav.Link> 
-            <Nav.Link  as = {Link} to="/alltransports" style={{ marginLeft: '10px' }}>All Transports</Nav.Link>
-            <Nav.Link  as = {Link} to="/createshipments" style={{ marginLeft: '10px' }}>Create Shipments</Nav.Link> 
-            <Nav.Link  as = {Link} to="/allshipments" style={{ marginLeft: '10px' }}>All Shipments</Nav.Link>
-            <Nav.Link  as = {Link} to="/contactinventory" style={{ marginLeft: '10px' }}>Contact Inventory</Nav.Link>
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
+            {/* <Nav.Link  as = {Link} to="/createtransports" style={{ marginLeft: '10px' }}>Create Transport |</Nav.Link> */}
+              <Nav.Link  as = {Link} to="/alltransports" style={{ marginLeft: '10px' }}>All Transports |</Nav.Link>
+              {/* <Nav.Link  as = {Link} to="/createshipments" style={{ marginLeft: '10px' }}>Create Shipments |</Nav.Link> */}
+              <Nav.Link  as = {Link} to="/allshipments" style={{ marginLeft: '10px' }}>All Shipments |</Nav.Link>
+              <Nav.Link  as = {Link} to="/contactinventory" style={{ marginLeft: '10px' }}>Contact Inventory |</Nav.Link>
+              <Nav.Link as = {Link} to="/transportinbox" style={{ marginLeft: '10px' }}>Transport Inbox |</Nav.Link>
+              <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave |</Nav.Link> 
+              <Nav.Link as = {Link} to="/locationtest" style={{marginLeft: '10px'}}>Location |</Nav.Link>
+
+
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();
