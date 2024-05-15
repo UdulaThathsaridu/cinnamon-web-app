@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
@@ -6,17 +6,17 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
 
-const Register = () =>{
-  const {toast} = useContext(ToastContext);
-  const {registerUser} = useContext(AuthContext);
+const Register = () => {
+  const { toast } = useContext(ToastContext);
+  const { registerUser } = useContext(AuthContext);
 
-  const [credentials,setCredentials] = useState({
-    name:"",
-    email:"",
-    address:"",
-    phone:"",
-    password:"",
-    confirmPassword:"",
+  const [credentials, setCredentials] = useState({
+    name: "",
+    email: "",
+    address: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -36,7 +36,7 @@ const Register = () =>{
   };
 
   const handleInputChange = (event) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     let error = '';
 
     switch (name) {
@@ -66,7 +66,7 @@ const Register = () =>{
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const handleSubmit =(event) =>{
+  const handleSubmit = (event) => {
     event.preventDefault();
     const { email, phone, password, confirmPassword } = credentials;
 
@@ -83,6 +83,21 @@ const Register = () =>{
     registerUser(userData);
   };
 
+  const handleKeyPress1 = (event) => {
+    const regex = /^[a-zA-Z\s]*$/;
+    if (!regex.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+
+  const handleKeyPress = (event) => {
+    const regex = /^\d+$/;
+    if (!regex.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
       <h3>Create your Account</h3>
@@ -93,6 +108,7 @@ const Register = () =>{
             name="name"
             type="text"
             placeholder="Enter Name"
+            onKeyPress={handleKeyPress1}
             value={credentials.name}
             onChange={handleInputChange}
             required
@@ -134,6 +150,7 @@ const Register = () =>{
             name="phone"
             type="tel"
             placeholder="Enter Phone Number"
+            onKeyPress={handleKeyPress}
             value={credentials.phone}
             onChange={handleInputChange}
             required
