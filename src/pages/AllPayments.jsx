@@ -101,7 +101,9 @@ const AllPayments = () =>{
     };
   
 
-    return (<>This is the All Payments page
+    return (<>
+    <div style={{ backgroundColor: 'black', color: 'white',  padding: '20px' }}>
+      This is the All Payments page
     <br></br>
     <a href="/allpayment" className="btn btn-danger my-2">Reload Payment</a>
     {loading ? <Spinner splash="Loading Payment..." /> : (
@@ -122,7 +124,7 @@ const AllPayments = () =>{
          </form>
 
         <p>Total No of Payments:{payments.length}</p>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
         <thead>
           <tr>
             <th>CardHolder Name</th>
@@ -179,7 +181,7 @@ const AllPayments = () =>{
         </Modal.Footer>
       </Modal>
     </div>
-    
+    </div>
     </>
     );
       }

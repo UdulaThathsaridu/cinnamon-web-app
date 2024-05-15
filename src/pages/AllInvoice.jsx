@@ -75,8 +75,6 @@ const AllInvoices = () => {
                 pdf.save("invoice.pdf");
             })
     }
-    
-
 
     const handleSearchSubmit = (event) => {
         event.preventDefault();
@@ -95,8 +93,8 @@ const AllInvoices = () => {
     };
 
     return (
-        <>This is the All Invoices page
-            <br></br>
+        <div style={{ backgroundColor: 'black', color: 'white', minHeight: '00vh', padding: '20px' }}>
+            <p>This is the All Invoices page</p>
             <a href="/allinvoice" className="btn btn-danger my-2">Reload Invoice </a>
             {loading ? <Spinner splash="Loading Invoice..." /> : (
                 (invoices.length === 0 ? <h3>No Invoice Added</h3> : (
@@ -117,14 +115,14 @@ const AllInvoices = () => {
                         </form>
 
                         <p>Total No of Invoices :{invoices.length}</p>
-                        <Table striped bordered hover variant="dark">
+                        <Table striped bordered hover variant="light" style={{ backgroundColor: 'white', color: 'black' }}>
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Customer Name</th>
                                     <th>Order ID</th>
                                     <th>Ordered Date</th>
-                                    <th>Total Amount</th>
+                                    <th>Total Amount(USD)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,7 +160,7 @@ const AllInvoices = () => {
                                 <p><strong>Customer Name:</strong> {selectedInvoice.cname}</p>
                                 <p><strong>Order ID:</strong>{selectedInvoice.orderid}</p>
                                 <p><strong>Ordered Day:</strong> {selectedInvoice.orderedDate}</p>
-                                <p><strong>Total Amount:</strong>{selectedInvoice.tamount}</p>
+                                <p><strong>Total Amount(USD):</strong>{selectedInvoice.tamount}</p>
                             </>
                         )}
                     </Modal.Body>
@@ -184,7 +182,7 @@ const AllInvoices = () => {
                     </Modal.Footer>
                 </Modal>
             </div>
-        </>
+        </div>
     );
 }
 
