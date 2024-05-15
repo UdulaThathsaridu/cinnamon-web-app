@@ -125,23 +125,24 @@ const CreateTransport = () => {
     <Form.Control.Feedback type="invalid">
         {errors.vehicle}
     </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                    <Form.Label>Vehicle Number</Form.Label>
-                    <Form.Control
-    name="vnumber"
-    type="text"
-    placeholder="Enter Vehicle Number"
-    value={values.vnumber.toUpperCase()} // Convert input value to uppercase
-    onChange={handleChange}
-    onBlur={handleBlur}
-    isInvalid={touched.vnumber && !!errors.vnumber}
-    pattern="^[A-Z]{2,3}[0-9]{4}$|^[0-9]{6}$"
-    title="Please enter a valid vehicle number"
-/>
-<Form.Control.Feedback type="invalid">
-    {errors.vnumber}
-</Form.Control.Feedback>
+                            <Form.Group className="mb-3">
+                            <Form.Label>Vehicle Number</Form.Label>
+                            <Form.Control
+                                name="vnumber"
+                                type="text"
+                                placeholder="Enter Vehicle Number"
+                                value={values.vnumber.toUpperCase()} // Convert input value to uppercase
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                isInvalid={touched.vnumber && !!errors.vnumber}
+                                pattern="^[A-Z]{0,3}[0-9]{4}$|^[0-9]{6}$" // Add pattern attribute separately
+                                title="Please enter a valid vehicle number"
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.vnumber}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
 
                         </Form.Group>
 
