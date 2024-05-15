@@ -144,7 +144,7 @@ const EditInvoice = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="tamount">
-              <Form.Label>Total Amount</Form.Label>
+              <Form.Label>Total Amount(USD)</Form.Label>
               <Form.Control
                 id="tamount"
                 name="tamount"

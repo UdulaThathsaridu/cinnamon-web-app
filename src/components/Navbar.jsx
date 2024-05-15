@@ -180,10 +180,11 @@ const Navbar = ({title = "Mandri Life"}) => {
             <Form className="d-flex ms-auto my-2">
            
             <Nav.Link  as = {Link} to="/allpayment" style={{ marginLeft: '10px'  }}>All Payment |</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px' }}>Create Financial Reports |</Nav.Link>
-            <Nav.Link  as = {Link} to="/allfinancial" style={{ marginLeft: '10px'  }}>All Financial Reports |</Nav.Link>
             <Nav.Link  as = {Link} to="/createinvoice" style={{ marginLeft: '10px'  }}>Create Invoice |</Nav.Link>
             <Nav.Link  as = {Link} to="/allinvoice" style={{ marginLeft: '10px'}}>All Invoice |</Nav.Link>
+            <Nav.Link  as = {Link} to="/createfinancial" style={{ marginLeft: '10px' }}>Create Financial Reports |</Nav.Link>
+            <Nav.Link  as = {Link} to="/allfinancial" style={{ marginLeft: '10px'  }}>All Financial Reports |</Nav.Link>
+            
             <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);

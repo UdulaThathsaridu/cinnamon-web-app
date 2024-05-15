@@ -92,6 +92,7 @@ const AllFinancials = () => {
 
     return (
         <>
+            <div style={{ backgroundColor: 'black', color: 'white',  padding: '20px' }}>
             <h2>All Financial Reports</h2>
             <Button onClick={generatePDFReport}>Generate PDF Report</Button>
             <br /><br />
@@ -119,13 +120,13 @@ const AllFinancials = () => {
                     </form>
 
                     <p>Total No of Financial Reports: {financials.length}</p>
-                    <Table striped bordered hover variant="dark">
+                    <Table striped bordered hover variant="light">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Day Duration</th>
-                                <th>Total Sales</th>
-                                <th>Total Cost</th>
+                                <th>Total Sales(USD)</th>
+                                <th>Total Cost(USD)</th>
                                 <th>Count of Sales</th>
                             </tr>
                         </thead>
@@ -156,8 +157,8 @@ const AllFinancials = () => {
                             <>
                                 <p><strong>ID:</strong> {selectedFinancial.id}</p>
                                 <p><strong>Day Duration:</strong> {selectedFinancial.dduration}</p>
-                                <p><strong>Total Sales:</strong> {selectedFinancial.tsale}</p>
-                                <p><strong>Total Cost:</strong> {selectedFinancial.tcost}</p>
+                                <p><strong>Total Sales(USD):</strong> {selectedFinancial.tsale}</p>
+                                <p><strong>Total Cost(USD):</strong> {selectedFinancial.tcost}</p>
                                 <p><strong>Count of Product Sales:</strong> {selectedFinancial.cofPsales}</p>
                             </>
                         )}
@@ -168,6 +169,7 @@ const AllFinancials = () => {
                         <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
                     </Modal.Footer>
                 </Modal>
+            </div>
             </div>
         </>
     );
