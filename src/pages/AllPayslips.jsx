@@ -171,7 +171,7 @@ const AllPayslips = () =>{
 
        <div ref={contentRef}>
         <p>Total No of Payslips:{payslips.length}</p>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="primary">
         <thead>
           <tr>
             <th>Employee Email</th>
