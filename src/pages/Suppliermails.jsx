@@ -16,7 +16,6 @@ const Suppliermail = () => {
         const fetchSuppliers = async () => {
             try {
                 const response = await axios.get("http://localhost:4000/api/suppliers");
-                console.log(response.data);
                 setSuppliers(response.data.suppliers);
             } catch (error) {
                 console.error("Error fetching suppliers", error);
@@ -34,9 +33,7 @@ const Suppliermail = () => {
                 "http://localhost:4000/api/suppliermail/sendemail",
                 { email, itemName, quantity }
             );
-            console.log(response.data);
-
-            // Show success toast message
+            // If the email is sent successfully
             toast.success("Email sent successfully!");
 
             // Clear form fields after submission
@@ -44,6 +41,7 @@ const Suppliermail = () => {
             setItemName("");
             setQuantity("");
         } catch (error) {
+            // Handle errors in sending email
             console.error("Error sending email", error);
             toast.error("Error sending email. Please try again.");
         }
@@ -87,6 +85,7 @@ const Suppliermail = () => {
                     <Form.Control
                         name="quantity"
                         type="number"
+                        placeholder="Enter Quantity"
                         value={quantity}
                         onChange={(e) => setQuantity(e.target.value)}
                         required

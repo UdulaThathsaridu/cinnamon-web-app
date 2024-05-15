@@ -80,13 +80,8 @@ import AllShipments from "./pages/AllShipments";
 import EditShipments from "./pages/EditShipments";
 import ContactInventory from "./pages/ContactInventory";
 import InventoryInbox from "./pages/InventoryInbox";
-import ContactTransport from "./pages/ContactTransport";
-import ContactPayment from "./pages/ContactPayment";
 import TransportInbox from "./pages/TransportInbox";
-import PaymentInbox from "./pages/PaymentInbox";
-import Suppliermail from "./pages/Suppliermail";
-
-
+import LocationTest from "./pages/LocationTest";
 
 
 
@@ -157,13 +152,14 @@ const App = () => {
       <Route path="/edittransports/:id" element={<EditTransports></EditTransports>}/>
       <Route path="/contactinventory" element={<ContactInventory></ContactInventory>}/>
       <Route path="/inventoryinbox" element={<InventoryInbox></InventoryInbox>}/>
+      <Route path="/LocationTest" element={<LocationTest></LocationTest>}/>
 
 
 
       <Route path="/createshipments" element={<CreateShipments></CreateShipments>}/>
       <Route path="/allshipments" element={<AllShipments></AllShipments>}/>
       <Route path="/editshipments/:id" element={<EditShipments></EditShipments>}/>
-
+      <Route path="/transportinbox" element={<TransportInbox></TransportInbox>}/>
 
       <Route path="/createproducts" element={<CreateProduct></CreateProduct>}/>
       <Route path="/allproducts" element={<AllProducts></AllProducts>}/>
@@ -177,14 +173,6 @@ const App = () => {
       <Route path="/createinvoice" element={<CreateInvoice></CreateInvoice>}/>
       <Route path="/allinvoice" element={<AllInvoice></AllInvoice>} />
       <Route path="/editinvoice/:id" element={<EditInvoice></EditInvoice>}/>
-
-
-       
-      <Route path="/contactTransport" element={<ContactTransport></ContactTransport>}/>
-      <Route path="/contactPayment" element={<ContactPayment></ContactPayment>}/>
-      <Route path="/transportInbox" element={<TransportInbox></TransportInbox>}/>
-      <Route path="/PaymentInbox" element={<PaymentInbox></PaymentInbox>}/>
-      <Route path="/Suppliermails" element={<Suppliermail></Suppliermail>}/>
       
       
 

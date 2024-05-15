@@ -77,7 +77,6 @@ const SupplierInbox = () => {
 
     return (
         <>
-            <p>This is the Inbox page</p>
             <a href="/supplierinbox" className="btn btn-danger my-2">Reload Mails</a>
             {loading ? <Spinner splash="Loading Mails..." /> : (
                 (mails.length === 0 ? <h3>No Mails Added</h3> : <>
