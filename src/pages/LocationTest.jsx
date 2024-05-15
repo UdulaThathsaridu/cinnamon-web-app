@@ -38,11 +38,14 @@ const GeoLocationTest = () => {
 
   return (
     <div>
-      <button onClick={getLocation}>Get Location</button>
+    <button className="btn btn-primary" onClick={getLocation}>Get Location</button>
+    
+    <div id="map" style={{ width: '400px', height: '300px' }}>
       <p>Latitude: {coordinates.latitude}</p>
       <p>Longitude: {coordinates.longitude}</p>
-      <div id="map" style={{ width: '400px', height: '300px' }}></div>
-    </div>
+      </div>
+  </div>
+  
   );
 };
 
