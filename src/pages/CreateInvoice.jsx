@@ -12,6 +12,17 @@ const CreateInvoice = () => {
   const { toast } = useContext(ToastContext);
   const navigate = useNavigate();
 
+  // Function to handle input change in Customer Name field
+  const handleCustomerNameChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    // Regular expression to allow only letters
+    const regex = /^[a-zA-Z\s]*$/;
+    // If the entered value matches the regex, update the form field
+    if (regex.test(value)) {
+      setFieldValue("cname", value);
+    }
+  };
+
   return (
     <>
       <h2>Add Invoice Details</h2>
@@ -58,7 +69,8 @@ const CreateInvoice = () => {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting
+          isSubmitting,
+          setFieldValue
         }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
@@ -86,7 +98,7 @@ const CreateInvoice = () => {
                 type="text"
                 placeholder="Enter Customer Name"
                 value={values.cname}
-                onChange={handleChange}
+                onChange={(e) => handleCustomerNameChange(e, setFieldValue)}
                 onBlur={handleBlur}
                 isInvalid={touched.cname && errors.cname}
               />
@@ -130,7 +142,7 @@ const CreateInvoice = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="tamount">
-              <Form.Label>Total Amount</Form.Label>
+              <Form.Label>Total Amount(USD)</Form.Label>
               <Form.Control
                 id="tamount"
                 name="tamount"

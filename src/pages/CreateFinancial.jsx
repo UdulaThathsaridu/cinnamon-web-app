@@ -78,14 +78,14 @@ const CreateFinancial = () =>{
                         </Form.Group>
                         
                         <Form.Group className="mb-3" controlId="tsale">
-                            <Form.Label>Total Sales</Form.Label>
+                            <Form.Label>Total Sales(USD)</Form.Label>
                             <Form.Control id="tsale" name="tsale" type="number" 
                                 placeholder="Enter Total Sales" value={formik.values.tsale} onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                             <ErrorMessage name="tsale" component="div" className="error" />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="tcost">
-                            <Form.Label>Total Cost</Form.Label>
+                            <Form.Label>Total Cost(USD)</Form.Label>
                             <Form.Control id="tcost" name="tcost" type="number" 
                                 placeholder="Enter Total Cost" value={formik.values.tcost} onChange={formik.handleChange} onBlur={formik.handleBlur} required/>
                             <ErrorMessage name="tcost" component="div" className="error" />

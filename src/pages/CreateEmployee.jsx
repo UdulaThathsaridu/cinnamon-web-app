@@ -24,10 +24,14 @@ const CreateEmployee = () => {
 
         if (!values.name.trim()) {
             errors.name = "Name is required";
+        } else if (!/^[a-zA-Z\s]+$/.test(values.name)) {
+            errors.name = "Name should only contain letters and spaces";
         }
 
         if (!values.address.trim()) {
             errors.address = "Address is required";
+        } else if (!/^[a-zA-Z0-9\s,'-]*$/.test(values.address)) {
+            errors.address = "Invalid address";
         }
 
         if (!values.email.trim()) {
@@ -188,3 +192,4 @@ const CreateEmployee = () => {
 };
 
 export default CreateEmployee;
+
