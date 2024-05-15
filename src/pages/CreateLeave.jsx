@@ -115,7 +115,7 @@ const CreateLeave = () => {
                         placeholder="Leave Status"
                         value={leaveDetails.leaveTypeStatus}
                         onChange={handleInputChange}
-                        required
+                        required readOnly
                     />
                 </Form.Group>
                 <Button id="btn" name="submit" variant="primary" type="submit">
