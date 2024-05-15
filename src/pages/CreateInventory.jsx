@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
     quantity: Yup.number().typeError('Quantity must be a number').required('Product Quantity is required').positive('Quantity must be positive').integer('Quantity must be an integer'),
     unitprice: Yup.number().typeError('Unit Price must be a number').required('Unit Price is required').positive('Price must be positive'),
     itemno: Yup.number().typeError('Item Number must be a number').required('Item Number is required').positive('Item Number must be positive').integer('Item Number must be an integer'),
-    suppliername: Yup.string().matches(/^[a-zA-Z0-9\s\W]*$/, 'Only letters,symbols are allowed for Supplier Name').required('Supplier Name is required'),
+    suppliername: Yup.string().matches(/^[a-zA-Z\s]*$/, 'Only letters are allowed for Supplier Name').required('Supplier Name is required'),
 });
 
 const CreateInventory = () => {

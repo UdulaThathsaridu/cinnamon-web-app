@@ -28,7 +28,7 @@ const CustomerProduct = () => {
         }
     }, []);
 
-    // Update localStorage whenever cart changes
+    // Update localStorage whenever  cart changes
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);

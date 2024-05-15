@@ -1,15 +1,8 @@
-import { useContext, useEffect,useState,useRef } from "react";
-import React from "react";
-import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
-import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
-import ToastContext from "../context/ToastContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Spinner, Table, Modal } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import logo from "../assets/mandri-logo_black-2.png";
+import ToastContext from "../context/ToastContext";
 
 const AllInventories = () => {
     const { toast } = useContext(ToastContext);
@@ -18,7 +11,6 @@ const AllInventories = () => {
     const [selectedInventory, setSelectedInventory] = useState(null);
     const [inventories, setInventories] = useState([]);
     const [searchInput, setSearchInput] = useState("");
-    const contentRef = useRef(null);
 
     useEffect(() => {
         async function fetchInventories() {
@@ -78,49 +70,32 @@ const AllInventories = () => {
         setInventories(newSearchInventory);
     };
 
-    const exportPDF = () => {
-        const tableContent = contentRef.current;
-        html2canvas(tableContent).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
+    const generatePDFReport = () => {
+        generatePDF(inventories);
+    };
 
-            // Logo
-            const logoImg = new Image();
-            logoImg.src = logo; // Replace 'your_logo_url' with the URL of your logo
-            logoImg.onload = function () {
-                const imgWidth = 30;
-                const imgHeight = (this.height * imgWidth) / this.width;
-                const marginLeft = 10;
-                const marginTop = 10;
-                pdf.addImage(this, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
-
-                // Title
-                pdf.setFontSize(16);
-                const titleText = "Inventory Report";
-                const titleWidth = pdf.getStringUnitWidth(titleText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
-                const titleX = (pdf.internal.pageSize.width - titleWidth) / 2;
-                const titleY = marginTop + imgHeight + 10; // Adjusted top margin for the title
-                pdf.text(titleText, titleX, titleY);
-
-                // Table Content
-                const pdfWidth = 200;
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                const tableMarginTop = titleY + 10; // Adjusted top margin to accommodate title
-                const tableMarginLeft = (pdf.internal.pageSize.width - pdfWidth) / 2; // Centering the table horizontally
-                pdf.addImage(imgData, 'PNG', tableMarginLeft, tableMarginTop, pdfWidth, pdfHeight);
-
-                const fontSize = 12;
-                pdf.setFontSize(fontSize);
-
-                pdf.save("inventory_report.pdf");
-            };
+    const generatePDF = (inventories) => {
+        const doc = new jsPDF();
+        doc.text("Inventory Report", 10, 10);
+        let yPos = 20;
+        inventories.forEach((inventory, index) => {
+            yPos += 10;
+            doc.text(`${index + 1}. Product Name: ${inventory.productname}`, 10, yPos);
+            doc.text(`   SKU: ${inventory.sku}`, 10, yPos + 5);
+            doc.text(`   Quantity: ${inventory.quantity}`, 10, yPos + 10);
+            doc.text(`   Unit Price: ${inventory.unitprice}`, 10, yPos + 15);
+            doc.text(`   Item Number: ${inventory.itemno}`, 10, yPos + 20);
+            doc.text(`   Supplier Name: ${inventory.suppliername}`, 10, yPos + 25);
+            yPos += 30;
         });
+
+        doc.save("inventory_report.pdf");
     };
 
     return (
         <>
             <h2>All Inventory Items</h2>
-            <Button onClick={exportPDF}>Generate PDF Report</Button>
+            <Button onClick={generatePDFReport}>Generate PDF Report</Button>
             <br /><br />
             {loading ? (
                 <Spinner animation="border" role="status">
@@ -145,7 +120,7 @@ const AllInventories = () => {
                         </Button>
                     </form>
                     <p>Total No of Inventories: {inventories.length}</p>
-                    <Table striped bordered hover variant="dark" ref={contentRef}>
+                    <Table striped bordered hover variant="dark">
                         <thead>
                             <tr>
                                 <th>Product Name</th>
