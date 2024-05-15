@@ -80,6 +80,12 @@ import AllShipments from "./pages/AllShipments";
 import EditShipments from "./pages/EditShipments";
 import ContactInventory from "./pages/ContactInventory";
 import InventoryInbox from "./pages/InventoryInbox";
+import ContactTransport from "./pages/ContactTransport";
+import ContactPayment from "./pages/ContactPayment";
+import TransportInbox from "./pages/TransportInbox";
+import PaymentInbox from "./pages/PaymentInbox";
+import Suppliermail from "./pages/Suppliermail";
+
 
 
 
@@ -171,6 +177,15 @@ const App = () => {
       <Route path="/createinvoice" element={<CreateInvoice></CreateInvoice>}/>
       <Route path="/allinvoice" element={<AllInvoice></AllInvoice>} />
       <Route path="/editinvoice/:id" element={<EditInvoice></EditInvoice>}/>
+
+
+       
+      <Route path="/contactTransport" element={<ContactTransport></ContactTransport>}/>
+      <Route path="/contactPayment" element={<ContactPayment></ContactPayment>}/>
+      <Route path="/transportInbox" element={<TransportInbox></TransportInbox>}/>
+      <Route path="/PaymentInbox" element={<PaymentInbox></PaymentInbox>}/>
+      <Route path="/Suppliermails" element={<Suppliermail></Suppliermail>}/>
+      <Route path="/SupplierOrders" element={<SupplierOrders></SupplierOrders>}/>
       
       
 
