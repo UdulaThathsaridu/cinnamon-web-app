@@ -19,6 +19,8 @@ const AllTransports = () =>{
     const [vehicles,setVehicles] = useState([]);
     const [searchInput,setSearchInput] = useState("");
     const contentRef = useRef(null);
+
+    
   
 
     useEffect(() => {
@@ -147,8 +149,11 @@ const AllTransports = () =>{
 
     return (<>This is the All Vehicles page
     <br></br>
-    <a href="/alltransports" className="btn btn-danger my-2">Reload Vehicles</a>
+    <div className="mb-3">
+    <Link to="/createtransports" className="btn btn-primary me-2">Create Transport</Link>
+    <a href="/alltransports" className="btn btn-danger">Reload Vehicles</a>
     <Button onClick={exportPDF} variant="success" className="my-2 mx-2">Export to PDF</Button>
+    </div>
     {loading ? <Spinner splash="Loading Vehicles..." /> : (
         (vehicles.length == 0 ? <h3>No Vehicles Added</h3>:<>
         <form className="d-flex" onSubmit={handleSearchSubmit}>
@@ -167,11 +172,12 @@ const AllTransports = () =>{
          </form>
 
          <div ref={contentRef}>
-        <p>Total No of Vehicles:{vehicles.length}</p>
-        <Table striped bordered hover variant="dark">
+        <p>Total No of Vehicles : {vehicles.length}</p>
+        <Table striped bordered hover variant="light">
         <thead>
           <tr>
             <th>Vehicle</th>
+            <th>Vehicle Number</th>
             <th>Model</th>
             <th>Status</th>
             <th>Last Inspection</th>
@@ -179,20 +185,22 @@ const AllTransports = () =>{
           </tr>
         </thead>
         <tbody>
-          {loading === false && vehicles.map((vehicle) =>(
-               <tr key={vehicle._id} onClick={()=> {
-                setSelectedVehicle({});
-                setSelectedVehicle(vehicle);
-                setShowModal(true)}}>
-               <td>{vehicle.vehicle}</td>
-               <td>{vehicle.model}</td>
-               <td>{vehicle.status}</td>
-               <td>{vehicle.last_inspection}</td>
-               <td>{vehicle.next_inspection}</td>
-             </tr>
-  
-          ))}
-        </tbody>
+  {loading === false && vehicles.map((vehicle) => (
+    <tr key={vehicle._id} onClick={() => {
+      setSelectedVehicle(vehicle);
+      setShowModal(true);
+    }}>
+      <td>{vehicle.vehicle}</td>
+      <td>{vehicle.vnumber}</td>
+      <td>{vehicle.model}</td>
+      <td>{vehicle.status}</td>
+      {/* Format dates if needed */}
+      <td>{new Date(vehicle.last_inspection).toLocaleDateString()}</td>
+      <td>{new Date(vehicle.next_inspection).toLocaleDateString()}</td>
+    </tr>
+  ))}
+</tbody>
+
       </Table>
       </div>
        </>)
@@ -213,6 +221,7 @@ const AllTransports = () =>{
          { selectedVehicle &&(
             <>
             <p><strong>Vehicle:</strong> {selectedVehicle.vehicle}</p>
+          <p><strong>Vehicle Number</strong> {selectedVehicle.vnumber}</p>
           <p><strong>Model:</strong>{selectedVehicle.model}</p>
           <p><strong>Status:</strong> {selectedVehicle.status}</p>
           <p><strong>Last Inspection:</strong>{selectedVehicle.last_inspection}</p>

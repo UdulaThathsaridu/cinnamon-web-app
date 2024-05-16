@@ -264,6 +264,23 @@ const CreateCheckout = () => {
         formik.setFieldValue('phone', phoneCode);
     };
 
+    // Function to handle key press event for the full name input
+  const handleKeyPress = (event) => {
+    const regex = /^[a-zA-Z\s]*$/;
+    if (!regex.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+  const handleKeyPress1 = (event) => {
+    const regex = /^\d+$/;
+    if (!regex.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+
+
     return (
         <>
             <h2>Checkout Details</h2>
@@ -271,7 +288,8 @@ const CreateCheckout = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Customer Name</Form.Label>
                     <Form.Control id="name" name="name" type="text"
-                        placeholder="Enter Customer Name" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.name && formik.errors.name} />
+                        placeholder="Enter Customer Name" onKeyPress = {handleKeyPress} value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.name && formik.errors.name} />
+                                   
                     <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="address">
@@ -283,7 +301,7 @@ const CreateCheckout = () => {
                 <Form.Group className="mb-3" controlId="city">
                     <Form.Label>City</Form.Label>
                     <Form.Control id="city" name="city" type="text"
-                        placeholder="Enter City" value={formik.values.city} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.city && formik.errors.city} />
+                        placeholder="Enter City" onKeyPress = {handleKeyPress} value={formik.values.city} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.city && formik.errors.city} />
                     <Form.Control.Feedback type="invalid">{formik.errors.city}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="country">
@@ -305,7 +323,7 @@ const CreateCheckout = () => {
                 <Form.Group className="mb-3" controlId="phone">
                     <Form.Label>Phone</Form.Label>
                     <Form.Control id="phone" name="phone" type="tel"
-                        placeholder="Enter phone" value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.phone && formik.errors.phone} />
+                        placeholder="Enter phone" onKeyPress = {handleKeyPress1} value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.phone && formik.errors.phone} />
                     <Form.Control.Feedback type="invalid">{formik.errors.phone}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="email">

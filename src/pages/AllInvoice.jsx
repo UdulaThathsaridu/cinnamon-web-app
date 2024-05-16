@@ -4,6 +4,7 @@ import ToastContext from "../context/ToastContext";
 import { Link } from "react-router-dom";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import logo from "../assets/mandri-logo_black-2.png"; // Import the logo
 
 const AllInvoices = () => {
     const { toast } = useContext(ToastContext);
@@ -29,7 +30,6 @@ const AllInvoices = () => {
                 if (!result.error) {
                     setInvoices(result.invoices);
                     setOriginalInvoices(result.invoices);
- // Set original invoices when fetching
                     setLoading(false);
                 } else {
                     console.log(result);
@@ -71,12 +71,36 @@ const AllInvoices = () => {
             .then((canvas) => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF();
-                pdf.addImage(imgData, 'PNG', 0, 0);
-                pdf.save("invoice.pdf");
+                
+                // Logo
+                const logoImg = new Image();
+                logoImg.src = logo;
+                logoImg.onload = function() {
+                    const imgWidth = 30;
+                    const imgHeight = (this.height * imgWidth) / this.width;
+                    const marginLeft = 10;
+                    const marginTop = 10; 
+                    pdf.addImage(this, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
+
+                    // Title
+                    pdf.setFontSize(16);
+                    const titleText = "Invoice Details";
+                    const titleWidth = pdf.getStringUnitWidth(titleText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
+                    const titleX = (pdf.internal.pageSize.width - titleWidth) / 2;
+                    const titleY = marginTop + imgHeight + 10; // Adjusted top margin for the title
+                    pdf.text(titleText, titleX, titleY);
+
+                    // Invoice Content
+                    const pdfWidth = 200;
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    const contentMarginTop = titleY + 10; // Adjusted top margin to accommodate title
+                    const contentMarginLeft = (pdf.internal.pageSize.width - pdfWidth) / 2; // Centering the content horizontally
+                    pdf.addImage(imgData, 'PNG', contentMarginLeft, contentMarginTop, pdfWidth, pdfHeight);
+                    
+                    pdf.save("invoice.pdf");
+                };
             })
     }
-    
-
 
     const handleSearchSubmit = (event) => {
         event.preventDefault();
@@ -95,8 +119,8 @@ const AllInvoices = () => {
     };
 
     return (
-        <>This is the All Invoices page
-            <br></br>
+        <div style={{ backgroundColor: 'black', color: 'white', minHeight: '100vh', padding: '20px' }}>
+            <p>This is the All Invoices page</p>
             <a href="/allinvoice" className="btn btn-danger my-2">Reload Invoice </a>
             {loading ? <Spinner splash="Loading Invoice..." /> : (
                 (invoices.length === 0 ? <h3>No Invoice Added</h3> : (
@@ -117,14 +141,14 @@ const AllInvoices = () => {
                         </form>
 
                         <p>Total No of Invoices :{invoices.length}</p>
-                        <Table striped bordered hover variant="dark">
+                        <Table striped bordered hover variant="light" style={{ backgroundColor: 'white', color: 'black' }}>
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Customer Name</th>
                                     <th>Order ID</th>
                                     <th>Ordered Date</th>
-                                    <th>Total Amount</th>
+                                    <th>Total Amount(USD)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,7 +186,7 @@ const AllInvoices = () => {
                                 <p><strong>Customer Name:</strong> {selectedInvoice.cname}</p>
                                 <p><strong>Order ID:</strong>{selectedInvoice.orderid}</p>
                                 <p><strong>Ordered Day:</strong> {selectedInvoice.orderedDate}</p>
-                                <p><strong>Total Amount:</strong>{selectedInvoice.tamount}</p>
+                                <p><strong>Total Amount(USD):</strong>{selectedInvoice.tamount}</p>
                             </>
                         )}
                     </Modal.Body>
@@ -184,7 +208,7 @@ const AllInvoices = () => {
                     </Modal.Footer>
                 </Modal>
             </div>
-        </>
+        </div>
     );
 }
 

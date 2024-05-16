@@ -106,14 +106,14 @@ const EditFinancial = () =>{
         <Form.Label>Day Duration</Form.Label>
         <Form.Control id="dduration" name="dduration" type="number" 
         placeholder="Enter Day Duration"  value={financialDetails.dduration} onChange={handleInputChange}  required/>
-      </Form.Group>
+      </Form.Group>S
       <Form.Group className="mb-3" controlId="tsale">
-        <Form.Label>Total Sales</Form.Label>
+        <Form.Label>Total Sales(USD)</Form.Label>
         <Form.Control id="tsale" name="tsale" type="number" 
         placeholder="Enter Total Sales" value={financialDetails.tsale} onChange={handleInputChange} required/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="tcost">
-        <Form.Label>Total Cost</Form.Label>
+        <Form.Label>Total Cost(USD)</Form.Label>
         <Form.Control id="tcost" name="tcost" type="number" 
         placeholder="Enter Total Cost" value={financialDetails.tcost} onChange={handleInputChange} required/>
       </Form.Group>
