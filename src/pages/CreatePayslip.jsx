@@ -37,6 +37,11 @@ const CreatePayslip = () => {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+        if (value < 0) {
+            setPayslipDetails({ ...payslipDetails, [name]: 0 });
+            toast.error("Negative numbers are not allowed");
+            return;
+        }
         setPayslipDetails({ ...payslipDetails, [name]: value });
         validateField(name, value);
     }
@@ -58,9 +63,9 @@ const CreatePayslip = () => {
             case 'paymentMethod':
                 if (!value) {
                     setErrors(prevErrors => ({ ...prevErrors, [name]: "This field is required" }));
-                } else if(!/^[A-Za-z]+$/.test(value)){
-                  setErrors(prevErrors => ({...prevErrors,[name]:"Please enter only letters"}));
-                }else {
+                } else if (!/^[A-Za-z]+$/.test(value)) {
+                    setErrors(prevErrors => ({ ...prevErrors, [name]: "Please enter only letters" }));
+                } else {
                     setErrors(prevErrors => ({ ...prevErrors, [name]: "" }));
                 }
                 break;
@@ -75,6 +80,22 @@ const CreatePayslip = () => {
             toast.error("Please fix all validation errors before submitting.");
             return;
         }
+
+        // Check if there is already a payslip for the same month
+        const existingPayslip = await fetch(`http://localhost:4000/api/payslips/check/${payslipDetails.date}/${payslipDetails.email}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+
+        const existingPayslipResult = await existingPayslip.json();
+
+        if (existingPayslipResult.exists) {
+            toast.error(`A payslip already exists for the month of ${payslipDetails.date}. Please select a different month.`);
+            return;
+        }
+
         const { allowances, deductions, otherAllowances, otherDeductions } = payslipDetails;
         const totalAllowance = parseFloat(allowances) + parseFloat(otherAllowances);
         const totalDeduction = parseFloat(deductions) + parseFloat(otherDeductions);
@@ -94,7 +115,7 @@ const CreatePayslip = () => {
 
             const result = await res.json();
             if (!result.error) {
-                toast.success(`Created [${payslipDetails.id}]`);
+                toast.success(`Created [${payslipDetails.name}]`);
                 setPayslipDetails({
                     id: id, name: name, date: "", allowances: "", deductions: "",
                     otherAllowances: "", otherDeductions: "", basic: "",

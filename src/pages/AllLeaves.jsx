@@ -101,7 +101,7 @@ const AllLeaves = () =>{
       event.preventDefault();
 
       const newSearchLeave = leaves.filter((leave) => 
-      leave.leaveType.toLowerCase().includes(searchInput.toLowerCase())
+      leave.name.toLowerCase().includes(searchInput.toLowerCase())
       );
       console.log(newSearchLeave);
 
@@ -161,7 +161,7 @@ const AllLeaves = () =>{
 
         <div ref={contentRef}>
         <p>Total No of Leaves:{leaves.length}</p>
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="primary">
         <thead>
           <tr>
             <th>Name</th>

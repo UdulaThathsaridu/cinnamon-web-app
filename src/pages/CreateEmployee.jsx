@@ -24,6 +24,8 @@ const CreateEmployee = () => {
 
         if (!values.name.trim()) {
             errors.name = "Name is required";
+        } else if(!/^[A-Za-z]+$/.test(values.name)){
+            errors.name = "Invalid Name with special characters";
         }
 
         if (!values.address.trim()) {
@@ -101,15 +103,23 @@ const CreateEmployee = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Employee Name</Form.Label>
                             <Form.Control
-                                name="name"
-                                type="text"
-                                placeholder="Enter Employee Name"
-                                value={values.name}
-                                onChange={handleChangeName}
-                                onBlur={handleBlur}
-                                isInvalid={touched.name && !!errors.name}
-                                required
-                            />
+                             name="name"
+                            type="text"
+                            placeholder="Enter Employee Name"
+                          value={values.name}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                       onKeyPress={(event) => {
+        // Allow only alphabetic characters and space
+                    const regex = /^[A-Za-z\s]*$/;
+                    if (!regex.test(event.key)) {
+                       event.preventDefault();
+        }
+    }}
+    isInvalid={touched.name && !!errors.name}
+    required
+/>
+
                             <Form.Control.Feedback type="invalid">
                                 {errors.name}
                             </Form.Control.Feedback>
