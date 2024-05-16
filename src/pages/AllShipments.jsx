@@ -178,7 +178,7 @@ const AllShipments = () =>{
             <th>Date</th>
             <th>Vehicle</th>
             <th>Max Distance</th>
-            <th>Speed limit</th>
+          {/*  <th>Speed limit</th>*/}
             <th>Arrival</th>
             <th>Driver</th>
             <th>Note</th>
@@ -196,7 +196,7 @@ const AllShipments = () =>{
       <td>{new Date(shipment.date).toLocaleDateString()}</td>
       <td>{shipment.vehicle}</td>
       <td>{shipment.max_distance}</td>
-      <td>{shipment.speed_limit}</td>
+      {/*<td>{shipment.speed_limit}</td>*/}
       <td>{new Date(shipment.arrival).toLocaleDateString()}</td>
       <td>{shipment.driver}</td>
       <td>{shipment.note}</td>
