@@ -48,6 +48,14 @@ const CreateEmployee = () => {
         return errors;
     };
 
+    const handleChangeName = event => {
+        const input = event.target.value;
+        const regex = /^[a-zA-Z]*$/;
+        if (input === "" || regex.test(input)) {
+            setFieldValue("name", input);
+        }
+    };
+
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const res = await fetch('http://localhost:4000/api/employees', {
@@ -88,7 +96,8 @@ const CreateEmployee = () => {
                     handleChange,
                     handleBlur,
                     handleSubmit,
-                    isSubmitting
+                    isSubmitting,
+                    setFieldValue
                 }) => (
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">

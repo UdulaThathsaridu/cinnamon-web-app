@@ -120,6 +120,7 @@ const AllInventories = () => {
     return (
         <>
             <h2>All Inventory Items</h2>
+            <a href="/allinventories" className="btn btn-danger my-2">Reload Inventories</a>
             <Button onClick={exportPDF}>Generate PDF Report</Button>
             <br /><br />
             {loading ? (

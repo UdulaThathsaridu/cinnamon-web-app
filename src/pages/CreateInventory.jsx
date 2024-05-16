@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
     quantity: Yup.number().typeError('Quantity must be a number').required('Product Quantity is required').positive('Quantity must be positive').integer('Quantity must be an integer'),
     unitprice: Yup.number().typeError('Unit Price must be a number').required('Unit Price is required').positive('Price must be positive'),
     itemno: Yup.number().typeError('Item Number must be a number').required('Item Number is required').positive('Item Number must be positive').integer('Item Number must be an integer'),
-    suppliername: Yup.string().matches(/^[a-zA-Z0-9\s\W]*$/, 'Only letters,symbols are allowed for Supplier Name').required('Supplier Name is required'),
+    suppliername: Yup.string().matches(/^[a-zA-Z0-9\s\W]*$/, 'Only letters, numbers, and symbols are allowed for Supplier Name').required('Supplier Name is required'),
 });
 
 const CreateInventory = () => {
@@ -57,6 +57,13 @@ const CreateInventory = () => {
         }
     };
 
+    // Input validation for key press event
+    const handleKeyPress = (event, pattern) => {
+        if (!pattern.test(event.key)) {
+            event.preventDefault();
+        }
+    };
+
     return (
         <>
             <h2>Add Inventories</h2>
@@ -69,32 +76,62 @@ const CreateInventory = () => {
                     <Form onSubmit={formik.handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Product Name</Form.Label>
-                            <Field name="productname" type="text" className="form-control" />
+                            <Field 
+                                name="productname" 
+                                type="text" 
+                                className="form-control" 
+                                onKeyPress={(event) => handleKeyPress(event, /^[a-zA-Z\s]*$/)} 
+                            />
                             <ErrorMessage name="productname" component="div" className="text-danger" />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Product SKU</Form.Label>
-                            <Field name="sku" type="text" className="form-control" />
+                            <Field 
+                                name="sku" 
+                                type="text" 
+                                className="form-control" 
+                                onKeyPress={(event) => handleKeyPress(event, /^[a-zA-Z0-9\s\W]*$/)} 
+                            />
                             <ErrorMessage name="sku" component="div" className="text-danger" />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Product Quantity</Form.Label>
-                            <Field name="quantity" type="text" className="form-control" />
+                            <Field 
+                                name="quantity" 
+                                type="text" 
+                                className="form-control" 
+                                onKeyPress={(event) => handleKeyPress(event, /^[0-9]*$/)} 
+                            />
                             <ErrorMessage name="quantity" component="div" className="text-danger" />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Enter Unit Price</Form.Label>
-                            <Field name="unitprice" type="text" className="form-control" />
+                            <Field 
+                                name="unitprice" 
+                                type="text" 
+                                className="form-control" 
+                                onKeyPress={(event) => handleKeyPress(event, /^[0-9.]*$/)} 
+                            />
                             <ErrorMessage name="unitprice" component="div" className="text-danger" />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Enter Item Number</Form.Label>
-                            <Field name="itemno" type="text" className="form-control" />
+                            <Field 
+                                name="itemno" 
+                                type="text" 
+                                className="form-control" 
+                                onKeyPress={(event) => handleKeyPress(event, /^[0-9]*$/)} 
+                            />
                             <ErrorMessage name="itemno" component="div" className="text-danger" />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Enter Supplier Name</Form.Label>
-                            <Field name="suppliername" type="text" className="form-control" />
+                            <Field 
+                                name="suppliername" 
+                                type="text" 
+                                className="form-control" 
+                                onKeyPress={(event) => handleKeyPress(event, /^[a-zA-Z0-9\s\W]*$/)} 
+                            />
                             <ErrorMessage name="suppliername" component="div" className="text-danger" />
                         </Form.Group>
                         <Button id="btn" name="submit" variant="primary" type="submit" disabled={!formik.isValid || formik.isSubmitting}>
