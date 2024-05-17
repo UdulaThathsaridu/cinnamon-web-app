@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import loadGoogleMaps from '../components/loadGoogleMaps'; // Adjust the import path as necessary
+import loadGoogleMaps from 'your api kry'; // Adjust the import path as necessary & enter your api key
 
 const GeoLocationTest = () => {
   const [coordinates, setCoordinates] = useState({ latitude: null, longitude: null });
